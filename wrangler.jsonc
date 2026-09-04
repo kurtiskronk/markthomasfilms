@@ -1,7 +1,7 @@
 {
-	"name": "markthomasfilms",
-	"compatibility_date": "2026-09-03",
-	"assets": {
-		"directory": "./public/"
-	}
+  "name": "markthomasfilms",
+  "compatibility_date": "2026-09-03",
+  "assets": {
+    "directory": "./public/"
+  }
 }

@@ -495,19 +495,6 @@ article.blog-basic-grid--container.mtf-film-card a {
    ================================================== */
 
 /* =========================================================
-	 MARK THOMAS FILMS
-	 ========================================================= */
-
-
-
-
-
-
-
-
-
-
-/* =========================================================
 	 INQUIRY FORM — REQUIRED ASTERISK
 	 ========================================================= */
 
@@ -528,6 +515,63 @@ article.blog-basic-grid--container.mtf-film-card a {
 	margin-left: 0.15em;
 
 	vertical-align: super;
+}
+
+
+/* =========================================================
+	 INQUIRY FORM — VISUAL FIELD ORDER
+	 ========================================================= */
+
+/*
+ * Squarespace / DOM order remains:
+ *
+ * Wedding Date
+ * Optional Questions
+ * Optional fields
+ * Message
+ *
+ * Visual order becomes:
+ *
+ * Wedding Date
+ * Message
+ * Optional Questions
+ * Optional fields
+ *
+ * Nothing is physically moved in the DOM.
+ */
+
+#block-c3a7e802903a447efe19
+.mtf-form-message {
+	order: 10;
+
+	grid-column: 1 / -1 !important;
+}
+
+#block-c3a7e802903a447efe19
+.mtf-form-optional {
+	order: 20;
+}
+
+
+/* =========================================================
+	 INQUIRY FORM — MOBILE VISUAL ORDER
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	/*
+	 * CSS order only works on flex/grid children.
+	 * Desktop is already a grid via forms.js.
+	 * Use flex on mobile while retaining the normal
+	 * one-field-per-row Squarespace appearance.
+	 */
+
+	#block-c3a7e802903a447efe19
+	.field-list {
+		display: flex !important;
+		flex-direction: column;
+	}
+
 }
 
 

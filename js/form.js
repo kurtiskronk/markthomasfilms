@@ -125,6 +125,104 @@
 			);
 
 		}
+		
+		/* ======================================================
+			 VISUAL FIELD ORDER
+			 ====================================================== */
+		
+		function classifyFieldOrder(fieldList) {
+		
+			if (!fieldList) {
+				return;
+			}
+		
+		
+			const items =
+				Array.from(
+					fieldList.children
+				);
+		
+		
+			/*
+			 * Clear our classes first in case Squarespace
+			 * has re-rendered any part of the form.
+			 */
+		
+			items.forEach(function (item) {
+		
+				item.classList.remove(
+					'mtf-form-message',
+					'mtf-form-optional'
+				);
+		
+			});
+		
+		
+			let optionalSectionStarted =
+				false;
+		
+		
+			items.forEach(function (item) {
+		
+				/*
+				 * Message is the textarea field.
+				 *
+				 * It remains in its original DOM position;
+				 * we're only giving CSS a hook for visual order.
+				 */
+		
+				if (
+					item.querySelector(
+						'textarea'
+					)
+				) {
+		
+					item.classList.add(
+						'mtf-form-message'
+					);
+		
+					return;
+				}
+		
+		
+				const text =
+					item.textContent
+						.replace(
+							/\s+/g,
+							' '
+						)
+						.trim();
+		
+		
+				/*
+				 * Once we reach Optional Questions,
+				 * mark that section and everything following
+				 * it as optional.
+				 */
+		
+				if (
+					text.includes(
+						'Optional Questions'
+					)
+				) {
+		
+					optionalSectionStarted =
+						true;
+		
+				}
+		
+		
+				if (optionalSectionStarted) {
+		
+					item.classList.add(
+						'mtf-form-optional'
+					);
+		
+				}
+		
+			});
+		
+		}
 
 
 		/* ======================================================
@@ -512,8 +610,13 @@
 			if (!fieldList) {
 				return false;
 			}
-
-
+			
+			
+			classifyFieldOrder(
+				fieldList
+			);
+			
+			
 			/* ----------------------------------------------------
 				 GRID
 				 ---------------------------------------------------- */
@@ -845,9 +948,14 @@
 
 
 			if (fieldList) {
-
-				[
-					'display',
+			
+			classifyFieldOrder(
+				fieldList
+			);
+			
+			
+			[
+				'display',
 					'grid-template-columns',
 					'column-gap',
 					'row-gap',

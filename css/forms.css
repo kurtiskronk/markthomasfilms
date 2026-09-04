@@ -115,3 +115,4 @@ button[type="submit"] {
 /* Get rid of padding on bottom of form on mobile */
 .page-section.vertical-alignment--middle:not(.content-collection):not(.gallery-section):not(.user-items-list-section):not(.editmode-changing-rowcount).section-height--small>.content-wrapper {
 padding-bottom: 0;
+}

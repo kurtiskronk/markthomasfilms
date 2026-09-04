@@ -485,3 +485,130 @@ article.blog-basic-grid--container.mtf-film-card a {
 	}
 
 }
+
+
+
+/* =========================================================
+	 MOBILE — FILMS
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	.mtf-films-intro-explorer {
+		width: calc(100% - 32px);
+		margin-bottom: 0;
+		padding: 34px 10px 0;
+	}
+
+	.mtf-films-intro {
+		margin-bottom: 0;
+	}
+
+	.mtf-films-intro-title {
+		font-size: 2rem;
+	}
+
+	.mtf-films-intro-copy {
+		font-size: 0.93rem;
+	}
+
+	.mtf-film-explorer-title {
+		font-size: 1.06rem;
+	}
+
+	.mtf-film-explorer-copy {
+		margin-bottom: 8px;
+		font-size: 0.7rem;
+	}
+
+	.mtf-film-explorer
+	.mtf-film-tag-cloud-block
+	ul.sqs-tagcloud {
+		column-gap: 11px;
+		row-gap: 3px;
+	}
+
+	.mtf-archive-context {
+		width: calc(100% - 32px);
+		margin-top: 22px;
+		margin-bottom: 28px;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mtf-archive-context-label {
+		font-size: 0.82rem;
+	}
+
+	.mtf-archive-context-title {
+		font-size: 1.45rem;
+	}
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.mtf-film-categories,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.mtf-film-tags {
+		font-size: 0.68rem;
+	}
+
+}
+
+
+
+/* =========================================================
+	 REDUCED MOTION
+	 ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	a.image-wrapper.mtf-film-media
+	img.mtf-film-image,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.blog-title a,
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide,
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__media {
+		transition: none;
+	}
+
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card:hover {
+		transform: none;
+	}
+
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card:hover
+	a.image-wrapper.mtf-film-media
+	img.mtf-film-image {
+		transform: none;
+	}
+
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover {
+		translate: none;
+	}
+
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover
+	.user-items-list-carousel__media {
+		transform: none;
+	}
+
+}

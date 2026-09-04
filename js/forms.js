@@ -1179,10 +1179,8 @@
 						return;
 					}
 
-
 					mutationQueued =
 						true;
-
 
 					requestAnimationFrame(
 						function () {
@@ -1190,12 +1188,10 @@
 							mutationQueued =
 								false;
 
-
 							updateFormLayout();
-
+							queueFormResize();
 						}
 					);
-
 				}
 			);
 

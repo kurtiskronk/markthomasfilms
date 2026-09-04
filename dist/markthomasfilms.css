@@ -6,11 +6,37 @@
 	 CENTER SINGLE FILM ARCHIVES
 	 ================================================== */
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
 
-	.blog-basic-grid.collection-content-wrapper:has(> article.blog-item:only-child)
-	> article.blog-item {
+	.blog-basic-grid.collection-content-wrapper
+	> article.blog-item:only-child {
 		grid-column: 2;
+	}
+
+}
+
+
+/* ==================================================
+	 CENTER TWO-CARD FILM ARCHIVES
+	 ================================================== */
+
+@media screen and (min-width: 768px) {
+
+	.blog-basic-grid.collection-content-wrapper:has(
+		> article.blog-item:nth-child(2):last-child
+	) {
+		display: flex;
+		justify-content: center;
+		gap: 40px;
+	}
+
+
+	.blog-basic-grid.collection-content-wrapper:has(
+		> article.blog-item:nth-child(2):last-child
+	)
+	> article.blog-item {
+		flex: 0 0 calc((100% - 80px) / 3);
+		min-width: 0;
 	}
 
 }

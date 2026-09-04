@@ -1142,23 +1142,181 @@
 
 
 	/* ======================================================
-		 SAFE INITIALIZATION
-		 ====================================================== */
-
-	if (document.readyState === 'loading') {
-
-		document.addEventListener(
-			'DOMContentLoaded',
-			initForm,
-			{ once: true }
-		);
-
-	}
-
-	else {
-
-		initForm();
-
-	}
-
-})();
+			 SQUARESPACE-SAFE INITIALIZATION
+			 ====================================================== */
+	
+		let initStarted =
+			false;
+	
+	
+		let initObserver =
+			null;
+	
+	
+		let initTimeout =
+			null;
+	
+	
+		function tryInitForm() {
+	
+			if (initStarted) {
+				return true;
+			}
+	
+	
+			const block =
+				document.getElementById(
+					'block-c3a7e802903a447efe19'
+				);
+	
+	
+			if (!block) {
+				return false;
+			}
+	
+	
+			const feBlock =
+				block.closest(
+					'.fe-block'
+				);
+	
+	
+			const engine =
+				block.closest(
+					'.fluid-engine'
+				);
+	
+	
+			const fieldList =
+				block.querySelector(
+					'.field-list'
+				);
+	
+	
+			/*
+			 * Squarespace may create the outer block before
+			 * the complete form structure exists.
+			 *
+			 * Don't initialize until everything our form
+			 * script depends on is actually present.
+			 */
+	
+			if (
+				!feBlock ||
+				!engine ||
+				!fieldList
+			) {
+				return false;
+			}
+	
+	
+			initStarted =
+				true;
+	
+	
+			if (initObserver) {
+	
+				initObserver.disconnect();
+	
+				initObserver =
+					null;
+	
+			}
+	
+	
+			if (initTimeout) {
+	
+				clearTimeout(
+					initTimeout
+				);
+	
+				initTimeout =
+					null;
+	
+			}
+	
+	
+			console.info(
+				'Mark Thomas Films: wedding inquiry form initialized.'
+			);
+	
+	
+			initForm();
+	
+	
+			return true;
+	
+		}
+	
+	
+		function watchForForm() {
+	
+			/*
+			 * It may already exist.
+			 */
+	
+			if (tryInitForm()) {
+				return;
+			}
+	
+	
+			/*
+			 * Otherwise watch Squarespace while it builds
+			 * or hydrates the page.
+			 */
+	
+			initObserver =
+				new MutationObserver(
+					function () {
+	
+						tryInitForm();
+	
+					}
+				);
+	
+	
+			initObserver.observe(
+				document.documentElement,
+				{
+					childList: true,
+					subtree: true
+				}
+			);
+	
+	
+			/*
+			 * Don't leave a document-wide observer running
+			 * indefinitely if this isn't the inquiry page.
+			 */
+	
+			initTimeout =
+				setTimeout(
+					function () {
+	
+						if (initObserver) {
+	
+							initObserver.disconnect();
+	
+							initObserver =
+								null;
+	
+						}
+	
+					},
+					15000
+				);
+	
+		}
+	
+	
+		/*
+		 * Do NOT depend on DOMContentLoaded here.
+		 *
+		 * External scripts loaded through loader.js can arrive
+		 * before or after that event, and Squarespace can render
+		 * Fluid Engine content independently of it.
+		 */
+	
+		watchForForm();
+	
+	})();

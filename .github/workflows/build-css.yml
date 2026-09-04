@@ -1,43 +1,35 @@
 name: Build Mark Thomas Films CSS
 
 on:
-	push:
+  push:
 		branches:
 			- main
-
 		paths:
 			- "css/**/*.css"
 			- ".github/workflows/build-css.yml"
 
+	workflow_dispatch:
+
 permissions:
 	contents: write
 
-
 jobs:
-
 	build-css:
-
 		runs-on: ubuntu-latest
 
-
 		steps:
-
 			- name: Check out repository
 				uses: actions/checkout@v4
-
 
 			- name: Build combined stylesheet
 				shell: bash
 				run: |
-
 					mkdir -p dist
 
 					: > dist/markthomasfilms.css
 
-
 					while IFS= read -r file
 					do
-
 						echo "/* ==================================================" \
 							>> dist/markthomasfilms.css
 
@@ -50,10 +42,8 @@ jobs:
 						echo "" \
 							>> dist/markthomasfilms.css
 
-
 						cat "$file" \
 							>> dist/markthomasfilms.css
-
 
 						echo "" \
 							>> dist/markthomasfilms.css
@@ -69,37 +59,27 @@ jobs:
 							| sort
 					)
 
-
 			- name: Commit generated stylesheet
 				shell: bash
 				run: |
-
 					if [[ -z "$(git status --porcelain -- dist/markthomasfilms.css)" ]]
 					then
-
 						echo "CSS bundle is already current."
-
 						exit 0
-
 					fi
-
 
 					git config \
 						user.name \
 						"github-actions[bot]"
 
-
 					git config \
 						user.email \
 						"41898282+github-actions[bot]@users.noreply.github.com"
 
-
 					git add \
 						dist/markthomasfilms.css
 
-
 					git commit \
-						-m "Rebuild CSS bundle [skip ci]"
-
+						-m "Rebuild CSS bundle"
 
 					git push

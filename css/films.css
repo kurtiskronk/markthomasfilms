@@ -1,29 +1,12 @@
 /* ==================================================
-	 CENTER SMALL FILM ARCHIVES
+	 CENTER SINGLE FILM ARCHIVES
 	 ================================================== */
 
 @media (min-width: 768px) {
 
-	/* Exactly one film */
-	.blog-basic-grid.collection-content-wrapper:
-		has(> article.blog-item:only-child)
+	.blog-basic-grid.collection-content-wrapper:has(> article.blog-item:only-child)
 	> article.blog-item {
 		grid-column: 2;
-	}
-
-
-	/* Exactly two films */
-	.blog-basic-grid.collection-content-wrapper:
-		has(> article.blog-item:nth-child(2):last-child) {
-		display: flex;
-		justify-content: center;
-	}
-
-
-	.blog-basic-grid.collection-content-wrapper:
-		has(> article.blog-item:nth-child(2):last-child)
-	> article.blog-item {
-		width: calc((100% - 2 * var(--mtf-film-grid-gap, 32px)) / 3);
 	}
 
 }

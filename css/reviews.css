@@ -1,0 +1,364 @@
+/* =========================================================
+	 REVIEW CAROUSEL
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.user-items-list-carousel__slide {
+	padding: 0 !important; /* Squarespace sets padding inline */
+	background: #fff;
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+	transition:
+		box-shadow 0.3s ease,
+		translate 0.3s ease,
+		opacity 0.3s ease;
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — 16:9 IMAGE
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.user-items-list-carousel__media-container {
+	width: 100%;
+	margin-bottom: 0 !important; /* Squarespace sets margin inline */
+	overflow: hidden;
+}
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.user-items-list-carousel__media-inner {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	padding-bottom: 0;
+	overflow: hidden;
+}
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.user-items-list-carousel__media {
+	position: absolute;
+	inset: 0;
+	display: block;
+	transform: scale(1);
+	transition:
+		transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — HOVER
+	 ========================================================= */
+
+@media (hover: hover) {
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover {
+		translate: 0 -4px;
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+	}
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover
+	.user-items-list-carousel__media {
+		transform: scale(1.045);
+	}
+
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — CONTENT
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content {
+	padding: 26px 32px 28px;
+}
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__text-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	text-align: left;
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — REVIEW COPY
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__description {
+	order: 1;
+	max-width: none;
+	margin-top: 0 !important; /* Squarespace sets margin inline */
+	padding-left: 14px;
+	padding-right: 14px;
+	font-size: 0.98rem;
+	font-weight: 400;
+	line-height: 1.65;
+}
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__description p {
+	position: relative;
+	margin: 0;
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — FIVE STARS
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__description::before {
+	content: "★★★★★";
+	display: block;
+	margin-bottom: 17px;
+	color: #fbbc04;
+	font-family: Arial, sans-serif;
+	font-size: 0.95rem;
+	line-height: 1;
+	letter-spacing: 0.14em;
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — QUOTE MARK
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__description p::before {
+	content: "“";
+	position: absolute;
+	left: -18px;
+	top: -12px;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 3.1rem;
+	line-height: 1;
+	text-align: left;
+	opacity: 0.12;
+	pointer-events: none;
+}
+
+
+/* =========================================================
+	 REVIEW CAROUSEL — COUPLE NAME
+	 ========================================================= */
+
+.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+.list-item-content__title {
+	order: 2;
+	width: 100%;
+	max-width: none;
+	margin: 20px 0 0;
+	text-align: right;
+	font-size: 0.78rem !important;
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+
+/* =========================================================
+	 REVIEW SECTION TITLE
+	 ========================================================= */
+
+.user-items-list
+.list-section-title[id="6a94aa25f4ec927f5a6d55ce"] {
+	text-align: left;
+}
+
+.user-items-list
+.list-section-title[id="6a94aa25f4ec927f5a6d55ce"] p {
+	margin: 0;
+}
+
+
+/* =========================================================
+	 MOBILE — FILMS
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	.mtf-films-intro-explorer {
+		width: calc(100% - 32px);
+		margin-bottom: 0;
+		padding: 34px 10px 0;
+	}
+
+	.mtf-films-intro {
+		margin-bottom: 0;
+	}
+
+	.mtf-films-intro-title {
+		font-size: 2rem;
+	}
+
+	.mtf-films-intro-copy {
+		font-size: 0.93rem;
+	}
+
+	.mtf-film-explorer-title {
+		font-size: 1.06rem;
+	}
+
+	.mtf-film-explorer-copy {
+		margin-bottom: 8px;
+		font-size: 0.7rem;
+	}
+
+	.mtf-film-explorer
+	.mtf-film-tag-cloud-block
+	ul.sqs-tagcloud {
+		column-gap: 11px;
+		row-gap: 3px;
+	}
+
+	.mtf-archive-context {
+		width: calc(100% - 32px);
+		margin-top: 22px;
+		margin-bottom: 28px;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.mtf-archive-context-label {
+		font-size: 0.82rem;
+	}
+
+	.mtf-archive-context-title {
+		font-size: 1.45rem;
+	}
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.mtf-film-categories,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.mtf-film-tags {
+		font-size: 0.68rem;
+	}
+
+}
+
+
+/* =========================================================
+	 MOBILE — REVIEW CAROUSEL
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	/* One readable review card at a time */
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slides {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+
+	/* Expose part of the neighboring slides as a swipe cue */
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slides-revealer {
+		width: 88%;
+		max-width: 88%;
+		margin-left: auto;
+		margin-right: auto;
+		overflow: visible;
+	}
+
+
+	/* Prevent carousel from overflowing the page */
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__gutter {
+		overflow: hidden;
+	}
+
+
+	/* Neighboring slides are visible but subdued */
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide[aria-hidden="true"] {
+		opacity: 0.55;
+	}
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:not([aria-hidden="true"]) {
+		opacity: 1;
+	}
+
+
+	/* Review content spacing */
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.list-item-content {
+		padding: 24px 22px 26px;
+	}
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.list-item-content__description {
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+
+}
+
+
+/* =========================================================
+	 REDUCED MOTION
+	 ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	a.image-wrapper.mtf-film-media
+	img.mtf-film-image,
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card
+	.blog-title a,
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide,
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__media {
+		transition: none;
+	}
+
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card:hover {
+		transform: none;
+	}
+
+
+	.blog-basic-grid.collection-content-wrapper
+	article.blog-basic-grid--container.mtf-film-card:hover
+	a.image-wrapper.mtf-film-media
+	img.mtf-film-image {
+		transform: none;
+	}
+
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover {
+		translate: none;
+	}
+
+
+	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
+	.user-items-list-carousel__slide:hover
+	.user-items-list-carousel__media {
+		transform: none;
+	}
+
+}

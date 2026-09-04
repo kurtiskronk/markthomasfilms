@@ -1,1 +1,64 @@
-//fdjhfgdsjhkaf
+/* =========================================================
+	 MARK THOMAS FILMS
+	 ========================================================= */
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+	 INQUIRY FORM — REQUIRED ASTERISK
+	 ========================================================= */
+
+#block-c3a7e802903a447efe19
+.form-item
+.description.required {
+	font-size: 0 !important;
+}
+
+#block-c3a7e802903a447efe19
+.form-item
+.description.required::after {
+	content: "*";
+
+	font-size: 0.85rem;
+	line-height: 1;
+
+	margin-left: 0.15em;
+
+	vertical-align: super;
+}
+
+
+/* =========================================================
+	 INQUIRY FORM — SEND BUTTON SPACING
+	 ========================================================= */
+
+#block-c3a7e802903a447efe19
+button[type="submit"] {
+	margin-top: 18px;
+}
+
+
+/* =========================================================
+	 INQUIRY FORM — TOP ALIGN CONTENT
+	 ========================================================= */
+
+@media screen and (min-width: 768px) {
+
+	.fe-block-c3a7e802903a447efe19
+	.sqs-block {
+		justify-content: flex-start;
+	}
+
+	.fe-block-c3a7e802903a447efe19
+	.sqs-block-alignment-wrapper {
+		align-items: flex-start;
+	}
+
+}

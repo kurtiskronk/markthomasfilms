@@ -1,6 +1,6 @@
-/* ==================================================
-   SOURCE: css/films.css
-   ================================================== */
+/* =========================================================
+	 MARK THOMAS FILMS
+	 ========================================================= */
 
 
 /* =========================================================
@@ -455,113 +455,14 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
-
-
-/* ==================================================
-	 CENTER SMALL FILM ARCHIVES
-	 ================================================== */
-
-@media screen and (min-width: 768px) {
-
-	/* One card */
-	.blog-basic-grid.collection-content-wrapper
-	> article.blog-item:only-child {
-		grid-column: 2;
-	}
-
-
-	/* Two cards */
-	.blog-basic-grid.collection-content-wrapper:has(
-		> article.blog-item:nth-child(2):last-child
-	) {
-		display: flex;
-		justify-content: center;
-		gap: 40px;
-	}
-
-
-	.blog-basic-grid.collection-content-wrapper:has(
-		> article.blog-item:nth-child(2):last-child
-	)
-	> article.blog-item {
-		flex: 0 0 calc((100% - 80px) / 3);
-		min-width: 0;
-	}
-
-}
-
-/* ==================================================
-   SOURCE: css/forms.css
-   ================================================== */
-
 /* =========================================================
-	 MARK THOMAS FILMS
+	 MOBILE HEADER
 	 ========================================================= */
 
-
-
-
-
-
-
-
-
-
-/* =========================================================
-	 INQUIRY FORM — REQUIRED ASTERISK
-	 ========================================================= */
-
-#block-c3a7e802903a447efe19
-.form-item
-.description.required {
-	font-size: 0 !important;
+.header-title.header-title--use-mobile-logo {
+	padding-right: 40px;
 }
 
-#block-c3a7e802903a447efe19
-.form-item
-.description.required::after {
-	content: "*";
-
-	font-size: 0.85rem;
-	line-height: 1;
-
-	margin-left: 0.15em;
-
-	vertical-align: super;
-}
-
-
-/* =========================================================
-	 INQUIRY FORM — SEND BUTTON SPACING
-	 ========================================================= */
-
-#block-c3a7e802903a447efe19
-button[type="submit"] {
-	margin-top: 18px;
-}
-
-
-/* =========================================================
-	 INQUIRY FORM — TOP ALIGN CONTENT
-	 ========================================================= */
-
-@media screen and (min-width: 768px) {
-
-	.fe-block-c3a7e802903a447efe19
-	.sqs-block {
-		justify-content: flex-start;
-	}
-
-	.fe-block-c3a7e802903a447efe19
-	.sqs-block-alignment-wrapper {
-		align-items: flex-start;
-	}
-
-}
-
-/* ==================================================
-   SOURCE: css/reviews.css
-   ================================================== */
 
 /* =========================================================
 	 REVIEW CAROUSEL
@@ -929,16 +830,57 @@ button[type="submit"] {
 }
 
 
-/* ==================================================
-   SOURCE: css/site.css
-   ================================================== */
+
+
 
 /* =========================================================
-	 MOBILE HEADER
+	 INQUIRY FORM — REQUIRED ASTERISK
 	 ========================================================= */
 
-.header-title.header-title--use-mobile-logo {
-	padding-right: 40px;
+#block-c3a7e802903a447efe19
+.form-item
+.description.required {
+	font-size: 0 !important;
+}
+
+#block-c3a7e802903a447efe19
+.form-item
+.description.required::after {
+	content: "*";
+
+	font-size: 0.85rem;
+	line-height: 1;
+
+	margin-left: 0.15em;
+
+	vertical-align: super;
 }
 
 
+/* =========================================================
+	 INQUIRY FORM — SEND BUTTON SPACING
+	 ========================================================= */
+
+#block-c3a7e802903a447efe19
+button[type="submit"] {
+	margin-top: 18px;
+}
+
+
+/* =========================================================
+	 INQUIRY FORM — TOP ALIGN CONTENT
+	 ========================================================= */
+
+@media screen and (min-width: 768px) {
+
+	.fe-block-c3a7e802903a447efe19
+	.sqs-block {
+		justify-content: flex-start;
+	}
+
+	.fe-block-c3a7e802903a447efe19
+	.sqs-block-alignment-wrapper {
+		align-items: flex-start;
+	}
+
+}

@@ -1,5 +1,21 @@
+/* ==================================================
+	 PHOTO + VIDEO QUOTE BUILDER
+	 ================================================== */
+
+.fe-block:has(#mtf-photo-video-quote) {
+	grid-column: 2 / -2 !important;
+}
+
+.fe-block:has(#mtf-photo-video-quote) .sqs-block {
+	width: 100%;
+}
+
+.fe-block:has(#mtf-photo-video-quote) .sqs-block-content {
+	width: 100%;
+}
+
 #mtf-photo-video-quote {
-	width: min(100% - 40px, 1280px);
-	margin-left: auto;
-	margin-right: auto;
+	width: 100%;
+	max-width: 1280px;
+	margin-inline: auto;
 }

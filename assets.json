@@ -1,9 +1,0 @@
-{
-	"css": "dist/markthomasfilms.css",
-	"js": [
-		"js/films-tag-context.js",
-		"js/films.js",
-		"js/forms.js",
-		"js/site.js"
-	]
-}

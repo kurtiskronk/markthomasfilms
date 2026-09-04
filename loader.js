@@ -19,7 +19,7 @@
 	const jsFiles = [
 		'js/films-tag-context.js',
 		'js/films.js',
-		'js/form.js',
+		'js/forms.js',
 		'js/site.js'
 	];
 

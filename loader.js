@@ -92,12 +92,6 @@
 			);
 
 
-			/*
-			 * If GitHub is temporarily unavailable,
-			 * use the last commit this browser successfully
-			 * resolved rather than breaking the site.
-			 */
-
 			return sessionStorage.getItem(
 				'mtf-last-commit'
 			);
@@ -150,6 +144,12 @@
 		}
 
 
+		const href =
+			cdnBase +
+			'/' +
+			cssFile;
+
+
 		const link =
 			document.createElement(
 				'link'
@@ -161,9 +161,7 @@
 
 
 		link.href =
-			cdnBase +
-			'/' +
-			cssFile;
+			href;
 
 
 		link.setAttribute(
@@ -180,16 +178,73 @@
 
 
 	/* ==================================================
-		 LOAD JS SEQUENTIALLY
+		 PRELOAD JS
+
+		 Starts downloading all JavaScript immediately
+		 instead of waiting for each previous file to
+		 finish first.
+		 ================================================== */
+
+	function preloadScripts(
+		cdnBase,
+		files
+	) {
+
+		files.forEach(
+			function (filename) {
+
+				const preload =
+					document.createElement(
+						'link'
+					);
+
+
+				preload.rel =
+					'preload';
+
+
+				preload.as =
+					'script';
+
+
+				preload.href =
+					cdnBase +
+					'/' +
+					filename;
+
+
+				preload.setAttribute(
+					'data-mtf-preload',
+					filename
+				);
+
+
+				document.head.appendChild(
+					preload
+				);
+
+			}
+		);
+
+	}
+
+
+	/* ==================================================
+		 LOAD JS IN ORDER / DOWNLOAD IN PARALLEL
+
+		 Dynamic scripts normally behave asynchronously.
+
+		 Setting async = false preserves manifest execution
+		 order while allowing the browser to fetch the
+		 files concurrently.
 		 ================================================== */
 
 	function loadScripts(
 		cdnBase,
-		files,
-		index
+		files
 	) {
 
-		if (index >= files.length) {
+		if (!files.length) {
 
 			console.info(
 				'Mark Thomas Films: assets loaded.'
@@ -201,60 +256,85 @@
 		}
 
 
-		const filename =
-			files[index];
+		let completed =
+			0;
 
 
-		const script =
-			document.createElement(
-				'script'
-			);
+		function assetFinished() {
+
+			completed += 1;
 
 
-		script.src =
-			cdnBase +
-			'/' +
-			filename;
+			if (completed === files.length) {
 
-
-		script.setAttribute(
-			'data-mtf-asset',
-			filename
-		);
-
-
-		script.onload =
-			function () {
-
-				loadScripts(
-					cdnBase,
-					files,
-					index + 1
+				console.info(
+					'Mark Thomas Films: assets loaded.'
 				);
 
-			};
+			}
+
+		}
 
 
-		script.onerror =
-			function () {
+		files.forEach(
+			function (filename) {
 
-				console.error(
-					'Mark Thomas Films: failed to load',
+				const script =
+					document.createElement(
+						'script'
+					);
+
+
+				script.src =
+					cdnBase +
+					'/' +
+					filename;
+
+
+				/*
+				 * Critical:
+				 *
+				 * All scripts are appended immediately,
+				 * allowing parallel downloads, but
+				 * async=false preserves execution order.
+				 *
+				 * So films-tag-context.js can still
+				 * execute before films.js.
+				 */
+
+				script.async =
+					false;
+
+
+				script.setAttribute(
+					'data-mtf-asset',
 					filename
 				);
 
 
-				loadScripts(
-					cdnBase,
-					files,
-					index + 1
+				script.onload =
+					assetFinished;
+
+
+				script.onerror =
+					function () {
+
+						console.error(
+							'Mark Thomas Films: failed to load',
+							filename
+						);
+
+
+						assetFinished();
+
+					};
+
+
+				document.head.appendChild(
+					script
 				);
 
-			};
-
-
-		document.head.appendChild(
-			script
+			}
 		);
 
 	}
@@ -305,18 +385,47 @@
 				);
 
 
+			const jsFiles =
+				Array.isArray(
+					manifest.js
+				)
+					? manifest.js
+					: [];
+
+
+			/*
+			 * Start CSS immediately.
+			 */
+
 			loadCSS(
 				cdnBase,
 				manifest.css
 			);
 
 
+			/*
+			 * Tell the browser about every JS asset
+			 * immediately so their downloads can begin
+			 * together.
+			 */
+
+			preloadScripts(
+				cdnBase,
+				jsFiles
+			);
+
+
+			/*
+			 * Append all scripts immediately.
+			 *
+			 * async=false preserves the order defined
+			 * in assets.json while downloads happen
+			 * concurrently.
+			 */
+
 			loadScripts(
 				cdnBase,
-				Array.isArray(manifest.js)
-					? manifest.js
-					: [],
-				0
+				jsFiles
 			);
 
 		}

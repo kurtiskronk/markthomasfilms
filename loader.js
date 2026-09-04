@@ -1,6 +1,6 @@
 /* ==================================================
 	 MARK THOMAS FILMS
-	 ASSET LOADER
+	 PERMANENT ASSET BOOTSTRAP
 	 ================================================== */
 
 (function () {
@@ -8,92 +8,147 @@
 	'use strict';
 
 
-	/* ==================================================
-		 REPOSITORY
-		 ================================================== */
+	const owner =
+		'kurtiskronk';
+
 
 	const repository =
-		'kurtiskronk/markthomasfilms';
+		'markthomasfilms';
 
 
-	/* ==================================================
-		 DETECT LOADER VERSION
-		 ================================================== */
-
-	/*
-	 * Example loader URL:
-	 *
-	 * https://cdn.jsdelivr.net/gh/kurtiskronk/
-	 * markthomasfilms@COMMIT_SHA/loader.js
-	 *
-	 * Whatever appears after the @ becomes the version
-	 * used for every CSS and JS asset.
-	 */
-
-	const loaderScript =
-		document.currentScript;
-
-
-	let repositoryVersion =
+	const branch =
 		'main';
 
 
-	if (
-		loaderScript &&
-		loaderScript.src
-	) {
+	const apiURL =
+		'https://api.github.com/repos/' +
+		owner +
+		'/' +
+		repository +
+		'/commits/' +
+		branch;
 
-		const match =
-			loaderScript.src.match(
-				/markthomasfilms@([^/]+)\//
+
+	/* ==================================================
+		 GET CURRENT MAIN COMMIT
+		 ================================================== */
+
+	async function getCurrentCommit() {
+
+		try {
+
+			const response =
+				await fetch(
+					apiURL,
+					{
+						cache: 'no-store',
+
+						headers: {
+							'Accept':
+								'application/vnd.github+json'
+						}
+					}
+				);
+
+
+			if (!response.ok) {
+
+				throw new Error(
+					'GitHub returned ' +
+					response.status
+				);
+
+			}
+
+
+			const data =
+				await response.json();
+
+
+			if (!data.sha) {
+
+				throw new Error(
+					'GitHub response contained no commit SHA'
+				);
+
+			}
+
+
+			sessionStorage.setItem(
+				'mtf-last-commit',
+				data.sha
 			);
 
 
-		if (match) {
+			return data.sha;
 
-			repositoryVersion =
-				match[1];
+		}
+
+		catch (error) {
+
+			console.warn(
+				'Mark Thomas Films: could not resolve latest commit.',
+				error
+			);
+
+
+			/*
+			 * If GitHub is temporarily unavailable,
+			 * use the last commit this browser successfully
+			 * resolved rather than breaking the site.
+			 */
+
+			return sessionStorage.getItem(
+				'mtf-last-commit'
+			);
 
 		}
 
 	}
 
 
-	const cdnBase =
-		'https://cdn.jsdelivr.net/gh/' +
-		repository +
-		'@' +
-		repositoryVersion;
+	/* ==================================================
+		 GET ASSET MANIFEST
+		 ================================================== */
+
+	async function getManifest(
+		cdnBase
+	) {
+
+		const response =
+			await fetch(
+				cdnBase +
+				'/assets.json'
+			);
 
 
-	console.info(
-		'Mark Thomas Films: loading repository version',
-		repositoryVersion
-	);
+		if (!response.ok) {
+
+			throw new Error(
+				'Unable to load assets.json'
+			);
+
+		}
+
+
+		return response.json();
+
+	}
 
 
 	/* ==================================================
-		 JAVASCRIPT MANIFEST
+		 LOAD CSS
 		 ================================================== */
 
-	/*
-	 * Only explicitly listed JS files execute.
-	 *
-	 * Order matters.
-	 */
+	function loadCSS(
+		cdnBase,
+		cssFile
+	) {
 
-	const jsFiles = [
-		'films.js',
-		'form.js',
-		'site.js'
-	];
+		if (!cssFile) {
+			return;
+		}
 
-
-	/* ==================================================
-		 LOAD CSS BUNDLE
-		 ================================================== */
-
-	function loadCSS() {
 
 		const link =
 			document.createElement(
@@ -107,7 +162,8 @@
 
 		link.href =
 			cdnBase +
-			'/dist/markthomasfilms.css';
+			'/' +
+			cssFile;
 
 
 		link.setAttribute(
@@ -124,12 +180,16 @@
 
 
 	/* ==================================================
-		 LOAD JAVASCRIPT SEQUENTIALLY
+		 LOAD JS SEQUENTIALLY
 		 ================================================== */
 
-	function loadScript(index) {
+	function loadScripts(
+		cdnBase,
+		files,
+		index
+	) {
 
-		if (index >= jsFiles.length) {
+		if (index >= files.length) {
 
 			console.info(
 				'Mark Thomas Films: assets loaded.'
@@ -142,7 +202,7 @@
 
 
 		const filename =
-			jsFiles[index];
+			files[index];
 
 
 		const script =
@@ -153,7 +213,7 @@
 
 		script.src =
 			cdnBase +
-			'/js/' +
+			'/' +
 			filename;
 
 
@@ -166,7 +226,9 @@
 		script.onload =
 			function () {
 
-				loadScript(
+				loadScripts(
+					cdnBase,
+					files,
 					index + 1
 				);
 
@@ -177,17 +239,14 @@
 			function () {
 
 				console.error(
-					'Mark Thomas Films: failed to load JS:',
+					'Mark Thomas Films: failed to load',
 					filename
 				);
 
 
-				/*
-				 * Continue loading later modules even
-				 * if one file fails.
-				 */
-
-				loadScript(
+				loadScripts(
+					cdnBase,
+					files,
 					index + 1
 				);
 
@@ -197,7 +256,7 @@
 		document.head.appendChild(
 			script
 		);
- 
+
 	}
 
 
@@ -205,8 +264,75 @@
 		 INITIALIZE
 		 ================================================== */
 
-	loadCSS();
+	async function initialize() {
 
-	loadScript(0);
+		const commit =
+			await getCurrentCommit();
+
+
+		if (!commit) {
+
+			console.error(
+				'Mark Thomas Films: no repository version available.'
+			);
+
+
+			return;
+
+		}
+
+
+		console.info(
+			'Mark Thomas Films: loading commit',
+			commit.substring(0, 7)
+		);
+
+
+		const cdnBase =
+			'https://cdn.jsdelivr.net/gh/' +
+			owner +
+			'/' +
+			repository +
+			'@' +
+			commit;
+
+
+		try {
+
+			const manifest =
+				await getManifest(
+					cdnBase
+				);
+
+
+			loadCSS(
+				cdnBase,
+				manifest.css
+			);
+
+
+			loadScripts(
+				cdnBase,
+				Array.isArray(manifest.js)
+					? manifest.js
+					: [],
+				0
+			);
+
+		}
+
+		catch (error) {
+
+			console.error(
+				'Mark Thomas Films: unable to load asset manifest.',
+				error
+			);
+
+		}
+
+	}
+
+
+	initialize();
 
 })();

@@ -1,0 +1,8 @@
+{
+	"css": "dist/markthomasfilms.css",
+	"js": [
+		"js/films.js",
+		"js/form.js",
+		"js/site.js"
+	]
+}

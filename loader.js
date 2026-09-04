@@ -9,17 +9,76 @@
 
 
 	/* ==================================================
-		 CONFIGURATION
+		 REPOSITORY
 		 ================================================== */
 
-	const cdnBase =
-		'https://cdn.jsdelivr.net/gh/kurtiskronk/markthomasfilms@main';
+	const repository =
+		'kurtiskronk/markthomasfilms';
 
+
+	/* ==================================================
+		 DETECT LOADER VERSION
+		 ================================================== */
 
 	/*
-	 * JAVASCRIPT MANIFEST
+	 * Example loader URL:
 	 *
-	 * Only files explicitly listed here will execute.
+	 * https://cdn.jsdelivr.net/gh/kurtiskronk/
+	 * markthomasfilms@COMMIT_SHA/loader.js
+	 *
+	 * Whatever appears after the @ becomes the version
+	 * used for every CSS and JS asset.
+	 */
+
+	const loaderScript =
+		document.currentScript;
+
+
+	let repositoryVersion =
+		'main';
+
+
+	if (
+		loaderScript &&
+		loaderScript.src
+	) {
+
+		const match =
+			loaderScript.src.match(
+				/markthomasfilms@([^/]+)\//
+			);
+
+
+		if (match) {
+
+			repositoryVersion =
+				match[1];
+
+		}
+
+	}
+
+
+	const cdnBase =
+		'https://cdn.jsdelivr.net/gh/' +
+		repository +
+		'@' +
+		repositoryVersion;
+
+
+	console.info(
+		'Mark Thomas Films: loading repository version',
+		repositoryVersion
+	);
+
+
+	/* ==================================================
+		 JAVASCRIPT MANIFEST
+		 ================================================== */
+
+	/*
+	 * Only explicitly listed JS files execute.
+	 *
 	 * Order matters.
 	 */
 
@@ -31,13 +90,15 @@
 
 
 	/* ==================================================
-		 LOAD COMBINED CSS
+		 LOAD CSS BUNDLE
 		 ================================================== */
 
 	function loadCSS() {
 
 		const link =
-			document.createElement('link');
+			document.createElement(
+				'link'
+			);
 
 
 		link.rel =
@@ -74,6 +135,7 @@
 				'Mark Thomas Films: assets loaded.'
 			);
 
+
 			return;
 
 		}
@@ -84,7 +146,9 @@
 
 
 		const script =
-			document.createElement('script');
+			document.createElement(
+				'script'
+			);
 
 
 		script.src =
@@ -98,11 +162,6 @@
 			filename
 		);
 
-
-		/*
-		 * Load the next file only after this one
-		 * has successfully executed.
-		 */
 
 		script.onload =
 			function () {
@@ -124,7 +183,7 @@
 
 
 				/*
-				 * Continue loading remaining scripts even
+				 * Continue loading later modules even
 				 * if one file fails.
 				 */
 

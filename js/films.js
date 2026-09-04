@@ -36,15 +36,7 @@
 
 		if (archive) {
 
-			/*
-			 * Tag clouds are discovery navigation for the
-			 * main /films page only.
-			 *
-			 * On tag/category archives, remove them entirely.
-			 */
-
 			removeFilmsTagClouds();
-
 
 			addArchiveContext(
 				archive
@@ -90,7 +82,8 @@
 
 
 			const type =
-				match[1].toLowerCase();
+				match[1]
+					.toLowerCase();
 
 
 			let name =
@@ -113,8 +106,8 @@
 			catch (error) {
 
 				/*
-				 * Keep readable URL value
-				 * if decoding fails.
+				 * Keep the readable URL value if
+				 * decoding somehow fails.
 				 */
 
 			}
@@ -124,6 +117,120 @@
 				type: type,
 				name: name
 			};
+
+		}
+
+
+		/* ==================================================
+			 NORMALIZE TAG CONTEXT KEY
+			 ================================================== */
+
+		function normalizeTagContextKey(value) {
+
+			if (!value) {
+				return '';
+			}
+
+
+			return value
+				.trim()
+				.toLowerCase()
+				.replace(
+					/[’‘]/g,
+					"'"
+				)
+				.replace(
+					/\s+/g,
+					' '
+				);
+
+		}
+
+
+		/* ==================================================
+			 GET TAG CONTEXT
+			 ================================================== */
+
+		function getTagContext(archive) {
+
+			/*
+			 * We intentionally provide expanded context
+			 * only for tag archives.
+			 *
+			 * Categories continue using the standard
+			 * archive heading.
+			 */
+
+			if (
+				!archive ||
+				archive.type !== 'tag'
+			) {
+				return null;
+			}
+
+
+			if (
+				!window.MTF ||
+				!window.MTF.filmTagContext
+			) {
+				return null;
+			}
+
+
+			const key =
+				normalizeTagContextKey(
+					archive.name
+				);
+
+
+			/*
+			 * Try the normalized key first.
+			 */
+
+			if (
+				window.MTF.filmTagContext[
+					key
+				]
+			) {
+
+				return window.MTF.filmTagContext[
+					key
+				];
+
+			}
+
+
+			/*
+			 * Fallback for any context definitions that
+			 * still contain curly apostrophes.
+			 */
+
+			const contextKeys =
+				Object.keys(
+					window.MTF.filmTagContext
+				);
+
+
+			const matchingKey =
+				contextKeys.find(
+					function (contextKey) {
+
+						return (
+							normalizeTagContextKey(
+								contextKey
+							) ===
+							key
+						);
+
+					}
+				);
+
+
+			return matchingKey
+				? window.MTF.filmTagContext[
+					matchingKey
+				]
+				: null;
 
 		}
 
@@ -172,9 +279,9 @@
 
 
 				/*
-				 * If this is a dedicated Tag Cloud section,
-				 * remove the entire section so no Fluid
-				 * Engine spacing survives.
+				 * If this is a dedicated Tag Cloud
+				 * section, remove the entire section so
+				 * Fluid Engine spacing disappears too.
 				 */
 
 				if (
@@ -187,12 +294,6 @@
 					section.remove();
 
 				}
-
-				/*
-				 * Safety fallback:
-				 * if the block somehow shares the film-grid
-				 * section, remove only the Tag Cloud block.
-				 */
 
 				else {
 
@@ -315,11 +416,6 @@
 			);
 
 
-			/*
-			 * Move only the actual Tag Cloud block,
-			 * not its oversized Fluid Engine section.
-			 */
-
 			explorer.appendChild(
 				tagCloudBlock
 			);
@@ -334,12 +430,6 @@
 				tagCloudBlock
 			);
 
-
-			/*
-			 * The original section is now empty.
-			 * Remove it completely so its row height
-			 * cannot create dead space.
-			 */
 
 			if (
 				originalSection &&
@@ -390,11 +480,6 @@
 						link.textContent
 							.trim();
 
-
-					/*
-					 * Squarespace puts its frequency
-					 * weighting on the LI element.
-					 */
 
 					const sourceSize =
 						parseFloat(
@@ -515,12 +600,6 @@
 				}
 
 
-				/*
-				 * Normalize the LI itself so Squarespace's
-				 * large weighted em values don't create
-				 * oversized vertical line boxes.
-				 */
-
 				entry.item.style.fontSize =
 					'1rem';
 
@@ -565,6 +644,12 @@
 			}
 
 
+			const tagContext =
+				getTagContext(
+					archive
+				);
+
+
 			const context =
 				document.createElement(
 					'div'
@@ -574,6 +659,10 @@
 			context.className =
 				'mtf-archive-context';
 
+
+			/* --------------------------------------------------
+				 LABEL
+				 -------------------------------------------------- */
 
 			const label =
 				document.createElement(
@@ -591,6 +680,15 @@
 					: 'Browse wedding films in this collection:';
 
 
+			context.appendChild(
+				label
+			);
+
+
+			/* --------------------------------------------------
+				 TITLE
+				 -------------------------------------------------- */
+
 			const title =
 				document.createElement(
 					'h2'
@@ -601,19 +699,95 @@
 				'mtf-archive-context-title';
 
 
+			/*
+			 * If a venue definition supplies an official
+			 * display name, use it.
+			 *
+			 * Otherwise use the tag/category name from
+			 * Squarespace.
+			 */
+
 			title.textContent =
-				archive.name;
-
-
-			context.appendChild(
-				label
-			);
+				tagContext &&
+				tagContext.name
+					? tagContext.name
+					: archive.name;
 
 
 			context.appendChild(
 				title
 			);
 
+
+			/* --------------------------------------------------
+				 DESCRIPTIVE VENUE CONTEXT
+				 -------------------------------------------------- */
+
+			if (
+				tagContext &&
+				Array.isArray(
+					tagContext.paragraphs
+				) &&
+				tagContext.paragraphs.length
+			) {
+
+				const copy =
+					document.createElement(
+						'div'
+					);
+
+
+				copy.className =
+					'mtf-archive-context-copy';
+
+
+				tagContext.paragraphs
+					.forEach(function (text) {
+
+						if (
+							typeof text !==
+								'string' ||
+							!text.trim()
+						) {
+							return;
+						}
+
+
+						const paragraph =
+							document.createElement(
+								'p'
+							);
+
+
+						paragraph.className =
+							'mtf-archive-context-paragraph';
+
+
+						paragraph.textContent =
+							text.trim();
+
+
+						copy.appendChild(
+							paragraph
+						);
+
+					});
+
+
+				if (copy.children.length) {
+
+					context.appendChild(
+						copy
+					);
+
+				}
+
+			}
+
+
+			/* --------------------------------------------------
+				 INSERT ABOVE FILM GRID
+				 -------------------------------------------------- */
 
 			filmGrid.parentNode.insertBefore(
 				context,

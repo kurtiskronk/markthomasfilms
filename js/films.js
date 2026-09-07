@@ -398,7 +398,7 @@
 
 
 			explorerCopy.textContent =
-				'Browse by venue, location, or setting.';
+				'Browse by venue and location.';
 
 
 			explorer.appendChild(

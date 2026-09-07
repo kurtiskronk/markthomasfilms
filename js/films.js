@@ -454,9 +454,9 @@
 		/* ==================================================
 			 COMPACT + SCALE TAG CLOUD
 			 ================================================== */
-
+		
 		function scaleTagCloud(block) {
-
+		
 			let entries =
 				Array.from(
 					block.querySelectorAll(
@@ -464,51 +464,60 @@
 					)
 				)
 				.map(function (item) {
-
+		
 					const link =
 						item.querySelector(
 							'a[href*="/films/tag/"]'
 						);
-
-
+		
 					if (!link) {
 						return null;
 					}
-
-
+		
 					const name =
 						link.textContent
 							.trim();
-
-
-					const sourceSize =
-						parseFloat(
-							window
-								.getComputedStyle(
-									item
-								)
-								.fontSize
+		
+					/*
+					 * Squarespace includes the number of posts
+					 * in the LI title attribute, e.g.
+					 *
+					 * title="Kendall Point - 8"
+					 */
+					const title =
+						item.getAttribute('title') || '';
+		
+					const countMatch =
+						title.match(
+							/-\s*(\d+)\s*$/
 						);
-
-
+		
+					const count =
+						countMatch
+							? parseInt(
+								countMatch[1],
+								10
+							)
+							: 1;
+		
 					return {
 						item: item,
 						link: link,
 						name: name,
-						sourceSize: sourceSize
+						count: count
 					};
-
+		
 				})
 				.filter(Boolean);
-
-
+		
+		
 			/* ==============================================
 				 REMOVE TX COMPLETELY
 				 ============================================== */
-
+		
 			entries =
 				entries.filter(function (entry) {
-
+		
 					if (
 						entry.name
 							.toLowerCase() !==
@@ -516,19 +525,76 @@
 					) {
 						return true;
 					}
-
-
+		
 					entry.item.remove();
-
-
+		
 					return false;
-
+		
 				});
-
-
+		
+		
 			if (!entries.length) {
 				return;
 			}
+		
+		
+			/* ==============================================
+				 ASSIGN SIZE BY NUMBER OF FILMS
+				 ============================================== */
+		
+			entries.forEach(function (entry) {
+		
+				entry.item.style.fontSize =
+					'1rem';
+		
+				entry.item.style.lineHeight =
+					'1';
+		
+				entry.item.style.margin =
+					'0';
+		
+				entry.item.style.padding =
+					'0';
+		
+				entry.link.style.fontSize = '';
+		
+				entry.link.classList.remove(
+					'mtf-tag-small',
+					'mtf-tag-medium',
+					'mtf-tag-large'
+				);
+		
+		
+				if (entry.count >= 7) {
+		
+					entry.link.classList.add(
+						'mtf-tag-large'
+					);
+		
+				}
+		
+				else if (entry.count >= 4) {
+		
+					entry.link.classList.add(
+						'mtf-tag-medium'
+					);
+		
+				}
+		
+				else {
+		
+					entry.link.classList.add(
+						'mtf-tag-small'
+					);
+		
+				}
+		
+				entry.link.style.lineHeight =
+					'1.1';
+		
+			});
+		
+		}
 
 
 			/* ==============================================

@@ -124,6 +124,24 @@ ul.sqs-tagcloud > li > a {
 	transition: opacity 0.2s ease;
 }
 
+.mtf-film-explorer
+.mtf-film-tag-cloud-block
+ul.sqs-tagcloud > li > a.mtf-tag-small {
+	font-size: 14px;
+}
+
+.mtf-film-explorer
+.mtf-film-tag-cloud-block
+ul.sqs-tagcloud > li > a.mtf-tag-medium {
+	font-size: 16px;
+}
+
+.mtf-film-explorer
+.mtf-film-tag-cloud-block
+ul.sqs-tagcloud > li > a.mtf-tag-large {
+	font-size: 18px;
+}
+
 @media (hover: hover) {
 
 	.mtf-film-explorer

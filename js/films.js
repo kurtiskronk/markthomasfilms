@@ -3,6 +3,38 @@
 	'use strict';
 
 
+	/* ==================================================
+		 TAG CLOUD SIZE SETTINGS
+		 ==================================================
+
+		 SMALL:  3 or fewer posts
+		 MEDIUM: 4–6 posts
+		 LARGE:  7+ posts
+
+		 Change these values here for easy maintenance.
+		 ================================================== */
+
+	const TAG_CLOUD_SIZES = {
+
+		small: {
+			maxPosts: 3,
+			fontSize: 14
+		},
+
+		medium: {
+			minPosts: 4,
+			maxPosts: 6,
+			fontSize: 16
+		},
+
+		large: {
+			minPosts: 7,
+			fontSize: 18
+		}
+
+	};
+
+
 	function initFilms() {
 
 		/* ==================================================
@@ -481,21 +513,47 @@
 							.trim();
 
 
-					const sourceSize =
-						parseFloat(
-							window
-								.getComputedStyle(
-									item
-								)
-								.fontSize
+					/*
+					 * Squarespace stores the number
+					 * of posts using this format:
+					 *
+					 * title="Kendall Point - 8"
+					 *
+					 * The title normally lives on the
+					 * LI element, but we check the link
+					 * as a fallback too.
+					 */
+
+					const title =
+						item.getAttribute(
+							'title'
+						) ||
+						link.getAttribute(
+							'title'
+						) ||
+						'';
+
+
+					const countMatch =
+						title.match(
+							/-\s*(\d+)\s*$/
 						);
+
+
+					const postCount =
+						countMatch
+							? parseInt(
+								countMatch[1],
+								10
+							)
+							: 1;
 
 
 					return {
 						item: item,
 						link: link,
 						name: name,
-						sourceSize: sourceSize
+						postCount: postCount
 					};
 
 				})
@@ -532,73 +590,86 @@
 
 
 			/* ==============================================
-				 PRESERVE SQUARESPACE FREQUENCY WEIGHTING
+				 APPLY SMALL / MEDIUM / LARGE SIZES
 				 ============================================== */
-
-			const sourceSizes =
-				entries.map(function (entry) {
-
-					return entry.sourceSize;
-
-				});
-
-
-			const minSource =
-				Math.min.apply(
-					null,
-					sourceSizes
-				);
-
-
-			const maxSource =
-				Math.max.apply(
-					null,
-					sourceSizes
-				);
-
-
-			const targetMin =
-				13;
-
-
-			const targetMax =
-				18;
-
 
 			entries.forEach(function (entry) {
 
-				let targetSize =
-					targetMin;
+				let sizeName =
+					'small';
 
+
+				let fontSize =
+					TAG_CLOUD_SIZES
+						.small
+						.fontSize;
+
+
+				/*
+				 * LARGE
+				 * 7+ posts
+				 */
 
 				if (
-					maxSource >
-					minSource
+					entry.postCount >=
+					TAG_CLOUD_SIZES
+						.large
+						.minPosts
 				) {
 
-					const ratio =
-						(
-							entry.sourceSize -
-							minSource
-						) /
-						(
-							maxSource -
-							minSource
-						);
+					sizeName =
+						'large';
 
 
-					targetSize =
-						targetMin +
-						(
-							ratio *
-							(
-								targetMax -
-								targetMin
-							)
-						);
+					fontSize =
+						TAG_CLOUD_SIZES
+							.large
+							.fontSize;
 
 				}
 
+
+				/*
+				 * MEDIUM
+				 * 4–6 posts
+				 */
+
+				else if (
+					entry.postCount >=
+						TAG_CLOUD_SIZES
+							.medium
+							.minPosts &&
+					entry.postCount <=
+						TAG_CLOUD_SIZES
+							.medium
+							.maxPosts
+				) {
+
+					sizeName =
+						'medium';
+
+
+					fontSize =
+						TAG_CLOUD_SIZES
+							.medium
+							.fontSize;
+
+				}
+
+
+				/*
+				 * SMALL
+				 * 1–3 posts
+				 *
+				 * Small is already the default,
+				 * so nothing else is required.
+				 */
+
+
+				/*
+				 * Normalize Squarespace's own LI sizing
+				 * so it cannot interfere with our sizes.
+				 */
 
 				entry.item.style.fontSize =
 					'1rem';
@@ -616,13 +687,37 @@
 					'0';
 
 
+				/*
+				 * Apply our explicit final font size
+				 * directly to the link.
+				 */
+
 				entry.link.style.fontSize =
-					targetSize.toFixed(2) +
+					fontSize +
 					'px';
 
 
 				entry.link.style.lineHeight =
 					'1.1';
+
+
+				/*
+				 * Debugging information.
+				 *
+				 * Inspecting a tag in DevTools will show:
+				 *
+				 * data-mtf-post-count="8"
+				 * data-mtf-tag-size="large"
+				 */
+
+				entry.item.dataset.mtfPostCount =
+					String(
+						entry.postCount
+					);
+
+
+				entry.link.dataset.mtfTagSize =
+					sizeName;
 
 			});
 

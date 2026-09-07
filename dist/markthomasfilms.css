@@ -133,13 +133,13 @@ ul.sqs-tagcloud > li > a.mtf-tag-small {
 .mtf-film-explorer
 .mtf-film-tag-cloud-block
 ul.sqs-tagcloud > li > a.mtf-tag-medium {
-	font-size: 16px !important;
+	font-size: 16px;
 }
 
 .mtf-film-explorer
 .mtf-film-tag-cloud-block
 ul.sqs-tagcloud > li > a.mtf-tag-large {
-	font-size: 18px !important;
+	font-size: 18px;
 }
 
 @media (hover: hover) {

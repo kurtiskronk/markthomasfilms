@@ -538,7 +538,7 @@ export default {
 			) {
 
 				payload['CF-892515'] =
-					quoteTotal;
+					quoteTotal.toFixed(2);
 
 			}
 

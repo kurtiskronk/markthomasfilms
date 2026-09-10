@@ -2,7 +2,19 @@
 	 MARK THOMAS FILMS → VSCO WORKSPACE
 
 	 Production Cloudflare Worker
-
+	 
+	 =========================================================
+	 SOURCE OF TRUTH: GITHUB
+	 kurtiskronk/markthomasfilms
+	 /workers/markthomasfilms-vsco/
+	 
+	 DO NOT EDIT THIS WORKER IN THE CLOUDFLARE DASHBOARD.
+	 Make changes in Nova, then run:
+	 markthomasfilms push
+	 
+	 Cloudflare Builds deploys this Worker automatically.
+	 =========================================================
+	 
 	 Lead creation:
 	 Legacy New Lead API
 	 (preserves native VSCO New Lead notifications)

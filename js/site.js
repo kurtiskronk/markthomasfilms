@@ -144,6 +144,10 @@ console.log(
 				fieldValue(
 					form,
 					'#text-0e6d3a16-2749-434e-9cc4-317142fda434-field'
+					) ||
+				fieldValue(
+					form,
+					'#text-3fd04055-f9e4-4830-b67b-522f09f488e3-field'
 				),
 
 			message:

@@ -1012,58 +1012,95 @@
 		/* ==================================================
 			 FILM BROWSER DROPDOWN BEHAVIOR
 			 ================================================== */
-
+		
 		function setupFilmBrowserDropdowns(browser) {
-
+		
 			const dropdowns =
 				browser.querySelectorAll(
 					'.mtf-dropdown'
 				);
-
-
+		
+		
+			/*
+			 * Only allow one browser dropdown
+			 * to remain open at a time.
+			 */
+		
 			dropdowns.forEach(function (dropdown) {
-
+		
 				dropdown.addEventListener(
 					'toggle',
 					function () {
-
+		
 						if (!dropdown.open) {
 							return;
 						}
-
-
+		
+		
 						dropdowns.forEach(function (other) {
-
+		
 							if (other !== dropdown) {
 								other.open = false;
 							}
-
+		
 						});
-
+		
 					}
 				);
-
+		
 			});
-
-
-			browser.addEventListener(
+		
+		
+			/*
+			 * Close all dropdowns when the user
+			 * clicks anywhere outside the browser.
+			 */
+		
+			document.addEventListener(
+				'click',
+				function (event) {
+		
+					if (
+						browser.contains(
+							event.target
+						)
+					) {
+						return;
+					}
+		
+		
+					dropdowns.forEach(function (dropdown) {
+		
+						dropdown.open = false;
+		
+					});
+		
+				}
+			);
+		
+		
+			/*
+			 * Escape closes any open dropdown.
+			 */
+		
+			document.addEventListener(
 				'keydown',
 				function (event) {
-
+		
 					if (event.key !== 'Escape') {
 						return;
 					}
-
-
+		
+		
 					dropdowns.forEach(function (dropdown) {
-
+		
 						dropdown.open = false;
-
+		
 					});
-
+		
 				}
 			);
-
+		
 		}
 
 

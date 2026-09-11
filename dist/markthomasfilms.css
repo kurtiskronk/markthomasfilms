@@ -15,9 +15,9 @@
 		 margin: 0 auto;
 	 
 		 padding:
-			 8px
+			 60px
 			 0
-			 8px
+			 60px
 			 clamp(24px, 3vw, 40px);
 	 
 		 border-left:

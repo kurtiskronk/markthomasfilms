@@ -53,7 +53,9 @@
 
 
 		section.className =
-			'mtf-film-testimonials';
+			'mtf-film-testimonials ' +
+			'mtf-section ' +
+			'mtf-section--light';
 
 
 		section.setAttribute(
@@ -73,7 +75,8 @@
 
 
 		heading.className =
-			'mtf-film-testimonials-heading';
+			'mtf-film-testimonials-heading ' +
+			'mtf-section__heading';
 
 
 		const eyebrow =
@@ -83,7 +86,8 @@
 
 
 		eyebrow.className =
-			'mtf-film-testimonials-eyebrow';
+			'mtf-film-testimonials-eyebrow ' +
+			'mtf-section__eyebrow';
 
 
 		eyebrow.textContent =
@@ -101,7 +105,8 @@
 
 
 		title.className =
-			'mtf-film-testimonials-title';
+			'mtf-film-testimonials-title ' +
+			'mtf-section__title';
 
 
 		title.textContent =
@@ -115,7 +120,8 @@
 
 
 		intro.className =
-			'mtf-film-testimonials-intro';
+			'mtf-film-testimonials-intro ' +
+			'mtf-section__description';
 
 
 		intro.textContent =
@@ -138,7 +144,7 @@
 
 
 		/* --------------------------------------------------
-			 QUOTE
+			 TESTIMONIAL
 			 -------------------------------------------------- */
 
 		const testimonial =

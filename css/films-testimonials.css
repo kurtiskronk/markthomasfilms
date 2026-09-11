@@ -2,87 +2,28 @@
 	 MARK THOMAS FILMS — FILM TESTIMONIALS
 	 ================================================== */
 
-.mtf-film-testimonials {
-		 box-sizing: border-box;
-		 width: calc(100% - 48px);
-		 max-width: 960px;
-		 margin: 0 auto;
-		 padding: 60px 0 60px clamp(24px, 3vw, 40px);
-		 background: transparent;
-		 border-radius: 0;
-		 box-shadow: none;
-		 transition: opacity 250ms ease;
-	 }
 
 /* ==================================================
-	 SECTION HEADING
-	 ================================================== */
-
-.mtf-film-testimonials-heading {
-	width: 100%;
-	max-width: 760px;
-	margin:	0 auto 48px;
-	text-align: center;
-}
-
-.mtf-film-testimonials-eyebrow {
-	margin:	0 0 10px;
-	font-size: 0.68rem;
-	font-weight: 400;
-	line-height: 1.2;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: #999;
-}
-
-.mtf-film-testimonials-title {
-	margin: 0;
-	font-size: clamp(1.7rem, 2vw,	2.15rem);
-
-	font-weight: 500;
-	line-height: 1.15;
-
-	letter-spacing: 0.035em;
-	text-transform: uppercase;
-
-	color: #111;
-}
-
-
-.mtf-film-testimonials-intro {
-	max-width: 620px;
-
-	margin:
-		14px auto 0;
-
-	font-size: 0.95rem;
-	font-weight: 400;
-	line-height: 1.55;
-
-	color: #666;
-}
-
-
-/* ==================================================
-	 TESTIMONIAL
+	 TESTIMONIAL CONTAINER
 	 ================================================== */
 
 .mtf-film-testimonial {
 	box-sizing: border-box;
 
-	width: 100%;
-	max-width: 1180px;
+	width: calc(100% - 48px);
+	max-width: 960px;
 
 	margin: 0 auto;
 
 	padding:
-		8px
+		6px
 		0
-		8px
-		clamp(24px, 3vw, 42px);
+		6px
+		clamp(24px, 3vw, 40px);
 
 	border-left:
-		3px solid #c7c7c7;
+		3px solid
+		var(--mtf-section-rule);
 
 	background: transparent;
 	border-radius: 0;
@@ -114,7 +55,8 @@
 	font-weight: 600;
 	line-height: 0.7;
 
-	color: #ddd;
+	color:
+		var(--mtf-section-faint);
 }
 
 
@@ -146,9 +88,14 @@
 
 	letter-spacing: 0;
 
-	color: #222;
+	color:
+		var(--mtf-section-text);
 }
 
+
+/* ==================================================
+	 COUPLE NAME
+	 ================================================== */
 
 .mtf-film-testimonial-name {
 	margin-top: 18px;
@@ -160,7 +107,8 @@
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
 
-	color: #888;
+	color:
+		var(--mtf-section-muted);
 }
 
 
@@ -168,42 +116,19 @@
 	 MOBILE
 	 ================================================== */
 
-@media (max-width: 767px) {
-
-	.mtf-film-testimonials {
-		padding:
-			52px
-			22px;
-	}
-
-
-	.mtf-film-testimonials-heading {
-		margin-bottom: 34px;
-	}
-
-
-	.mtf-film-testimonials-eyebrow {
-		font-size: 0.64rem;
-	}
-
-
-	.mtf-film-testimonials-title {
-		font-size: 1.5rem;
-		line-height: 1.18;
-	}
-
-
-	.mtf-film-testimonials-intro {
-		margin-top: 12px;
-
-		font-size: 0.9rem;
-	}
-
+@media screen and (max-width: 767px) {
 
 	.mtf-film-testimonial {
 		width: 100%;
 		max-width: none;
-		padding: 6px 0 6px 20px;
+
+		padding:
+			5px
+			0
+			5px
+			20px;
+
+		border-left-width: 3px;
 	}
 
 

@@ -54,12 +54,15 @@
 			 ================================================== */
 
 		filmCards.forEach(function (post) {
-
+		
 			processFilmCard(
 				post
 			);
-
+		
 		});
+		
+		
+		buildFilmTestimonials();
 
 
 		/* ==================================================
@@ -1328,7 +1331,464 @@
 
 		}
 
-
+		
+		/* ==================================================
+			 FILM TESTIMONIALS
+			 ================================================== */
+		
+		function buildFilmTestimonials() {
+		
+			if (
+				document.querySelector(
+					'.mtf-film-testimonials'
+				)
+			) {
+				return;
+			}
+		
+		
+			if (
+				!window.MTF ||
+				!Array.isArray(
+					window.MTF.filmTestimonials
+				) ||
+				!window.MTF.filmTestimonials.length
+			) {
+				return;
+			}
+		
+		
+			const testimonials =
+				window.MTF.filmTestimonials
+					.filter(function (testimonial) {
+		
+						return (
+							testimonial &&
+							typeof testimonial.quote ===
+								'string' &&
+							testimonial.quote.trim() &&
+							typeof testimonial.name ===
+								'string' &&
+							testimonial.name.trim()
+						);
+		
+					});
+		
+		
+			if (!testimonials.length) {
+				return;
+			}
+		
+		
+			/* --------------------------------------------------
+				 SECTION
+				 -------------------------------------------------- */
+		
+			const section =
+				document.createElement(
+					'section'
+				);
+		
+		
+			section.className =
+				'mtf-film-testimonials';
+		
+		
+			section.setAttribute(
+				'aria-labelledby',
+				'mtf-film-testimonials-title'
+			);
+		
+		
+			/* --------------------------------------------------
+				 SECTION HEADING
+				 -------------------------------------------------- */
+		
+			const heading =
+				document.createElement(
+					'div'
+				);
+		
+		
+			heading.className =
+				'mtf-film-testimonials-heading';
+		
+		
+			const eyebrow =
+				document.createElement(
+					'p'
+				);
+		
+		
+			eyebrow.className =
+				'mtf-film-testimonials-eyebrow';
+		
+		
+			eyebrow.textContent =
+				'Real Feedback';
+		
+		
+			const title =
+				document.createElement(
+					'h2'
+				);
+		
+		
+			title.id =
+				'mtf-film-testimonials-title';
+		
+		
+			title.className =
+				'mtf-film-testimonials-title';
+		
+		
+			title.textContent =
+				'What Couples Are Saying';
+		
+		
+			const intro =
+				document.createElement(
+					'p'
+				);
+		
+		
+			intro.className =
+				'mtf-film-testimonials-intro';
+		
+		
+			intro.textContent =
+				'Kind words from couples who trusted Mark Thomas Films to preserve their wedding day.';
+		
+		
+			heading.appendChild(
+				eyebrow
+			);
+		
+		
+			heading.appendChild(
+				title
+			);
+		
+		
+			heading.appendChild(
+				intro
+			);
+		
+		
+			/* --------------------------------------------------
+				 TESTIMONIAL
+				 -------------------------------------------------- */
+		
+			const testimonial =
+				document.createElement(
+					'div'
+				);
+		
+		
+			testimonial.className =
+				'mtf-film-testimonial';
+		
+		
+			const quoteMark =
+				document.createElement(
+					'span'
+				);
+		
+		
+			quoteMark.className =
+				'mtf-film-testimonial-mark';
+		
+		
+			quoteMark.setAttribute(
+				'aria-hidden',
+				'true'
+			);
+		
+		
+			quoteMark.textContent =
+				'“';
+		
+		
+			const blockquote =
+				document.createElement(
+					'blockquote'
+				);
+		
+		
+			blockquote.className =
+				'mtf-film-testimonial-quote';
+		
+		
+			const quoteText =
+				document.createElement(
+					'p'
+				);
+		
+		
+			quoteText.className =
+				'mtf-film-testimonial-text';
+		
+		
+			const attribution =
+				document.createElement(
+					'footer'
+				);
+		
+		
+			attribution.className =
+				'mtf-film-testimonial-name';
+		
+		
+			blockquote.appendChild(
+				quoteText
+			);
+		
+		
+			blockquote.appendChild(
+				attribution
+			);
+		
+		
+			testimonial.appendChild(
+				quoteMark
+			);
+		
+		
+			testimonial.appendChild(
+				blockquote
+			);
+		
+		
+			section.appendChild(
+				heading
+			);
+		
+		
+			section.appendChild(
+				testimonial
+			);
+		
+		
+			/* --------------------------------------------------
+				 INSERT AFTER FIRST ROW OF FILMS
+				 -------------------------------------------------- */
+		
+			const insertionCard =
+				filmCards[
+					Math.min(
+						2,
+						filmCards.length - 1
+					)
+				];
+		
+		
+			insertionCard.insertAdjacentElement(
+				'afterend',
+				section
+			);
+		
+		
+			/* --------------------------------------------------
+				 ROTATION
+				 -------------------------------------------------- */
+		
+			startFilmTestimonialRotation(
+				testimonial,
+				testimonials,
+				quoteText,
+				attribution
+			);
+		
+		}
+		
+		
+		/* ==================================================
+			 FILM TESTIMONIAL ROTATION
+			 ================================================== */
+		
+		function startFilmTestimonialRotation(
+			testimonialElement,
+			testimonials,
+			quoteText,
+			attribution
+		) {
+		
+			let currentIndex = 0;
+		
+			let intervalId =
+				null;
+		
+			let transitionTimer =
+				null;
+		
+		
+			const prefersReducedMotion =
+				window.matchMedia &&
+				window.matchMedia(
+					'(prefers-reduced-motion: reduce)'
+				).matches;
+		
+		
+			/* --------------------------------------------------
+				 RENDER TESTIMONIAL
+				 -------------------------------------------------- */
+		
+			function renderTestimonial(index) {
+		
+				const item =
+					testimonials[index];
+		
+		
+				quoteText.textContent =
+					item.quote;
+		
+		
+				attribution.textContent =
+					item.name;
+		
+			}
+		
+		
+			/* --------------------------------------------------
+				 ADVANCE
+				 -------------------------------------------------- */
+		
+			function advanceTestimonial() {
+		
+				testimonialElement.classList.add(
+					'is-changing'
+				);
+		
+		
+				window.clearTimeout(
+					transitionTimer
+				);
+		
+		
+				transitionTimer =
+					window.setTimeout(
+						function () {
+		
+							currentIndex =
+								(
+									currentIndex + 1
+								) %
+								testimonials.length;
+		
+		
+							renderTestimonial(
+								currentIndex
+							);
+		
+		
+							testimonialElement
+								.classList.remove(
+									'is-changing'
+								);
+		
+						},
+						250
+					);
+		
+			}
+		
+		
+			/* --------------------------------------------------
+				 START / STOP ROTATION
+				 -------------------------------------------------- */
+		
+			function startRotation() {
+		
+				if (
+					prefersReducedMotion ||
+					testimonials.length < 2 ||
+					intervalId
+				) {
+					return;
+				}
+		
+		
+				intervalId =
+					window.setInterval(
+						advanceTestimonial,
+						7000
+					);
+		
+			}
+		
+		
+			function stopRotation() {
+		
+				if (!intervalId) {
+					return;
+				}
+		
+		
+				window.clearInterval(
+					intervalId
+				);
+		
+		
+				intervalId =
+					null;
+		
+			}
+		
+		
+			/* --------------------------------------------------
+				 INITIAL TESTIMONIAL
+				 -------------------------------------------------- */
+		
+			renderTestimonial(
+				currentIndex
+			);
+		
+		
+			startRotation();
+		
+		
+			/* --------------------------------------------------
+				 PAUSE WHILE USER IS INTERACTING
+				 -------------------------------------------------- */
+		
+			testimonialElement.addEventListener(
+				'mouseenter',
+				stopRotation
+			);
+		
+		
+			testimonialElement.addEventListener(
+				'mouseleave',
+				startRotation
+			);
+		
+		
+			/* --------------------------------------------------
+				 PAUSE WHILE PAGE IS HIDDEN
+				 -------------------------------------------------- */
+		
+			document.addEventListener(
+				'visibilitychange',
+				function () {
+		
+					if (document.hidden) {
+		
+						stopRotation();
+		
+					}
+		
+					else {
+		
+						startRotation();
+		
+					}
+		
+				}
+			);
+		
+		}
+		
+		
 		/* ==================================================
 			 PROCESS FILM CARD
 			 ================================================== */

@@ -1730,22 +1730,73 @@
 		
 		
 			/*
-			 * Film-card tags entered in all caps are treated
-			 * as hidden taxonomy tags.
+			 * Film-card tags that were literally entered
+			 * in all caps are treated as hidden taxonomy tags.
+			 *
+			 * The card styling itself uses text-transform:
+			 * uppercase, so rendered text cannot be used to
+			 * determine whether the original tag was all caps.
+			 *
+			 * Instead, read the original tag value from the
+			 * Squarespace tag URL.
 			 *
 			 * Short acronyms such as TX remain visible.
 			 */
 		
 			if (
 				lineClass ===
-				'mtf-film-tags'
+					'mtf-film-tags'
 			) {
 		
 				items =
 					items.filter(function (item) {
 		
+						let originalName =
+							item.text;
+		
+		
+						try {
+		
+							const url =
+								new URL(
+									item.href,
+									window.location.origin
+								);
+		
+		
+							const match =
+								url.pathname.match(
+									/\/(?:films|blog)\/tag\/([^/]+)\/?$/i
+								);
+		
+		
+							if (match) {
+		
+								originalName =
+									decodeURIComponent(
+										match[1]
+											.replace(
+												/\+/g,
+												' '
+											)
+									);
+		
+							}
+		
+						}
+		
+						catch (error) {
+		
+							/*
+							 * Fall back to the collected text
+							 * if the URL cannot be parsed.
+							 */
+		
+						}
+		
+		
 						const lettersOnly =
-							item.text.replace(
+							originalName.replace(
 								/[^A-Za-z]/g,
 								''
 							);
@@ -1832,6 +1883,11 @@
 			);
 		
 		}
+
+
+
+
+
 
 
 	/* ==================================================

@@ -20,6 +20,9 @@
 		'js/films-tag-context.js',
 		'js/films-cities-list.js',
 		'js/films-testimonials.js',
+		'js/films-browser.js',
+		'js/films-cards.js',
+		'js/films-testimonials-ui.js',
 		'js/films.js',
 		'js/forms.js',
 		'js/site.js'

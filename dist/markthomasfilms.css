@@ -8,29 +8,15 @@
 
 .mtf-film-testimonials {
 		 box-sizing: border-box;
-	 
 		 width: calc(100% - 48px);
 		 max-width: 960px;
-	 
 		 margin: 0 auto;
-	 
-		 padding:
-			 60px
-			 0
-			 60px
-			 clamp(24px, 3vw, 40px);
-	 
-		 border-left:
-			 3px solid #c7c7c7;
-	 
+		 padding: 60px 0 60px clamp(24px, 3vw, 40px);
 		 background: transparent;
 		 border-radius: 0;
 		 box-shadow: none;
-	 
-		 transition:
-			 opacity 250ms ease;
+		 transition: opacity 250ms ease;
 	 }
-
 
 /* ==================================================
 	 SECTION HEADING
@@ -39,38 +25,23 @@
 .mtf-film-testimonials-heading {
 	width: 100%;
 	max-width: 760px;
-
-	margin:
-		0 auto
-		48px;
-
+	margin:	0 auto 48px;
 	text-align: center;
 }
 
-
 .mtf-film-testimonials-eyebrow {
-	margin:
-		0 0 10px;
-
+	margin:	0 0 10px;
 	font-size: 0.68rem;
 	font-weight: 400;
 	line-height: 1.2;
-
 	letter-spacing: 0.2em;
 	text-transform: uppercase;
-
 	color: #999;
 }
 
-
 .mtf-film-testimonials-title {
 	margin: 0;
-
-	font-size: clamp(
-		1.7rem,
-		2vw,
-		2.15rem
-	);
+	font-size: clamp(1.7rem, 2vw,	2.15rem);
 
 	font-weight: 500;
 	line-height: 1.15;

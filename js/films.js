@@ -1710,14 +1710,14 @@
 		/* ==================================================
 			 RENDER META LINE
 			 ================================================== */
-
+		
 		function renderMetaLine(
 			parent,
 			items,
 			lineClass,
 			separatorClass
 		) {
-
+		
 			if (
 				!parent ||
 				!items.length ||
@@ -1727,73 +1727,111 @@
 			) {
 				return;
 			}
-
-
+		
+		
+			/*
+			 * Film-card tags entered in all caps are treated
+			 * as hidden taxonomy tags.
+			 *
+			 * Short acronyms such as TX remain visible.
+			 */
+		
+			if (
+				lineClass ===
+				'mtf-film-tags'
+			) {
+		
+				items =
+					items.filter(function (item) {
+		
+						const lettersOnly =
+							item.text.replace(
+								/[^A-Za-z]/g,
+								''
+							);
+		
+		
+						const isHiddenAllCapsTag =
+							lettersOnly.length > 3 &&
+							lettersOnly ===
+								lettersOnly.toUpperCase();
+		
+		
+						return !isHiddenAllCapsTag;
+		
+					});
+		
+			}
+		
+		
+			if (!items.length) {
+				return;
+			}
+		
+		
 			const line =
 				document.createElement(
 					'div'
 				);
-
-
+		
+		
 			line.className =
 				lineClass;
-
-
+		
+		
 			items.forEach(
 				function (item, index) {
-
+		
 					if (index > 0) {
-
+		
 						const separator =
 							document.createElement(
 								'span'
 							);
-
-
+		
+		
 						separator.className =
 							separatorClass;
-
-
+		
+		
 						separator.textContent =
 							' · ';
-
-
+		
+		
 						line.appendChild(
 							separator
 						);
-
+		
 					}
-
-
+		
+		
 					const link =
 						document.createElement(
 							'a'
 						);
-
-
+		
+		
 					link.href =
 						item.href;
-
-
+		
+		
 					link.textContent =
 						item.text;
-
-
+		
+		
 					line.appendChild(
 						link
 					);
-
+		
 				}
 			);
-
-
+		
+		
 			parent.appendChild(
 				line
 			);
-
+		
 		}
-
-	}
 
 
 	/* ==================================================

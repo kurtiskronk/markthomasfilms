@@ -151,14 +151,6 @@
 
 		function getTagContext(archive) {
 
-			/*
-			 * We intentionally provide expanded context
-			 * only for tag archives.
-			 *
-			 * Categories continue using the standard
-			 * archive heading.
-			 */
-
 			if (
 				!archive ||
 				archive.type !== 'tag'
@@ -181,10 +173,6 @@
 				);
 
 
-			/*
-			 * Try the normalized key first.
-			 */
-
 			if (
 				window.MTF.filmTagContext[
 					key
@@ -197,11 +185,6 @@
 
 			}
 
-
-			/*
-			 * Fallback for any context definitions that
-			 * still contain curly apostrophes.
-			 */
 
 			const contextKeys =
 				Object.keys(
@@ -276,12 +259,6 @@
 					);
 
 
-				/*
-				 * If this is a dedicated Tag Cloud
-				 * section, remove the entire section so
-				 * Fluid Engine spacing disappears too.
-				 */
-
 				if (
 					section &&
 					!section.contains(
@@ -350,11 +327,6 @@
 					tagCloudBlock
 				);
 
-
-			/*
-			 * If the browser cannot be built, leave Squarespace's
-			 * native Tag Cloud visible as a safe fallback.
-			 */
 
 			if (!browser) {
 				return;
@@ -429,12 +401,6 @@
 			);
 
 
-			/*
-			 * The native Squarespace Tag Cloud remains the data
-			 * source, but is removed from the rendered page after
-			 * the browser has been built successfully.
-			 */
-
 			removeFilmsTagClouds();
 
 
@@ -452,13 +418,8 @@
 
 		function createFilmBrowser(
 			tagCloudBlock,
-			excludedTagName
+			currentTagName
 		) {
-
-			/*
-			 * The city list is loaded before films.js.
-			 * If it is unavailable, do not guess at classifications.
-			 */
 
 			if (
 				!window.MTF ||
@@ -478,16 +439,16 @@
 			}
 
 
-			const excludedKey =
+			const currentKey =
 				normalizeTagContextKey(
-					excludedTagName
+					currentTagName
 				);
 
 
 			const tags =
 				collectFilmBrowserTags(
 					tagCloudBlock,
-					excludedKey
+					currentKey
 				);
 
 
@@ -587,7 +548,7 @@
 
 		function collectFilmBrowserTags(
 			block,
-			excludedKey
+			currentKey
 		) {
 
 			const items = [];
@@ -618,11 +579,7 @@
 						!name ||
 						!href ||
 						!key ||
-						key === 'tx' ||
-						(
-							excludedKey &&
-							key === excludedKey
-						)
+						key === 'tx'
 					) {
 						return;
 					}
@@ -641,7 +598,12 @@
 						items.push({
 							name: name,
 							href: href,
-							key: key
+							key: key,
+							isCurrent:
+								Boolean(
+									currentKey &&
+									key === currentKey
+								)
 						});
 
 					}
@@ -800,6 +762,78 @@
 
 			options.items.forEach(function (item) {
 
+				if (item.isCurrent) {
+
+					const currentItem =
+						document.createElement(
+							'div'
+						);
+
+
+					currentItem.className =
+						'mtf-current-item';
+
+
+					currentItem.dataset.mtfSearchName =
+						normalizeTagContextKey(
+							item.name
+						);
+
+
+					currentItem.setAttribute(
+						'aria-current',
+						'page'
+					);
+
+
+					const currentName =
+						document.createElement(
+							'span'
+						);
+
+
+					currentName.className =
+						'mtf-current-item-name';
+
+
+					currentName.textContent =
+						item.name;
+
+
+					const currentLabel =
+						document.createElement(
+							'span'
+						);
+
+
+					currentLabel.className =
+						'mtf-current-label';
+
+
+					currentLabel.textContent =
+						'Current';
+
+
+					currentItem.appendChild(
+						currentName
+					);
+
+
+					currentItem.appendChild(
+						currentLabel
+					);
+
+
+					list.appendChild(
+						currentItem
+					);
+
+
+					return;
+
+				}
+
+
 				const link =
 					document.createElement(
 						'a'
@@ -812,6 +846,12 @@
 
 				link.textContent =
 					item.name;
+
+
+				link.dataset.mtfSearchName =
+					normalizeTagContextKey(
+						item.name
+					);
 
 
 				list.appendChild(
@@ -886,9 +926,10 @@
 			noResults
 		) {
 
-			const links =
+			const items =
 				dropdown.querySelectorAll(
-					'.mtf-link-list a'
+					'.mtf-link-list > a, ' +
+					'.mtf-link-list > .mtf-current-item'
 				);
 
 
@@ -905,11 +946,12 @@
 					let visibleCount = 0;
 
 
-					links.forEach(function (link) {
+					items.forEach(function (item) {
 
 						const itemName =
+							item.dataset.mtfSearchName ||
 							normalizeTagContextKey(
-								link.textContent
+								item.textContent
 							);
 
 
@@ -919,7 +961,7 @@
 							);
 
 
-						link.hidden =
+						item.hidden =
 							!visible;
 
 
@@ -950,9 +992,9 @@
 						'';
 
 
-					links.forEach(function (link) {
+					items.forEach(function (item) {
 
-						link.hidden =
+						item.hidden =
 							false;
 
 					});
@@ -1095,14 +1137,6 @@
 				'mtf-archive-context-title';
 
 
-			/*
-			 * If a venue definition supplies an official
-			 * display name, use it.
-			 *
-			 * Otherwise use the tag/category name from
-			 * Squarespace.
-			 */
-
 			title.textContent =
 				tagContext &&
 				tagContext.name
@@ -1146,11 +1180,6 @@
 						);
 
 
-						/*
-						 * The current archive tag is excluded from the
-						 * browser, so a page never links to itself.
-						 */
-
 						removeFilmsTagClouds();
 
 					}
@@ -1160,11 +1189,6 @@
 			}
 
 			else {
-
-				/*
-				 * Categories retain the previous behavior: no
-				 * Venue / City browser and no native Tag Cloud.
-				 */
 
 				removeFilmsTagClouds();
 
@@ -1237,10 +1261,6 @@
 			}
 
 
-			/* --------------------------------------------------
-				 INSERT ABOVE FILM GRID
-				 -------------------------------------------------- */
-
 			filmGrid.parentNode.insertBefore(
 				context,
 				filmGrid
@@ -1300,10 +1320,6 @@
 			);
 
 
-			/* ==============================================
-				 FEATURED IMAGE
-				 ============================================== */
-
 			if (imageWrapper) {
 
 				imageWrapper.classList.add(
@@ -1328,10 +1344,6 @@
 			}
 
 
-			/* ==============================================
-				 EXCERPT
-				 ============================================== */
-
 			if (excerpt) {
 
 				excerpt.classList.add(
@@ -1346,10 +1358,6 @@
 			}
 
 
-			/* ==============================================
-				 WATCH THE FILM
-				 ============================================== */
-
 			if (readMore) {
 
 				readMore.textContent =
@@ -1362,10 +1370,6 @@
 
 			}
 
-
-			/* ==============================================
-				 TAXONOMY
-				 ============================================== */
 
 			const categories =
 				collectUniqueLinks(
@@ -1440,10 +1444,6 @@
 
 			}
 
-
-			/* ==============================================
-				 WHOLE CARD CLICK
-				 ============================================== */
 
 			post.addEventListener(
 				'click',
@@ -1592,8 +1592,7 @@
 			}
 
 
-			const items =
-				[];
+			const items = [];
 
 
 			root

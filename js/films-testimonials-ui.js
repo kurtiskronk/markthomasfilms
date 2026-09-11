@@ -244,29 +244,27 @@
 		return node;
 	}
 
-	function findArchiveInsertionTarget(filmGrid) {
-
-		const pagination =
-			findPaginationTarget(
-				filmGrid
-			);
-
-		if (pagination) {
-			return pagination;
-		}
-
+	function findArchiveInsertionTarget(
+		filmGrid
+	) {
+	
 		if (!filmGrid) {
 			return null;
 		}
-
-		return (
-			filmGrid.closest(
-				'.blog-list, ' +
-				'.blog-basic-grid-wrapper, ' +
-				'.collection-content-wrapper'
-			) ||
-			filmGrid
-		);
+	
+	
+		/*
+		 * Squarespace keeps the film cards AND the
+		 * Older/Newer Posts pagination inside the
+		 * blog grid container.
+		 *
+		 * Therefore the testimonial needs to be
+		 * inserted AFTER the entire grid, not after
+		 * the pagination element itself.
+		 */
+	
+		return filmGrid;
+	
 	}
 
 	function findIndividualInsertionTarget() {

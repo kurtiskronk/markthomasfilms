@@ -902,6 +902,16 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
+
+/* Prevent dropdown scrolling from spilling into the page */
+.mtf-dropdown-panel,
+.mtf-link-list {
+	overscroll-behavior-y: contain;
+}
+
+
+
+
 /* ==================================================
 	 TESTIMONIAL QUOTE
 	 ================================================== */

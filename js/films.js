@@ -36,8 +36,6 @@
 
 		if (archive) {
 
-			removeFilmsTagClouds();
-
 			addArchiveContext(
 				archive
 			);
@@ -261,7 +259,7 @@
 
 
 		/* ==================================================
-			 REMOVE TAG CLOUDS FROM FILTERED ARCHIVES
+			 REMOVE FILMS TAG CLOUDS
 			 ================================================== */
 
 		function removeFilmsTagClouds() {
@@ -338,26 +336,6 @@
 			}
 
 
-			/*
-			 * The city list is loaded before films.js.
-			 * If it is unavailable, keep Squarespace's native
-			 * tag cloud visible as a safe fallback rather than
-			 * misclassifying every tag as a venue.
-			 */
-
-			if (
-				!window.MTF ||
-				!(window.MTF.filmCities instanceof Set)
-			) {
-
-				console.error(
-					'Mark Thomas Films: film city list is unavailable.'
-				);
-
-				return;
-			}
-
-
 			const tagCloudBlock =
 				findFilmsTagCloud();
 
@@ -367,50 +345,20 @@
 			}
 
 
-			const tags =
-				collectFilmBrowserTags(
+			const browser =
+				createFilmBrowser(
 					tagCloudBlock
 				);
 
 
-			if (!tags.length) {
+			/*
+			 * If the browser cannot be built, leave Squarespace's
+			 * native Tag Cloud visible as a safe fallback.
+			 */
+
+			if (!browser) {
 				return;
 			}
-
-
-			const cities = [];
-			const venues = [];
-
-
-			tags.forEach(function (tag) {
-
-				if (
-					window.MTF.filmCities.has(
-						tag.key
-					)
-				) {
-
-					cities.push(tag);
-
-				}
-
-				else {
-
-					venues.push(tag);
-
-				}
-
-			});
-
-
-			sortFilmBrowserTags(
-				cities
-			);
-
-
-			sortFilmBrowserTags(
-				venues
-			);
 
 
 			const wrapper =
@@ -461,6 +409,128 @@
 				'Browse by venue and location.';
 
 
+			explorer.appendChild(
+				explorerTitle
+			);
+
+
+			explorer.appendChild(
+				explorerCopy
+			);
+
+
+			explorer.appendChild(
+				browser
+			);
+
+
+			wrapper.appendChild(
+				explorer
+			);
+
+
+			/*
+			 * The native Squarespace Tag Cloud remains the data
+			 * source, but is removed from the rendered page after
+			 * the browser has been built successfully.
+			 */
+
+			removeFilmsTagClouds();
+
+
+			filmGrid.parentNode.insertBefore(
+				wrapper,
+				filmGrid
+			);
+
+		}
+
+
+		/* ==================================================
+			 CREATE FILM BROWSER
+			 ================================================== */
+
+		function createFilmBrowser(
+			tagCloudBlock,
+			excludedTagName
+		) {
+
+			/*
+			 * The city list is loaded before films.js.
+			 * If it is unavailable, do not guess at classifications.
+			 */
+
+			if (
+				!window.MTF ||
+				!(window.MTF.filmCities instanceof Set)
+			) {
+
+				console.error(
+					'Mark Thomas Films: film city list is unavailable.'
+				);
+
+				return null;
+			}
+
+
+			if (!tagCloudBlock) {
+				return null;
+			}
+
+
+			const excludedKey =
+				normalizeTagContextKey(
+					excludedTagName
+				);
+
+
+			const tags =
+				collectFilmBrowserTags(
+					tagCloudBlock,
+					excludedKey
+				);
+
+
+			if (!tags.length) {
+				return null;
+			}
+
+
+			const cities = [];
+			const venues = [];
+
+
+			tags.forEach(function (tag) {
+
+				if (
+					window.MTF.filmCities.has(
+						tag.key
+					)
+				) {
+
+					cities.push(tag);
+
+				}
+
+				else {
+
+					venues.push(tag);
+
+				}
+
+			});
+
+
+			sortFilmBrowserTags(
+				cities
+			);
+
+
+			sortFilmBrowserTags(
+				venues
+			);
+
+
 			const browser =
 				document.createElement(
 					'div'
@@ -501,44 +571,12 @@
 			);
 
 
-			explorer.appendChild(
-				explorerTitle
-			);
-
-
-			explorer.appendChild(
-				explorerCopy
-			);
-
-
-			explorer.appendChild(
-				browser
-			);
-
-
-			wrapper.appendChild(
-				explorer
-			);
-
-
 			setupFilmBrowserDropdowns(
 				browser
 			);
 
 
-			/*
-			 * The native Squarespace Tag Cloud remains the data
-			 * source, but is removed from the rendered page after
-			 * the browser has been built successfully.
-			 */
-
-			removeFilmsTagClouds();
-
-
-			filmGrid.parentNode.insertBefore(
-				wrapper,
-				filmGrid
-			);
+			return browser;
 
 		}
 
@@ -547,7 +585,10 @@
 			 COLLECT FILM BROWSER TAGS
 			 ================================================== */
 
-		function collectFilmBrowserTags(block) {
+		function collectFilmBrowserTags(
+			block,
+			excludedKey
+		) {
 
 			const items = [];
 
@@ -577,7 +618,11 @@
 						!name ||
 						!href ||
 						!key ||
-						key === 'tx'
+						key === 'tx' ||
+						(
+							excludedKey &&
+							key === excludedKey
+						)
 					) {
 						return;
 					}
@@ -1068,6 +1113,62 @@
 			context.appendChild(
 				title
 			);
+
+
+			/* --------------------------------------------------
+				 TAG ARCHIVE FILM BROWSER
+				 -------------------------------------------------- */
+
+			if (archive.type === 'tag') {
+
+				const tagCloudBlock =
+					findFilmsTagCloud();
+
+
+				if (tagCloudBlock) {
+
+					const browser =
+						createFilmBrowser(
+							tagCloudBlock,
+							archive.name
+						);
+
+
+					if (browser) {
+
+						browser.classList.add(
+							'mtf-film-browser--archive'
+						);
+
+
+						context.appendChild(
+							browser
+						);
+
+
+						/*
+						 * The current archive tag is excluded from the
+						 * browser, so a page never links to itself.
+						 */
+
+						removeFilmsTagClouds();
+
+					}
+
+				}
+
+			}
+
+			else {
+
+				/*
+				 * Categories retain the previous behavior: no
+				 * Venue / City browser and no native Tag Cloud.
+				 */
+
+				removeFilmsTagClouds();
+
+			}
 
 
 			/* --------------------------------------------------

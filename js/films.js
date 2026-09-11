@@ -3,38 +3,6 @@
 	'use strict';
 
 
-	/* ==================================================
-		 TAG CLOUD SIZE SETTINGS
-		 ==================================================
-
-		 SMALL:  3 or fewer posts
-		 MEDIUM: 4–6 posts
-		 LARGE:  7+ posts
-
-		 Change these values here for easy maintenance.
-		 ================================================== */
-
-	const TAG_CLOUD_SIZES = {
-
-		small: {
-			maxPosts: 3,
-			fontSize: 14
-		},
-
-		medium: {
-			minPosts: 4,
-			maxPosts: 6,
-			fontSize: 16
-		},
-
-		large: {
-			minPosts: 7,
-			fontSize: 18
-		}
-
-	};
-
-
 	function initFilms() {
 
 		/* ==================================================
@@ -78,7 +46,7 @@
 
 		else {
 
-			buildFilmsExplorer();
+			buildFilmsBrowser();
 
 		}
 
@@ -356,16 +324,36 @@
 
 
 		/* ==================================================
-			 MAIN FILMS EXPLORER
+			 MAIN FILMS BROWSER
 			 ================================================== */
 
-		function buildFilmsExplorer() {
+		function buildFilmsBrowser() {
 
 			if (
 				document.querySelector(
 					'.mtf-films-intro-explorer'
 				)
 			) {
+				return;
+			}
+
+
+			/*
+			 * The city list is loaded before films.js.
+			 * If it is unavailable, keep Squarespace's native
+			 * tag cloud visible as a safe fallback rather than
+			 * misclassifying every tag as a venue.
+			 */
+
+			if (
+				!window.MTF ||
+				!(window.MTF.filmCities instanceof Set)
+			) {
+
+				console.error(
+					'Mark Thomas Films: film city list is unavailable.'
+				);
+
 				return;
 			}
 
@@ -379,10 +367,50 @@
 			}
 
 
-			const originalSection =
-				tagCloudBlock.closest(
-					'section'
+			const tags =
+				collectFilmBrowserTags(
+					tagCloudBlock
 				);
+
+
+			if (!tags.length) {
+				return;
+			}
+
+
+			const cities = [];
+			const venues = [];
+
+
+			tags.forEach(function (tag) {
+
+				if (
+					window.MTF.filmCities.has(
+						tag.key
+					)
+				) {
+
+					cities.push(tag);
+
+				}
+
+				else {
+
+					venues.push(tag);
+
+				}
+
+			});
+
+
+			sortFilmBrowserTags(
+				cities
+			);
+
+
+			sortFilmBrowserTags(
+				venues
+			);
 
 
 			const wrapper =
@@ -433,6 +461,46 @@
 				'Browse by venue and location.';
 
 
+			const browser =
+				document.createElement(
+					'div'
+				);
+
+
+			browser.className =
+				'mtf-film-browser';
+
+
+			browser.setAttribute(
+				'aria-label',
+				'Browse wedding films'
+			);
+
+
+			browser.appendChild(
+				createFilmBrowserDropdown({
+					type: 'venue',
+					label: 'Browse by Venue',
+					searchPlaceholder: 'Search venues...',
+					searchLabel: 'Search venues',
+					noResultsText: 'No matching venues.',
+					items: venues
+				})
+			);
+
+
+			browser.appendChild(
+				createFilmBrowserDropdown({
+					type: 'city',
+					label: 'Browse by City',
+					searchPlaceholder: 'Search cities...',
+					searchLabel: 'Search cities',
+					noResultsText: 'No matching cities.',
+					items: cities
+				})
+			);
+
+
 			explorer.appendChild(
 				explorerTitle
 			);
@@ -443,13 +511,8 @@
 			);
 
 
-			tagCloudBlock.classList.add(
-				'mtf-film-tag-cloud-block'
-			);
-
-
 			explorer.appendChild(
-				tagCloudBlock
+				browser
 			);
 
 
@@ -458,21 +521,18 @@
 			);
 
 
-			scaleTagCloud(
-				tagCloudBlock
+			setupFilmBrowserDropdowns(
+				browser
 			);
 
 
-			if (
-				originalSection &&
-				!originalSection.contains(
-					filmGrid
-				)
-			) {
+			/*
+			 * The native Squarespace Tag Cloud remains the data
+			 * source, but is removed from the rendered page after
+			 * the browser has been built successfully.
+			 */
 
-				originalSection.remove();
-
-			}
+			removeFilmsTagClouds();
 
 
 			filmGrid.parentNode.insertBefore(
@@ -484,242 +544,438 @@
 
 
 		/* ==================================================
-			 COMPACT + SCALE TAG CLOUD
+			 COLLECT FILM BROWSER TAGS
 			 ================================================== */
 
-		function scaleTagCloud(block) {
+		function collectFilmBrowserTags(block) {
 
-			let entries =
-				Array.from(
-					block.querySelectorAll(
-						'li'
-					)
+			const items = [];
+
+
+			block
+				.querySelectorAll(
+					'a[href*="/films/tag/"]'
 				)
-				.map(function (item) {
-
-					const link =
-						item.querySelector(
-							'a[href*="/films/tag/"]'
-						);
-
-
-					if (!link) {
-						return null;
-					}
-
+				.forEach(function (link) {
 
 					const name =
 						link.textContent
 							.trim();
 
 
-					/*
-					 * Squarespace stores the number
-					 * of posts using this format:
-					 *
-					 * title="Kendall Point - 8"
-					 *
-					 * The title normally lives on the
-					 * LI element, but we check the link
-					 * as a fallback too.
-					 */
-
-					const title =
-						item.getAttribute(
-							'title'
-						) ||
-						link.getAttribute(
-							'title'
-						) ||
-						'';
+					const href =
+						link.href;
 
 
-					const countMatch =
-						title.match(
-							/-\s*(\d+)\s*$/
+					const key =
+						normalizeTagContextKey(
+							name
 						);
 
 
-					const postCount =
-						countMatch
-							? parseInt(
-								countMatch[1],
-								10
-							)
-							: 1;
-
-
-					return {
-						item: item,
-						link: link,
-						name: name,
-						postCount: postCount
-					};
-
-				})
-				.filter(Boolean);
-
-
-			/* ==============================================
-				 REMOVE TX COMPLETELY
-				 ============================================== */
-
-			entries =
-				entries.filter(function (entry) {
-
 					if (
-						entry.name
-							.toLowerCase() !==
-						'tx'
+						!name ||
+						!href ||
+						!key ||
+						key === 'tx'
 					) {
-						return true;
+						return;
 					}
 
 
-					entry.item.remove();
+					const exists =
+						items.some(function (item) {
+
+							return item.key === key;
+
+						});
 
 
-					return false;
+					if (!exists) {
+
+						items.push({
+							name: name,
+							href: href,
+							key: key
+						});
+
+					}
 
 				});
 
 
-			if (!entries.length) {
-				return;
-			}
+			return items;
+
+		}
 
 
-			/* ==============================================
-				 APPLY SMALL / MEDIUM / LARGE SIZES
-				 ============================================== */
+		/* ==================================================
+			 SORT FILM BROWSER TAGS
+			 ================================================== */
 
-			entries.forEach(function (entry) {
+		function sortFilmBrowserTags(items) {
 
-				let sizeName =
-					'small';
+			items.sort(function (a, b) {
 
+				return a.name.localeCompare(
+					b.name,
+					'en',
+					{
+						sensitivity: 'base'
+					}
+				);
 
-				let fontSize =
-					TAG_CLOUD_SIZES
-						.small
-						.fontSize;
+			});
 
-
-				/*
-				 * LARGE
-				 * 7+ posts
-				 */
-
-				if (
-					entry.postCount >=
-					TAG_CLOUD_SIZES
-						.large
-						.minPosts
-				) {
-
-					sizeName =
-						'large';
+		}
 
 
-					fontSize =
-						TAG_CLOUD_SIZES
-							.large
-							.fontSize;
+		/* ==================================================
+			 CREATE FILM BROWSER DROPDOWN
+			 ================================================== */
 
-				}
+		function createFilmBrowserDropdown(options) {
 
-
-				/*
-				 * MEDIUM
-				 * 4–6 posts
-				 */
-
-				else if (
-					entry.postCount >=
-						TAG_CLOUD_SIZES
-							.medium
-							.minPosts &&
-					entry.postCount <=
-						TAG_CLOUD_SIZES
-							.medium
-							.maxPosts
-				) {
-
-					sizeName =
-						'medium';
+			const dropdown =
+				document.createElement(
+					'details'
+				);
 
 
-					fontSize =
-						TAG_CLOUD_SIZES
-							.medium
-							.fontSize;
-
-				}
+			dropdown.className =
+				'mtf-dropdown mtf-' +
+				options.type +
+				'-dropdown';
 
 
-				/*
-				 * SMALL
-				 * 1–3 posts
-				 *
-				 * Small is already the default,
-				 * so nothing else is required.
-				 */
+			const summary =
+				document.createElement(
+					'summary'
+				);
 
 
-				/*
-				 * Normalize Squarespace's own LI sizing
-				 * so it cannot interfere with our sizes.
-				 */
-
-				entry.item.style.fontSize =
-					'1rem';
+			const summaryLabel =
+				document.createElement(
+					'span'
+				);
 
 
-				entry.item.style.lineHeight =
-					'1';
+			summaryLabel.textContent =
+				options.label;
 
 
-				entry.item.style.margin =
-					'0';
+			const chevron =
+				document.createElement(
+					'span'
+				);
 
 
-				entry.item.style.padding =
-					'0';
+			chevron.className =
+				'mtf-chevron';
 
 
-				/*
-				 * Apply our explicit final font size
-				 * directly to the link.
-				 */
-
-				entry.link.style.fontSize =
-					fontSize +
-					'px';
+			chevron.setAttribute(
+				'aria-hidden',
+				'true'
+			);
 
 
-				entry.link.style.lineHeight =
-					'1.1';
+			summary.appendChild(
+				summaryLabel
+			);
 
 
-				/*
-				 * Debugging information.
-				 *
-				 * Inspecting a tag in DevTools will show:
-				 *
-				 * data-mtf-post-count="8"
-				 * data-mtf-tag-size="large"
-				 */
+			summary.appendChild(
+				chevron
+			);
 
-				entry.item.dataset.mtfPostCount =
-					String(
-						entry.postCount
+
+			const panel =
+				document.createElement(
+					'div'
+				);
+
+
+			panel.className =
+				'mtf-dropdown-panel';
+
+
+			const searchWrap =
+				document.createElement(
+					'div'
+				);
+
+
+			searchWrap.className =
+				'mtf-search-wrap';
+
+
+			const search =
+				document.createElement(
+					'input'
+				);
+
+
+			search.type =
+				'search';
+
+
+			search.className =
+				'mtf-search';
+
+
+			search.placeholder =
+				options.searchPlaceholder;
+
+
+			search.autocomplete =
+				'off';
+
+
+			search.setAttribute(
+				'aria-label',
+				options.searchLabel
+			);
+
+
+			searchWrap.appendChild(
+				search
+			);
+
+
+			const list =
+				document.createElement(
+					'div'
+				);
+
+
+			list.className =
+				'mtf-link-list';
+
+
+			options.items.forEach(function (item) {
+
+				const link =
+					document.createElement(
+						'a'
 					);
 
 
-				entry.link.dataset.mtfTagSize =
-					sizeName;
+				link.href =
+					item.href;
+
+
+				link.textContent =
+					item.name;
+
+
+				list.appendChild(
+					link
+				);
 
 			});
+
+
+			const noResults =
+				document.createElement(
+					'div'
+				);
+
+
+			noResults.className =
+				'mtf-no-results';
+
+
+			noResults.textContent =
+				options.noResultsText;
+
+
+			noResults.hidden =
+				true;
+
+
+			panel.appendChild(
+				searchWrap
+			);
+
+
+			panel.appendChild(
+				list
+			);
+
+
+			panel.appendChild(
+				noResults
+			);
+
+
+			dropdown.appendChild(
+				summary
+			);
+
+
+			dropdown.appendChild(
+				panel
+			);
+
+
+			setupFilmBrowserSearch(
+				dropdown,
+				search,
+				noResults
+			);
+
+
+			return dropdown;
+
+		}
+
+
+		/* ==================================================
+			 FILM BROWSER SEARCH
+			 ================================================== */
+
+		function setupFilmBrowserSearch(
+			dropdown,
+			searchInput,
+			noResults
+		) {
+
+			const links =
+				dropdown.querySelectorAll(
+					'.mtf-link-list a'
+				);
+
+
+			searchInput.addEventListener(
+				'input',
+				function () {
+
+					const searchTerm =
+						normalizeTagContextKey(
+							this.value
+						);
+
+
+					let visibleCount = 0;
+
+
+					links.forEach(function (link) {
+
+						const itemName =
+							normalizeTagContextKey(
+								link.textContent
+							);
+
+
+						const visible =
+							itemName.includes(
+								searchTerm
+							);
+
+
+						link.hidden =
+							!visible;
+
+
+						if (visible) {
+							visibleCount += 1;
+						}
+
+					});
+
+
+					noResults.hidden =
+						visibleCount !== 0;
+
+				}
+			);
+
+
+			dropdown.addEventListener(
+				'toggle',
+				function () {
+
+					if (dropdown.open) {
+						return;
+					}
+
+
+					searchInput.value =
+						'';
+
+
+					links.forEach(function (link) {
+
+						link.hidden =
+							false;
+
+					});
+
+
+					noResults.hidden =
+						true;
+
+				}
+			);
+
+		}
+
+
+		/* ==================================================
+			 FILM BROWSER DROPDOWN BEHAVIOR
+			 ================================================== */
+
+		function setupFilmBrowserDropdowns(browser) {
+
+			const dropdowns =
+				browser.querySelectorAll(
+					'.mtf-dropdown'
+				);
+
+
+			dropdowns.forEach(function (dropdown) {
+
+				dropdown.addEventListener(
+					'toggle',
+					function () {
+
+						if (!dropdown.open) {
+							return;
+						}
+
+
+						dropdowns.forEach(function (other) {
+
+							if (other !== dropdown) {
+								other.open = false;
+							}
+
+						});
+
+					}
+				);
+
+			});
+
+
+			browser.addEventListener(
+				'keydown',
+				function (event) {
+
+					if (event.key !== 'Escape') {
+						return;
+					}
+
+
+					dropdowns.forEach(function (dropdown) {
+
+						dropdown.open = false;
+
+					});
+
+				}
+			);
 
 		}
 

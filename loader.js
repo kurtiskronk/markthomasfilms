@@ -18,6 +18,7 @@
 
 	const jsFiles = [
 		'js/films-tag-context.js',
+		'js/films-cities-list.js',
 		'js/films.js',
 		'js/forms.js',
 		'js/site.js'

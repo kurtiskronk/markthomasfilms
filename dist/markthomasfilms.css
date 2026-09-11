@@ -2,7 +2,6 @@
    SOURCE: css/films.css
    ================================================== */
 
-
 /* =========================================================
 	 FILMS INTRO + EXPLORER
 	 ========================================================= */
@@ -70,86 +69,209 @@
 
 
 /* =========================================================
-	 NATIVE TAG CLOUD
+	 FILM BROWSER
 	 ========================================================= */
 
-.mtf-film-explorer .mtf-film-tag-cloud-block {
+.mtf-film-browser {
+	position: relative;
+	z-index: 10;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
 	width: 100%;
-	max-width: none;
-	margin: 0;
-	padding: 0;
+	max-width: 900px;
+	margin: 18px auto 0;
+	text-align: left;
 }
 
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-.sqs-block-content {
+
+/* =========================================================
+	 FILM BROWSER — DROPDOWNS
+	 ========================================================= */
+
+.mtf-dropdown {
+	position: relative;
 	margin: 0;
-	padding: 0;
 }
 
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud {
+.mtf-dropdown summary {
+	box-sizing: border-box;
 	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	justify-content: center;
-	column-gap: 15px;
-	row-gap: 3px;
-	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0;
-	list-style: none;
-}
-
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud > li {
-	display: inline-flex;
-	align-items: baseline;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	width: 100%;
+	min-height: 50px;
 	margin: 0;
-	padding: 0;
-	font-size: 1rem;
-	line-height: 1;
-}
-
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud > li > a {
-	display: inline-block;
+	padding: 13px 16px;
+	border: 1px solid rgba(0, 0, 0, 0.22);
+	border-radius: 5px;
+	background: #fff;
 	color: inherit;
-	line-height: 1.1;
-	text-decoration: none;
-	white-space: nowrap;
-	transition: opacity 0.2s ease;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 500;
+	line-height: 1.25;
+	list-style: none;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud > li > a.mtf-tag-small {
-	font-size: 14px;
+.mtf-dropdown summary::-webkit-details-marker {
+	display: none;
 }
 
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud > li > a.mtf-tag-medium {
-	font-size: 16px;
-}
-
-.mtf-film-explorer
-.mtf-film-tag-cloud-block
-ul.sqs-tagcloud > li > a.mtf-tag-large {
-	font-size: 18px;
+.mtf-dropdown summary::marker {
+	content: '';
 }
 
 @media (hover: hover) {
 
-	.mtf-film-explorer
-	.mtf-film-tag-cloud-block
-	ul.sqs-tagcloud > li > a:hover {
-		opacity: 0.5;
+	.mtf-dropdown summary:hover {
+		border-color: rgba(0, 0, 0, 0.42);
 	}
 
+}
+
+.mtf-dropdown[open] summary {
+	border-color: rgba(0, 0, 0, 0.42);
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+	 FILM BROWSER — CHEVRON
+	 ========================================================= */
+
+.mtf-chevron {
+	flex: 0 0 auto;
+	width: 7px;
+	height: 7px;
+	margin-top: -4px;
+	border-right: 1.5px solid currentColor;
+	border-bottom: 1.5px solid currentColor;
+	transform: rotate(45deg);
+	transition: transform 0.2s ease;
+}
+
+.mtf-dropdown[open] .mtf-chevron {
+	margin-top: 4px;
+	transform: rotate(225deg);
+}
+
+
+/* =========================================================
+	 FILM BROWSER — PANEL
+	 ========================================================= */
+
+.mtf-dropdown-panel {
+	position: absolute;
+	top: calc(100% + 6px);
+	left: 0;
+	z-index: 30;
+	box-sizing: border-box;
+	width: 100%;
+	max-height: 420px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	border: 1px solid rgba(0, 0, 0, 0.18);
+	border-radius: 5px;
+	background: #fff;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+}
+
+
+/* =========================================================
+	 FILM BROWSER — SEARCH
+	 ========================================================= */
+
+.mtf-search-wrap {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	padding: 12px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	background: #fff;
+}
+
+.mtf-film-browser .mtf-search {
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+	height: 42px;
+	margin: 0;
+	padding: 9px 11px;
+	border: 1px solid rgba(0, 0, 0, 0.18);
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+	font-size: 0.84rem;
+	line-height: 1.25;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.mtf-film-browser .mtf-search:focus {
+	border-color: rgba(0, 0, 0, 0.48);
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.07);
+}
+
+.mtf-film-browser .mtf-search::placeholder {
+	color: inherit;
+	opacity: 0.45;
+}
+
+
+/* =========================================================
+	 FILM BROWSER — LINKS
+	 ========================================================= */
+
+.mtf-link-list {
+	padding: 6px 0;
+}
+
+.mtf-link-list a {
+	display: block;
+	padding: 9px 14px;
+	color: inherit;
+	font-size: 0.84rem;
+	line-height: 1.35;
+	text-decoration: none;
+	transition:
+		background-color 0.15s ease,
+		opacity 0.15s ease;
+}
+
+.mtf-link-list a[hidden] {
+	display: none;
+}
+
+@media (hover: hover) {
+
+	.mtf-link-list a:hover {
+		background: rgba(0, 0, 0, 0.045);
+	}
+
+}
+
+
+/* =========================================================
+	 FILM BROWSER — NO RESULTS
+	 ========================================================= */
+
+.mtf-no-results {
+	padding: 14px;
+	font-size: 0.8rem;
+	line-height: 1.35;
+	opacity: 0.6;
+}
+
+.mtf-no-results[hidden] {
+	display: none;
 }
 
 
@@ -473,8 +595,6 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
-
-
 /* ==================================================
 	 CENTER SMALL FILM ARCHIVES
 	 ================================================== */
@@ -482,6 +602,7 @@ article.blog-basic-grid--container.mtf-film-card a {
 @media screen and (min-width: 768px) {
 
 	/* One card */
+
 	.blog-basic-grid.collection-content-wrapper
 	> article.blog-item:only-child {
 		grid-column: 2;
@@ -489,6 +610,7 @@ article.blog-basic-grid--container.mtf-film-card a {
 
 
 	/* Two cards */
+
 	.blog-basic-grid.collection-content-wrapper:has(
 		> article.blog-item:nth-child(2):last-child
 	) {
@@ -507,7 +629,6 @@ article.blog-basic-grid--container.mtf-film-card a {
 	}
 
 }
-
 
 
 /* =========================================================
@@ -543,11 +664,21 @@ article.blog-basic-grid--container.mtf-film-card a {
 		font-size: 0.7rem;
 	}
 
-	.mtf-film-explorer
-	.mtf-film-tag-cloud-block
-	ul.sqs-tagcloud {
-		column-gap: 11px;
-		row-gap: 3px;
+	.mtf-film-browser {
+		grid-template-columns: 1fr;
+		gap: 10px;
+		margin-top: 14px;
+	}
+
+	.mtf-dropdown-panel {
+		position: static;
+		margin-top: 6px;
+		max-height: 340px;
+	}
+
+	.mtf-dropdown summary {
+		min-height: 48px;
+		padding: 12px 14px;
 	}
 
 	.mtf-archive-context {
@@ -579,12 +710,15 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
-
 /* =========================================================
 	 REDUCED MOTION
 	 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
+	.mtf-dropdown summary,
+	.mtf-chevron,
+	.mtf-link-list a,
 
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card,

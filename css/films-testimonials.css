@@ -2,7 +2,7 @@
 	 MARK THOMAS FILMS — FILM TESTIMONIALS
 	 ================================================== */
 
-section.mtf-film-testimonial {
+.mtf-film-testimonials {
 		 box-sizing: border-box;
 	 
 		 width: calc(100% - 48px);

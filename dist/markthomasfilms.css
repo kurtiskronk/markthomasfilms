@@ -6,7 +6,7 @@
 	 MARK THOMAS FILMS — FILM TESTIMONIALS
 	 ================================================== */
 
-section.mtf-film-testimonial {
+.mtf-film-testimonials {
 		 box-sizing: border-box;
 	 
 		 width: calc(100% - 48px);
@@ -1501,6 +1501,171 @@ padding-bottom: 0;
 /* ==================================================
    SOURCE: css/site.css
    ================================================== */
+
+/* =========================================================
+	 STANDARD CONTENT SECTIONS
+	 ========================================================= */
+
+.mtf-section {
+	--mtf-section-bg: transparent;
+	--mtf-section-text: inherit;
+	--mtf-section-muted: rgba(0, 0, 0, 0.58);
+
+	box-sizing: border-box;
+	width: 100%;
+
+	padding:
+		clamp(56px, 6vw, 84px)
+		clamp(22px, 6vw, 96px);
+
+	background:
+		var(--mtf-section-bg);
+
+	color:
+		var(--mtf-section-text);
+}
+
+
+/* =========================================================
+	 SECTION COLOR THEMES
+	 ========================================================= */
+
+.mtf-section--light {
+	--mtf-section-bg: #f5f5f5;
+	--mtf-section-text: #171717;
+	--mtf-section-muted: #777;
+}
+
+
+.mtf-section--dark {
+	--mtf-section-bg: #171717;
+	--mtf-section-text: #fff;
+	--mtf-section-muted: rgba(255, 255, 255, 0.62);
+}
+
+
+/* =========================================================
+	 SECTION INNER WIDTH
+	 ========================================================= */
+
+.mtf-section__inner {
+	box-sizing: border-box;
+
+	width: 100%;
+	max-width: 1180px;
+
+	margin-inline: auto;
+}
+
+
+/* =========================================================
+	 SECTION HEADING
+	 ========================================================= */
+
+.mtf-section__heading {
+	width: 100%;
+	max-width: 760px;
+
+	margin:
+		0 auto
+		clamp(34px, 4vw, 48px);
+
+	text-align: center;
+}
+
+
+/* =========================================================
+	 SECTION EYEBROW
+	 ========================================================= */
+
+.mtf-section__eyebrow {
+	margin:
+		0 0 10px;
+
+	font-size: 0.68rem;
+	font-weight: 400;
+	line-height: 1.2;
+
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+
+	color:
+		var(--mtf-section-muted);
+}
+
+
+/* =========================================================
+	 SECTION TITLE
+	 ========================================================= */
+
+.mtf-section__title {
+	margin: 0;
+
+	font-size: clamp(
+		1.45rem,
+		1.8vw,
+		1.9rem
+	);
+
+	font-weight: 500;
+	line-height: 1.2;
+
+	letter-spacing: 0.035em;
+	text-transform: uppercase;
+
+	color:
+		var(--mtf-section-text);
+}
+
+
+/* =========================================================
+	 SECTION DESCRIPTION
+	 ========================================================= */
+
+.mtf-section__description {
+	max-width: 640px;
+
+	margin:
+		14px auto 0;
+
+	font-size: 0.95rem;
+	font-weight: 400;
+	line-height: 1.55;
+
+	color:
+		var(--mtf-section-muted);
+}
+
+
+/* =========================================================
+	 MOBILE
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	.mtf-section {
+		padding:
+			48px
+			22px;
+	}
+
+
+	.mtf-section__heading {
+		margin-bottom: 32px;
+	}
+
+
+	.mtf-section__title {
+		font-size: 1.4rem;
+	}
+
+
+	.mtf-section__description {
+		font-size: 0.9rem;
+	}
+
+}
+
 
 /* =========================================================
 	 MOBILE HEADER

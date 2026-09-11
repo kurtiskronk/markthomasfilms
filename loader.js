@@ -12,6 +12,16 @@
 		'https://markthomasfilms.mark-a7f.workers.dev';
 
 
+	/*
+	 * Change this value whenever deployed assets change.
+	 * This prevents the browser or CDN from reusing an
+	 * older copy of a file at the same URL.
+	 */
+
+	const assetVersion =
+		'2026-09-11-r2';
+
+
 	const cssFile =
 		'dist/markthomasfilms.css';
 
@@ -29,6 +39,21 @@
 	];
 
 
+	function assetURL(filename) {
+
+		return (
+			baseURL +
+			'/' +
+			filename +
+			'?v=' +
+			encodeURIComponent(
+				assetVersion
+			)
+		);
+
+	}
+
+
 	/* ==================================================
 		 LOAD CSS
 		 ================================================== */
@@ -36,7 +61,9 @@
 	function loadCSS() {
 
 		const link =
-			document.createElement('link');
+			document.createElement(
+				'link'
+			);
 
 
 		link.rel =
@@ -44,9 +71,9 @@
 
 
 		link.href =
-			baseURL +
-			'/' +
-			cssFile;
+			assetURL(
+				cssFile
+			);
 
 
 		link.setAttribute(
@@ -98,15 +125,10 @@
 
 
 				script.src =
-					baseURL +
-					'/' +
-					filename;
+					assetURL(
+						filename
+					);
 
-
-				/*
-				 * Download files concurrently while
-				 * preserving execution order.
-				 */
 
 				script.async =
 					false;

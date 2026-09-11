@@ -18,11 +18,9 @@
 
 				return (
 					testimonial &&
-					typeof testimonial.quote ===
-						'string' &&
+					typeof testimonial.quote === 'string' &&
 					testimonial.quote.trim() &&
-					typeof testimonial.name ===
-						'string' &&
+					typeof testimonial.name === 'string' &&
 					testimonial.name.trim()
 				);
 
@@ -180,16 +178,77 @@
 		};
 	}
 
-	function findArchiveInsertionTarget(
-		filmGrid
-	) {
+	function findPaginationTarget(filmGrid) {
 
-		const pagination =
+		const selectorMatch =
 			document.querySelector(
 				'.blog-list-pagination, ' +
 				'.blog-pagination, ' +
 				'.pagination, ' +
 				'nav[aria-label*="pagination" i]'
+			);
+
+		if (selectorMatch) {
+			return selectorMatch;
+		}
+
+
+		/*
+		 * Squarespace markup can vary, so also find
+		 * pagination by its visible link text.
+		 */
+
+		const paginationLink =
+			Array
+				.from(
+					document.querySelectorAll(
+						'a'
+					)
+				)
+				.find(function (link) {
+
+					const text =
+						link.textContent
+							.trim();
+
+					return /^(older|newer) posts?$/i.test(
+						text
+					);
+
+				});
+
+		if (!paginationLink) {
+			return null;
+		}
+
+
+		let node =
+			paginationLink;
+
+
+		while (
+			node.parentElement &&
+			node.parentElement !== document.body &&
+			filmGrid &&
+			!node.parentElement.contains(
+				filmGrid
+			)
+		) {
+
+			node =
+				node.parentElement;
+
+		}
+
+
+		return node;
+	}
+
+	function findArchiveInsertionTarget(filmGrid) {
+
+		const pagination =
+			findPaginationTarget(
+				filmGrid
 			);
 
 		if (pagination) {
@@ -200,14 +259,11 @@
 			return null;
 		}
 
-		/*
-		 * Fallback: inserting after the section
-		 * keeps testimonials outside the card grid.
-		 */
-
 		return (
 			filmGrid.closest(
-				'section'
+				'.blog-list, ' +
+				'.blog-basic-grid-wrapper, ' +
+				'.collection-content-wrapper'
 			) ||
 			filmGrid
 		);
@@ -216,8 +272,8 @@
 	function findIndividualInsertionTarget() {
 
 		return document.querySelector(
-			'article.blog-item, ' +
 			'.blog-item-wrapper, ' +
+			'article.blog-item, ' +
 			'.blog-item-content-wrapper, ' +
 			'main article'
 		);
@@ -276,6 +332,7 @@
 				motionQuery &&
 				motionQuery.matches
 			);
+
 		}
 
 		function render(index) {
@@ -285,6 +342,7 @@
 
 			attribution.textContent =
 				testimonials[index].name;
+
 		}
 
 		function advance() {
@@ -318,6 +376,7 @@
 					},
 					250
 				);
+
 		}
 
 		function stop() {
@@ -332,6 +391,7 @@
 
 			intervalId =
 				null;
+
 		}
 
 		function start() {
@@ -350,6 +410,7 @@
 					advance,
 					7000
 				);
+
 		}
 
 		render(
@@ -392,42 +453,6 @@
 			}
 		);
 
-		if (motionQuery) {
-
-			const handleMotionChange =
-				function () {
-
-					if (reducedMotion()) {
-						stop();
-					}
-					else {
-						start();
-					}
-
-				};
-
-			if (
-				motionQuery.addEventListener
-			) {
-
-				motionQuery.addEventListener(
-					'change',
-					handleMotionChange
-				);
-
-			}
-
-			else if (
-				motionQuery.addListener
-			) {
-
-				motionQuery.addListener(
-					handleMotionChange
-				);
-
-			}
-
-		}
 	}
 
 	function init(options) {
@@ -471,6 +496,7 @@
 			elements.quoteText,
 			elements.attribution
 		);
+
 	}
 
 	window.MTF.filmTestimonialsUI = {

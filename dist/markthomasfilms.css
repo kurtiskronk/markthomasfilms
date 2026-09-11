@@ -6,7 +6,7 @@
 	 MARK THOMAS FILMS — FILM TESTIMONIALS
 	 ================================================== */
 
-.mtf-film-testimonial {
+section.mtf-film-testimonial {
 		 box-sizing: border-box;
 	 
 		 width: calc(100% - 48px);

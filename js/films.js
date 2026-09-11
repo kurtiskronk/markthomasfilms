@@ -1708,150 +1708,162 @@
 
 
 		/* ==================================================
-			 RENDER META LINE
-			 ================================================== */
+					 RENDER META LINE
+					 ================================================== */
 		
-		function renderMetaLine(
-			parent,
-			items,
-			lineClass,
-			separatorClass
-		) {
+				function renderMetaLine(
+					parent,
+					items,
+					lineClass,
+					separatorClass
+				) {
 		
-			if (
-				!parent ||
-				!items.length ||
-				parent.querySelector(
-					'.' + lineClass
-				)
-			) {
-				return;
-			}
-		
-		
-			/*
-			 * Film-card tags entered in all caps are treated
-			 * as hidden taxonomy tags.
-			 *
-			 * Short acronyms such as TX remain visible.
-			 */
-		
-			if (
-				lineClass ===
-				'mtf-film-tags'
-			) {
-		
-				items =
-					items.filter(function (item) {
-		
-						const lettersOnly =
-							item.text.replace(
-								/[^A-Za-z]/g,
-								''
-							);
+					if (
+						!parent ||
+						!items.length ||
+						parent.querySelector(
+							'.' + lineClass
+						)
+					) {
+						return;
+					}
 		
 		
-						const isHiddenAllCapsTag =
-							lettersOnly.length > 3 &&
-							lettersOnly ===
-								lettersOnly.toUpperCase();
+					/*
+					 * On film-card tag rows only, hide tags that were
+					 * literally entered in Squarespace using ALL CAPS.
+					 *
+					 * This checks item.text, which comes from the DOM's
+					 * original textContent before CSS text-transform is
+					 * applied. So a tag entered as "Kendall Point" remains
+					 * visible even if CSS displays it as "KENDALL POINT".
+					 *
+					 * Tags must contain at least 3 letters to be hidden,
+					 * so a short tag such as "TX" remains visible.
+					 */
+		
+					if (
+						lineClass ===
+						'mtf-film-tags'
+					) {
+		
+						items =
+							items.filter(function (item) {
+		
+								const originalText =
+									item.text.trim();
 		
 		
-						return !isHiddenAllCapsTag;
-		
-					});
-		
-			}
-		
-		
-			if (!items.length) {
-				return;
-			}
+								const lettersOnly =
+									originalText.replace(
+										/[^A-Za-z]/g,
+										''
+									);
 		
 		
-			const line =
-				document.createElement(
-					'div'
-				);
+								const wasEnteredAllCaps =
+									lettersOnly.length >= 3 &&
+									lettersOnly ===
+										lettersOnly.toUpperCase();
 		
 		
-			line.className =
-				lineClass;
+								return !wasEnteredAllCaps;
 		
-		
-			items.forEach(
-				function (item, index) {
-		
-					if (index > 0) {
-		
-						const separator =
-							document.createElement(
-								'span'
-							);
-		
-		
-						separator.className =
-							separatorClass;
-		
-		
-						separator.textContent =
-							' · ';
-		
-		
-						line.appendChild(
-							separator
-						);
+							});
 		
 					}
 		
 		
-					const link =
+					if (!items.length) {
+						return;
+					}
+		
+		
+					const line =
 						document.createElement(
-							'a'
+							'div'
 						);
 		
 		
-					link.href =
-						item.href;
+					line.className =
+						lineClass;
 		
 		
-					link.textContent =
-						item.text;
+					items.forEach(
+						function (item, index) {
+		
+							if (index > 0) {
+		
+								const separator =
+									document.createElement(
+										'span'
+									);
 		
 		
-					line.appendChild(
-						link
+								separator.className =
+									separatorClass;
+		
+		
+								separator.textContent =
+									' · ';
+		
+		
+								line.appendChild(
+									separator
+								);
+		
+							}
+		
+		
+							const link =
+								document.createElement(
+									'a'
+								);
+		
+		
+							link.href =
+								item.href;
+		
+		
+							link.textContent =
+								item.text;
+		
+		
+							line.appendChild(
+								link
+							);
+		
+						}
+					);
+		
+		
+					parent.appendChild(
+						line
 					);
 		
 				}
-			);
+		
+			}
 		
 		
-			parent.appendChild(
-				line
-			);
+			/* ==================================================
+				 SAFE INITIALIZATION
+				 ================================================== */
 		
-		}
-
-
-	/* ==================================================
-		 SAFE INITIALIZATION
-		 ================================================== */
-
-	if (document.readyState === 'loading') {
-
-		document.addEventListener(
-			'DOMContentLoaded',
-			initFilms,
-			{ once: true }
-		);
-
-	}
-
-	else {
-
-		initFilms();
-
-	}
-
-})();
+			if (document.readyState === 'loading') {
+		
+				document.addEventListener(
+					'DOMContentLoaded',
+					initFilms,
+					{ once: true }
+				);
+		
+			}
+		
+			else {
+		
+				initFilms();
+		
+			}
+		
+		})();

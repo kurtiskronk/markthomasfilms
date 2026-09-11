@@ -2,20 +2,30 @@
 	 MARK THOMAS FILMS — FILM TESTIMONIALS
 	 ================================================== */
 
-.mtf-film-testimonials {
-	box-sizing: border-box;
-
-	width: 100%;
-
-	margin: 0;
-
-	padding:
-		72px
-		clamp(24px, 6vw, 96px);
-
-	background: transparent;
-	color: inherit;
-}
+.mtf-film-testimonial {
+		 box-sizing: border-box;
+	 
+		 width: calc(100% - 48px);
+		 max-width: 960px;
+	 
+		 margin: 0 auto;
+	 
+		 padding:
+			 8px
+			 0
+			 8px
+			 clamp(24px, 3vw, 40px);
+	 
+		 border-left:
+			 3px solid #c7c7c7;
+	 
+		 background: transparent;
+		 border-radius: 0;
+		 box-shadow: none;
+	 
+		 transition:
+			 opacity 250ms ease;
+	 }
 
 
 /* ==================================================
@@ -150,7 +160,7 @@
 
 
 .mtf-film-testimonial-text {
-	max-width: 1050px;
+	max-width: 850px;
 
 	margin: 0;
 
@@ -220,13 +230,9 @@
 
 
 	.mtf-film-testimonial {
-		padding:
-			6px
-			20%
-			6px
-			20%;
-
-		border-left-width: 3px;
+		width: 100%;
+		max-width: none;
+		padding: 6px 0 6px 20px;
 	}
 
 

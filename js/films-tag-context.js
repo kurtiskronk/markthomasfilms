@@ -23,6 +23,26 @@
 
 	window.MTF =
 		window.MTF || {};
+	
+	
+	window.MTF.filmCategoryContext = {
+	
+		'weddings': {
+	
+			name:
+				'Weddings',
+	
+			paragraphs: [
+	
+				'Explore wedding films by Mark Thomas Films featuring real couples, ceremonies, receptions, traditions, and celebrations throughout San Antonio, the Texas Hill Country, South Texas, Central Texas, and destinations across the state. Each film preserves the atmosphere of the wedding day along with the relationships, emotions, voices, and unscripted moments that make every celebration different.',
+	
+				'Browse the wedding film collection by venue or city to discover celebrations at churches, ranches, hotels, estates, event venues, private properties, and other distinctive Texas wedding locations. These films offer couples a look at both the places Mark Thomas Films has worked and the cinematic storytelling used to preserve each wedding day.'
+	
+			]
+	
+		}
+	
+	}
 
 
 	window.MTF.filmTagContext = {

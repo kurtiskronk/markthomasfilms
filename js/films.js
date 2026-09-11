@@ -146,73 +146,104 @@
 
 
 		/* ==================================================
-			 GET TAG CONTEXT
+			 GET ARCHIVE CONTEXT
 			 ================================================== */
-
-		function getTagContext(archive) {
-
+		
+		function getArchiveContext(archive) {
+		
 			if (
 				!archive ||
-				archive.type !== 'tag'
+				!window.MTF
 			) {
 				return null;
 			}
-
-
+		
+		
+			let contextSource =
+				null;
+		
+		
 			if (
-				!window.MTF ||
-				!window.MTF.filmTagContext
+				archive.type === 'tag' &&
+				window.MTF.filmTagContext
 			) {
+		
+				contextSource =
+					window.MTF.filmTagContext;
+		
+			}
+		
+			else if (
+				archive.type === 'category' &&
+				window.MTF.filmCategoryContext
+			) {
+		
+				contextSource =
+					window.MTF.filmCategoryContext;
+		
+			}
+		
+		
+			if (!contextSource) {
 				return null;
 			}
-
-
+		
+		
 			const key =
 				normalizeTagContextKey(
 					archive.name
 				);
-
-
+		
+		
+			/*
+			 * Try the normalized key first.
+			 */
+		
 			if (
-				window.MTF.filmTagContext[
+				contextSource[
 					key
 				]
 			) {
-
-				return window.MTF.filmTagContext[
+		
+				return contextSource[
 					key
 				];
-
+		
 			}
-
-
+		
+		
+			/*
+			 * Fallback for keys containing alternate
+			 * apostrophes or spacing.
+			 */
+		
 			const contextKeys =
 				Object.keys(
-					window.MTF.filmTagContext
+					contextSource
 				);
-
-
+		
+		
 			const matchingKey =
 				contextKeys.find(
 					function (contextKey) {
-
+		
 						return (
 							normalizeTagContextKey(
 								contextKey
 							) ===
 							key
 						);
-
+		
 					}
 				);
-
-
+		
+		
 			return matchingKey
-				? window.MTF.filmTagContext[
+				? contextSource[
 					matchingKey
 				]
 				: null;
-
+		
 		}
 
 
@@ -1119,8 +1150,8 @@
 			}
 
 
-			const tagContext =
-				getTagContext(
+			const archiveContext =
+				getArchiveContext(
 					archive
 				);
 
@@ -1175,9 +1206,9 @@
 
 
 			title.textContent =
-				tagContext &&
-				tagContext.name
-					? tagContext.name
+				archiveContext &&
+				archiveContext.name
+					? archiveContext.name
 					: archive.name;
 
 
@@ -1187,48 +1218,40 @@
 
 
 			/* --------------------------------------------------
-				 TAG ARCHIVE FILM BROWSER
+				 ARCHIVE FILM BROWSER
 				 -------------------------------------------------- */
-
-			if (archive.type === 'tag') {
-
-				const tagCloudBlock =
-					findFilmsTagCloud();
-
-
-				if (tagCloudBlock) {
-
-					const browser =
-						createFilmBrowser(
-							tagCloudBlock,
-							archive.name
-						);
-
-
-					if (browser) {
-
-						browser.classList.add(
-							'mtf-film-browser--archive'
-						);
-
-
-						context.appendChild(
-							browser
-						);
-
-
-						removeFilmsTagClouds();
-
-					}
-
+			
+			const tagCloudBlock =
+				findFilmsTagCloud();
+			
+			
+			if (tagCloudBlock) {
+			
+				const browser =
+					createFilmBrowser(
+						tagCloudBlock,
+						archive.type === 'tag'
+							? archive.name
+							: null
+					);
+			
+			
+				if (browser) {
+			
+					browser.classList.add(
+						'mtf-film-browser--archive'
+					);
+			
+			
+					context.appendChild(
+						browser
+					);
+			
+			
+					removeFilmsTagClouds();
+			
 				}
-
-			}
-
-			else {
-
-				removeFilmsTagClouds();
-
+			
 			}
 
 
@@ -1237,11 +1260,11 @@
 				 -------------------------------------------------- */
 
 			if (
-				tagContext &&
+				archiveContext &&
 				Array.isArray(
-					tagContext.paragraphs
+					archiveContext.paragraphs
 				) &&
-				tagContext.paragraphs.length
+				archiveContext.paragraphs.length
 			) {
 
 				const copy =
@@ -1254,7 +1277,7 @@
 					'mtf-archive-context-copy';
 
 
-				tagContext.paragraphs
+				archiveContext.paragraphs
 					.forEach(function (text) {
 
 						if (

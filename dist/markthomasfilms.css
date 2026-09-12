@@ -1034,6 +1034,14 @@ article.blog-basic-grid--container.mtf-film-card a {
 
 
 
+
+
+@media screen and (min-width: 768px) {
+	body[class*="collection-type-blog"] .blog-item-top-wrapper .blog-item-meta-wrapper {
+		margin-bottom: 0.75rem;
+	}
+}
+
 /* ==================================================
    SOURCE: css/forms.css
    ================================================== */

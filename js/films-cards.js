@@ -28,6 +28,81 @@
 		}
 	}
 
+	function normalizeArchiveHref(
+		link,
+		text
+	) {
+
+		const href =
+			link.href;
+
+		if (!href) {
+			return '';
+		}
+
+		try {
+
+			const url =
+				new URL(
+					href,
+					window.location.origin
+				);
+
+			const match =
+				url.pathname.match(
+					/^\/(films|blog)\/(tag|category)\/[^/]+\/?$/i
+				);
+
+			/*
+			 * Only normalize Squarespace film/blog
+			 * tag and category archive URLs.
+			 *
+			 * All other links remain untouched.
+			 */
+
+			if (!match) {
+				return href;
+			}
+
+			/*
+			 * Squarespace archive URLs use +
+			 * in place of spaces.
+			 *
+			 * Example:
+			 * Kendall Point
+			 * → Kendall+Point
+			 *
+			 * A genuine plus sign remains safely
+			 * encoded as %2B.
+			 */
+
+			const encodedName =
+				encodeURIComponent(
+					text.trim()
+				).replace(
+					/%20/g,
+					'+'
+				);
+
+			url.pathname =
+				'/' +
+				match[1] +
+				'/' +
+				match[2] +
+				'/' +
+				encodedName;
+
+			return url.href;
+
+		}
+
+		catch (error) {
+
+			return href;
+
+		}
+	}
+
 	function collectUniqueLinks(
 		root,
 		selector
@@ -50,13 +125,17 @@
 					link.textContent
 						.trim();
 
-				const href =
-					link.href;
+				if (!text) {
+					return;
+				}
 
-				if (
-					!text ||
-					!href
-				) {
+				const href =
+					normalizeArchiveHref(
+						link,
+						text
+					);
+
+				if (!href) {
 					return;
 				}
 

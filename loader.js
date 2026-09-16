@@ -34,6 +34,7 @@
 		'js/films-cards.js',
 		'js/films-testimonials-ui.js',
 		'js/films.js',
+		'js/films-archive-pagination.js',
 		'js/forms.js',
 		'js/site.js'
 	];

@@ -26,7 +26,11 @@
 						'span'
 					);
 	
-				if (label) {
+				if (
+					label &&
+					label.textContent.trim() !==
+						'Older Films'
+				) {
 	
 					label.textContent =
 						'Older Films';
@@ -53,7 +57,11 @@
 						'span'
 					);
 	
-				if (label) {
+				if (
+					label &&
+					label.textContent.trim() !==
+						'Newer Films'
+				) {
 	
 					label.textContent =
 						'Newer Films';
@@ -72,14 +80,24 @@
 
 		if (!match) return null;
 
-		let name = match[2].replace(/\+/g, ' ');
-
+		let name =
+			match[2];
+		
 		try {
-			name = decodeURIComponent(name);
+			name =
+				decodeURIComponent(
+					name
+				);
 		}
 		catch (error) {
 			/* Keep the readable URL value if decoding fails. */
 		}
+		
+		name =
+			name.replace(
+				/\+/g,
+				' '
+			);
 
 		return {
 			type: match[1].toLowerCase(),
@@ -289,6 +307,8 @@
 		) {
 			return;
 		}
+		
+		renameFilmPagination();
 
 		const filmGrid =
 			document.querySelector(
@@ -363,26 +383,6 @@
 			});
 
 		}
-		
-		const paginationObserver =
-			new MutationObserver(
-				function () {
-		
-					renameFilmPagination();
-		
-				}
-			);
-		
-		paginationObserver.observe(
-			document.body,
-			{
-				childList:
-					true,
-		
-				subtree:
-					true
-			}
-		);
 		
 	}
 

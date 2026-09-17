@@ -882,47 +882,102 @@
 
 			const cardContainer =
 				firstCurrentCard.parentNode;
-
-
+			
+			
+			/*
+			 * Squarespace places its Older/Newer Posts navigation
+			 * inside the same overall archive container.
+			 *
+			 * Find the highest ancestor of the Older Posts link
+			 * that is a direct child of the film-card container.
+			 * New cards will be inserted immediately before it.
+			 */
+			
+			let paginationReference =
+				olderLink;
+			
+			while (
+				paginationReference &&
+				paginationReference.parentNode &&
+				paginationReference.parentNode !==
+					cardContainer
+			) {
+			
+				paginationReference =
+					paginationReference.parentNode;
+			
+			}
+			
+			
+			/*
+			 * If the pagination could not be resolved as a direct
+			 * child of the card container, safely fall back to the
+			 * end of the container.
+			 */
+			
+			if (
+				!paginationReference ||
+				paginationReference.parentNode !==
+					cardContainer
+			) {
+			
+				paginationReference =
+					null;
+			
+			}
+			
+			
 			nextCards.forEach(
 				function (sourceCard) {
-
+			
 					const card =
 						document.importNode(
 							sourceCard,
 							true
 						);
-					
+			
 					/*
-					 * Dynamically imported Squarespace blog cards can retain
-					 * the initial animation state that normally gets cleared
-					 * during Squarespace's first page render.
-					 *
-					 * Because these cards are inserted after that initialization,
-					 * explicitly place them into their visible state.
+					 * Dynamically imported Squarespace cards retain
+					 * the pre-animation state from the fetched page.
+					 * Force them into their visible state.
 					 */
-					
+			
 					card.style.opacity =
 						'1';
-					
+			
 					card.style.visibility =
 						'visible';
-					
+			
 					card.style.transform =
 						'none';
-					
+			
 					card.removeAttribute(
 						'data-animation-state'
 					);
-					
-					cardContainer.appendChild(
-						card
-					);
-					
+			
+			
+					if (paginationReference) {
+			
+						cardContainer.insertBefore(
+							card,
+							paginationReference
+						);
+			
+					}
+			
+					else {
+			
+						cardContainer.appendChild(
+							card
+						);
+			
+					}
+			
+			
 					processFilmCard(
 						card
 					);
-
+			
 				}
 			);
 

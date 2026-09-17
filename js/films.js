@@ -8,6 +8,44 @@
 			? value.trim().toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ')
 			: '';
 	}
+	
+	// Blog navigation normally says 'Older Posts' and 'Newer Posts' - change that to say 'Films' instead of 'Posts'
+	function renameFilmPagination() {
+	
+		document
+			.querySelectorAll(
+				'a'
+			)
+			.forEach(function (link) {
+	
+				const text =
+					link.textContent
+						.trim()
+						.toLowerCase();
+	
+				if (
+					text ===
+					'older posts'
+				) {
+	
+					link.textContent =
+						'older films';
+	
+				}
+	
+				else if (
+					text ===
+						'newer posts'
+				) {
+	
+					link.textContent =
+						'newer films';
+	
+				}
+	
+			});
+	
+	}
 
 	function getCurrentArchive() {
 		const match = window.location.pathname.match(

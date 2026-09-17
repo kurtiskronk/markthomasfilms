@@ -14,38 +14,56 @@
 	
 		document
 			.querySelectorAll(
-				'a'
+				'.blog-list-pagination .older a'
 			)
 			.forEach(function (link) {
 	
-				const text =
-					link.textContent
-						.trim()
-						.toLowerCase();
+				const label =
+					link.querySelector(
+						'.next-label'
+					) ||
+					link.querySelector(
+						'span'
+					);
 	
-				if (
-					text ===
-					'older posts'
-				) {
+				if (label) {
 	
-					link.textContent =
-						'older films';
+					label.textContent =
+						'Older Films';
 	
 				}
 	
-				else if (
-					text ===
-						'newer posts'
-				) {
+			});
 	
-					link.textContent =
-						'newer films';
+	
+		document
+			.querySelectorAll(
+				'.blog-list-pagination .newer a'
+			)
+			.forEach(function (link) {
+	
+				const label =
+					link.querySelector(
+						'.prev-label'
+					) ||
+					link.querySelector(
+						'.previous-label'
+					) ||
+					link.querySelector(
+						'span'
+					);
+	
+				if (label) {
+	
+					label.textContent =
+						'Newer Films';
 	
 				}
 	
 			});
 	
 	}
+	
 
 	function getCurrentArchive() {
 		const match = window.location.pathname.match(
@@ -345,6 +363,27 @@
 			});
 
 		}
+		
+		const paginationObserver =
+			new MutationObserver(
+				function () {
+		
+					renameFilmPagination();
+		
+				}
+			);
+		
+		paginationObserver.observe(
+			document.body,
+			{
+				childList:
+					true,
+		
+				subtree:
+					true
+			}
+		);
+		
 	}
 
 	if (

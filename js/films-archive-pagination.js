@@ -892,11 +892,33 @@
 							sourceCard,
 							true
 						);
-
+					
+					/*
+					 * Dynamically imported Squarespace blog cards can retain
+					 * the initial animation state that normally gets cleared
+					 * during Squarespace's first page render.
+					 *
+					 * Because these cards are inserted after that initialization,
+					 * explicitly place them into their visible state.
+					 */
+					
+					card.style.opacity =
+						'1';
+					
+					card.style.visibility =
+						'visible';
+					
+					card.style.transform =
+						'none';
+					
+					card.removeAttribute(
+						'data-animation-state'
+					);
+					
 					cardContainer.appendChild(
 						card
 					);
-
+					
 					processFilmCard(
 						card
 					);

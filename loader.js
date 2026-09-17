@@ -19,7 +19,7 @@
 	 */
 
 	const assetVersion =
-		'2026-09-11-r2';
+		'2026-09-16-r1';
 
 
 	const cssFile =

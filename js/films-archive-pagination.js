@@ -170,10 +170,16 @@
 			return null;
 		}
 
-		const expectedText =
-			direction === 'older'
-				? 'older posts'
-				: 'newer posts';
+		const expectedTexts =
+		direction === 'older'
+			? [
+				'older posts',
+				'older films'
+			]
+			: [
+				'newer posts',
+				'newer films'
+			];
 
 		const links =
 			Array.from(
@@ -185,11 +191,10 @@
 		const textMatch =
 			links.find(function (link) {
 
-				return (
+				return expectedTexts.includes(
 					normalizeText(
 						link.textContent
-					).toLowerCase() ===
-					expectedText
+					).toLowerCase()
 				);
 
 			});

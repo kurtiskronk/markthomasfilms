@@ -4,7 +4,7 @@
 	window.MTF = window.MTF || {};
 
 	const MAX_FILMS_PER_MTF_PAGE =
-		9;
+		12;
 
 	const EXPECTED_NATIVE_PAGE_SIZE =
 		9;

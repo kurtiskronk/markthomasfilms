@@ -1,0 +1,41 @@
+/* MARK THOMAS FILMS — REUSABLE COMPONENTS */
+.mtf-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 13px 25px;
+  border: 1px solid currentColor;
+  border-radius: var(--mtf-radius);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 180ms ease;
+}
+.mtf-button--primary {
+  border-color: var(--mtf-color-dark);
+  background: var(--mtf-color-dark);
+  color: #fff;
+}
+.mtf-section--dark .mtf-button--primary {
+  border-color: #fff;
+  background: #fff;
+  color: var(--mtf-color-dark);
+}
+@media (hover: hover) { .mtf-button:hover { opacity: 0.8; } }
+.mtf-button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.mtf-cta { max-width: 860px; margin-inline: auto; text-align: center; }
+.mtf-cta__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+@media (prefers-reduced-motion: reduce) { .mtf-button { transition: none; } }

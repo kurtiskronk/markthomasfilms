@@ -688,46 +688,7 @@
 
 				'Browse Kendall Point wedding films by Mark Thomas Films to see how different couples make this Hill Country venue their own. These films capture vows, emotional reactions, family relationships, speeches, dances, and the unscripted moments that bring the full wedding story to life.'
 
-			],
-
-            /* Optional enhanced content; standard paragraphs above remain
-               the introduction. If a field is absent or empty, skip it. */
-            header: {
-                eyebrow: 'VENUE',
-                title: 'Kendall Point Wedding Videographer',
-                subtitle: 'Wedding Films & Photography at Kendall Point in Boerne, Texas',
-                paragraphs: [
-                    'Mark Thomas Films has filmed more than 20 weddings at Kendall Point, giving us firsthand experience with the venue, its outdoor ceremony spaces, covered porches, ballroom, and the flow of a full wedding day. Our approach focuses on real moments, natural emotion, and the people and voices that make each celebration unique.'
-                ],
-                galleryTitle: 'Wedding Films at Kendall Point'
-            },
-
-            footer: {
-                sections: [
-                    {
-                        heading: 'Why Experience Filming Weddings at Kendall Point Matters',
-                        paragraphs: [
-                            'Knowing a venue well makes a real difference on a wedding day. After filming many weddings at Kendall Point, we are familiar with how the property flows from getting ready through the ceremony, portraits, cocktail hour, and reception. That familiarity helps us anticipate lighting changes, camera placement, audio needs, and the transitions that keep coverage moving naturally without making the day feel staged.',
-                            'Every wedding at Kendall Point is still different. Some couples hold their ceremony on the property, while others arrive after a church ceremony elsewhere in Boerne. Our familiarity with the venue gives us a strong starting point while leaving room for each wedding to unfold in its own way.'
-                        ]
-                    },
-                    {
-                        heading: 'Weddings We’ve Filmed at Kendall Point',
-                        paragraphs: [
-                            'Our Kendall Point archive includes weddings with ceremonies on the property as well as celebrations that began at churches elsewhere in Boerne before continuing at Kendall Point. Across those films, we have documented different timelines, seasons, ceremony setups, reception styles, family traditions, and ways couples use the property.',
-                            'That depth of experience is useful because it lets couples see real weddings at Kendall Point instead of a single styled example. The setting may be familiar to us, but the story remains centered on the people, voices, relationships, and moments that make each wedding personal.'
-                        ]
-                    }
-                ],
-                cta: {
-                    heading: 'Planning a Wedding at Kendall Point?',
-                    paragraphs: [
-                        'If you’re planning a wedding at Kendall Point, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around real moments, natural emotion, and the people who matter most.',
-                        'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your Kendall Point wedding day.'
-                    ]
-                    /* Optional buttonText and VERIFIED buttonUrl may be added here. */
-                }
-            }
+			]
 
 		},
 

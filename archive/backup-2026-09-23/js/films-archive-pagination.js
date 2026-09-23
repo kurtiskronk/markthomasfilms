@@ -89,9 +89,8 @@
 
 		if (pathMatch) {
 
-			/* Convert literal + before decoding so an encoded %2B survives. */
 			let tag =
-				pathMatch[1].replace(/\+/g, ' ');
+				pathMatch[1];
 
 			try {
 
@@ -108,7 +107,12 @@
 
 			}
 
-			return tag.trim();
+			return tag
+				.replace(
+					/\+/g,
+					' '
+				)
+				.trim();
 
 		}
 
@@ -559,22 +563,38 @@
 				'mtf-film-count';
 
 
-			const countSlot = document.querySelector('.mtf-film-count-slot');
+			const archiveTitle =
+				document.querySelector(
+					'.mtf-archive-context-title'
+				);
 
-			if (countSlot) {
-				countSlot.appendChild(countElement);
+			if (archiveTitle) {
+
+				archiveTitle.insertAdjacentElement(
+					'afterend',
+					countElement
+				);
+
 			}
+
 			else {
-				const archiveTitle = document.querySelector('.mtf-archive-context-title');
-				if (archiveTitle) {
-					archiveTitle.insertAdjacentElement('afterend', countElement);
+
+				const filmGrid =
+					document.querySelector(
+						GRID_SELECTOR
+					);
+
+				if (!filmGrid) {
+					return;
 				}
-				else {
-					const filmGrid = document.querySelector(GRID_SELECTOR);
-					if (!filmGrid) return;
-					filmGrid.parentNode.insertBefore(countElement, filmGrid);
-				}
+
+				filmGrid.parentNode.insertBefore(
+					countElement,
+					filmGrid
+				);
+
 			}
+
 		}
 
 
@@ -585,6 +605,45 @@
 					? ' film'
 					: ' films'
 			);
+
+	}
+
+
+	/* =====================================================
+		 COUNT STYLING
+		 ===================================================== */
+
+	function addCountStyles() {
+
+		if (
+			document.getElementById(
+				'mtf-film-count-styles'
+			)
+		) {
+			return;
+		}
+
+
+		const style =
+			document.createElement(
+				'style'
+			);
+
+		style.id =
+			'mtf-film-count-styles';
+
+		style.textContent = `
+			.mtf-film-count {
+				margin: 6px 0 0;
+				font-size: 0.95em;
+				line-height: 1.4;
+				opacity: 0.65;
+			}
+		`;
+
+		document.head.appendChild(
+			style
+		);
 
 	}
 
@@ -1127,7 +1186,7 @@
 		}
 
 
-		/* Film count styles now live in css/films-sections.css. */
+		addCountStyles();
 
 
 		/*

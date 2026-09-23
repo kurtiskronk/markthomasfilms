@@ -1,0 +1,169 @@
+/* ==================================================
+	 MARK THOMAS FILMS — FILM TESTIMONIALS
+	 ================================================== */
+
+
+/* ==================================================
+	 TESTIMONIAL CONTAINER
+	 ================================================== */
+
+.mtf-film-testimonial {
+	box-sizing: border-box;
+
+	width: calc(100% - 48px);
+	max-width: 960px;
+
+	margin: 0 auto;
+
+	padding:
+		6px
+		0
+		6px
+		clamp(24px, 3vw, 40px);
+
+	border-left:
+		3px solid
+		var(--mtf-section-rule);
+
+	background: transparent;
+	border-radius: 0;
+	box-shadow: none;
+
+	transition:
+		opacity 250ms ease;
+}
+
+
+.mtf-film-testimonial.is-changing {
+	opacity: 0;
+}
+
+
+/* ==================================================
+	 QUOTE MARK
+	 ================================================== */
+
+.mtf-film-testimonial-mark {
+	display: block;
+
+	height: 24px;
+
+	margin:
+		0 0 12px;
+
+	font-size: 2.7rem;
+	font-weight: 600;
+	line-height: 0.7;
+
+	color:
+		var(--mtf-section-faint);
+}
+
+
+/* ==================================================
+	 QUOTE CONTENT
+	 ================================================== */
+
+.mtf-film-testimonial-quote {
+	margin: 0;
+	padding: 0;
+
+	border: 0;
+}
+
+
+.mtf-film-testimonial-text {
+	max-width: 850px;
+
+	margin: 0;
+
+	font-size: clamp(
+		1.3rem,
+		1.6vw,
+		1.7rem
+	);
+
+	font-weight: 400;
+	line-height: 1.4;
+
+	letter-spacing: 0;
+
+	color:
+		var(--mtf-section-text);
+}
+
+
+/* ==================================================
+	 COUPLE NAME
+	 ================================================== */
+
+.mtf-film-testimonial-name {
+	margin-top: 18px;
+
+	font-size: 0.68rem;
+	font-weight: 400;
+	line-height: 1.2;
+
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+
+	color:
+		var(--mtf-section-muted);
+}
+
+
+/* ==================================================
+	 MOBILE
+	 ================================================== */
+
+@media screen and (max-width: 767px) {
+
+	.mtf-film-testimonial {
+		width: 100%;
+		max-width: none;
+
+		padding:
+			5px
+			0
+			5px
+			20px;
+
+		border-left-width: 3px;
+	}
+
+
+	.mtf-film-testimonial-mark {
+		height: 22px;
+
+		margin-bottom: 10px;
+
+		font-size: 2.4rem;
+	}
+
+
+	.mtf-film-testimonial-text {
+		font-size: 1.15rem;
+		line-height: 1.45;
+	}
+
+
+	.mtf-film-testimonial-name {
+		margin-top: 16px;
+
+		font-size: 0.64rem;
+	}
+
+}
+
+
+/* ==================================================
+	 REDUCED MOTION
+	 ================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+	.mtf-film-testimonial {
+		transition: none;
+	}
+
+}

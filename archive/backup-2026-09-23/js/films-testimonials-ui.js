@@ -253,12 +253,12 @@
 
 	function insertBeforeFooter(section) {
 
-		/* Prefer Squarespace's global footer over any footer inside a film. */
 		const siteFooter =
-			document.querySelector('#footer-sections') ||
-			document.querySelector('footer.sections') ||
-			document.querySelector('body > footer') ||
-			document.querySelector('footer');
+			document.querySelector(
+				'#footer-sections, ' +
+				'footer.sections, ' +
+				'footer'
+			);
 
 
 		if (

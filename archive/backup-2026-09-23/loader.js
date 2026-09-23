@@ -19,7 +19,7 @@
 	 */
 
 	const assetVersion =
-		'2026-09-23-films-sections-r1';
+		'2026-09-16-r6';
 
 
 	const cssFile =
@@ -30,12 +30,9 @@
 		'js/films-tag-context.js',
 		'js/films-cities-list.js',
 		'js/films-testimonials.js',
-		'js/films-footer-shared.js',
 		'js/films-browser.js',
 		'js/films-cards.js',
 		'js/films-testimonials-ui.js',
-		'js/films-header.js',
-		'js/films-footer.js',
 		'js/films.js',
 		'js/films-archive-pagination.js',
 		'js/forms.js',

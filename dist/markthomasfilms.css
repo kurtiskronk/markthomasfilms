@@ -1,4 +1,128 @@
 /* ==================================================
+   SOURCE: css/components.css
+   ================================================== */
+
+/* MARK THOMAS FILMS — REUSABLE COMPONENTS */
+.mtf-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 13px 25px;
+  border: 1px solid currentColor;
+  border-radius: var(--mtf-radius);
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  transition: opacity 180ms ease;
+}
+.mtf-button--primary {
+  border-color: var(--mtf-color-dark);
+  background: var(--mtf-color-dark);
+  color: #fff;
+}
+.mtf-section--dark .mtf-button--primary {
+  border-color: #fff;
+  background: #fff;
+  color: var(--mtf-color-dark);
+}
+@media (hover: hover) { .mtf-button:hover { opacity: 0.8; } }
+.mtf-button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.mtf-cta { max-width: 860px; margin-inline: auto; text-align: center; }
+.mtf-cta__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+@media (prefers-reduced-motion: reduce) { .mtf-button { transition: none; } }
+
+
+/* ==================================================
+   SOURCE: css/films-sections.css
+   ================================================== */
+
+/* FILMS — HEADER AND FOOTER ARRANGEMENT
+ * Shared type, spacing and theme colors are in tokens.css/sections.css.
+ */
+.mtf-films-header.mtf-archive-context { position: relative; }
+.mtf-films-header--enhanced.mtf-archive-context {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 46px;
+  padding: clamp(44px, 6vw, 80px) var(--mtf-section-gutter) 0;
+  background: transparent;
+}
+.mtf-films-header--enhanced .mtf-films-header__inner {
+  width: 100%;
+  max-width: var(--mtf-content-width);
+  margin: 0 auto;
+}
+.mtf-films-header--enhanced .mtf-section__heading { margin-bottom: 24px; }
+.mtf-films-header--enhanced .mtf-archive-context-title {
+  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+.mtf-films-header--enhanced .mtf-section__eyebrow { margin-bottom: 10px; }
+.mtf-films-header:not(.mtf-films-header--enhanced) .mtf-archive-context-copy {
+  max-width: var(--mtf-reading-width);
+  margin: 20px auto 0;
+  text-align: center;
+}
+.mtf-films-header__subtitle {
+  max-width: var(--mtf-reading-width);
+  margin: 15px auto 0;
+  font-size: clamp(1.07rem, 1.45vw, 1.27rem);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--mtf-section-muted, #777);
+}
+.mtf-films-header--enhanced .mtf-films-header__intro {
+  max-width: var(--mtf-reading-width);
+  margin: 24px auto 32px;
+  text-align: center;
+}
+.mtf-films-header__gallery-title {
+  margin: clamp(32px, 4vw, 52px) 0 10px;
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+}
+.mtf-films-header--enhanced .mtf-film-browser { margin-top: 22px; }
+.mtf-film-count-slot:empty { display: none; }
+.mtf-film-count-slot .mtf-film-count {
+  margin: 6px 0 0;
+  color: var(--mtf-section-muted, #777);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.mtf-films-footer { position: relative; }
+.mtf-films-footer__section .mtf-section__prose {
+  max-width: var(--mtf-reading-width);
+  margin-inline: auto;
+}
+.mtf-films-footer__section .mtf-section__heading { margin-bottom: 22px; }
+.mtf-films-footer__cta .mtf-section__description { line-height: 1.65; }
+@media screen and (max-width: 767px) {
+  .mtf-films-header--enhanced.mtf-archive-context {
+    margin-bottom: 32px;
+    padding-top: 36px;
+  }
+}
+
+
+/* ==================================================
    SOURCE: css/films-testimonials.css
    ================================================== */
 
@@ -1443,8 +1567,10 @@ padding-bottom: 0;
 
 
 /* ==================================================
-   SOURCE: css/site.css
+   SOURCE: css/sections.css
    ================================================== */
+
+/* MARK THOMAS FILMS — REUSABLE SECTIONS, EXTRACTED FROM site.css */
 
 /* =========================================================
 	 STANDARD CONTENT SECTIONS
@@ -1464,8 +1590,8 @@ padding-bottom: 0;
 	margin: 0;
 
 	padding:
-		clamp(52px, 5vw, 72px)
-		clamp(22px, 6vw, 96px);
+		var(--mtf-section-space)
+		var(--mtf-section-gutter);
 
 	background:
 		var(--mtf-section-bg);
@@ -1480,16 +1606,16 @@ padding-bottom: 0;
 	 ========================================================= */
 
 .mtf-section--light {
-	--mtf-section-bg: #f5f5f5;
-	--mtf-section-text: #1a1a1a;
-	--mtf-section-muted: #777;
-	--mtf-section-rule: #c8c8c8;
-	--mtf-section-faint: #dedede;
+	--mtf-section-bg: var(--mtf-color-surface);
+	--mtf-section-text: var(--mtf-color-text);
+	--mtf-section-muted: var(--mtf-color-muted);
+	--mtf-section-rule: var(--mtf-color-rule);
+	--mtf-section-faint: var(--mtf-color-faint);
 }
 
 
 .mtf-section--dark {
-	--mtf-section-bg: #171717;
+	--mtf-section-bg: var(--mtf-color-dark);
 	--mtf-section-text: #fff;
 	--mtf-section-muted: rgba(255, 255, 255, 0.62);
 	--mtf-section-rule: rgba(255, 255, 255, 0.3);
@@ -1505,7 +1631,7 @@ padding-bottom: 0;
 	box-sizing: border-box;
 
 	width: 100%;
-	max-width: 1180px;
+	max-width: var(--mtf-content-width);
 
 	margin-inline: auto;
 }
@@ -1598,8 +1724,8 @@ padding-bottom: 0;
 
 	.mtf-section {
 		padding:
-			46px
-			22px;
+			var(--mtf-section-space)
+			var(--mtf-section-gutter);
 	}
 
 
@@ -1621,6 +1747,49 @@ padding-bottom: 0;
 
 }
 
+/* Reusable aliases and modifiers; markup determines heading level. */
+.mtf-section__container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--mtf-content-width);
+  margin-inline: auto;
+}
+.mtf-section__container--narrow { max-width: var(--mtf-reading-width); }
+.mtf-section--compact {
+  padding-block: clamp(36px, 4vw, 56px);
+}
+.mtf-section__heading--left {
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+.mtf-section__title--display {
+  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+.mtf-section__title--subsection {
+  font-size: clamp(1.55rem, 2.5vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  text-transform: none;
+}
+.mtf-section__prose {
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+  line-height: 1.65;
+}
+.mtf-section__prose p { margin: 0 0 1.15em; }
+.mtf-section__prose p:last-child { margin-bottom: 0; }
+
+
+/* ==================================================
+   SOURCE: css/site.css
+   ================================================== */
+
+/* Site-level overrides not covered by the shared design system. */
 
 /* =========================================================
 	 MOBILE HEADER
@@ -1629,4 +1798,35 @@ padding-bottom: 0;
 .header-title.header-title--use-mobile-logo {
 	padding-right: 40px;
 }
+
+/* ==================================================
+   SOURCE: css/tokens.css
+   ================================================== */
+
+/* MARK THOMAS FILMS — SHARED DESIGN TOKENS
+ * These defaults reproduce the site's existing section styling.
+ * Change a token here instead of redefining it in individual modules.
+ * Squarespace's native theme styles remain untouched.
+ */
+:root {
+  --mtf-color-text: #1a1a1a;
+  --mtf-color-muted: #777;
+  --mtf-color-faint: #dedede;
+  --mtf-color-background: #ffffff;
+  --mtf-color-surface: #f5f5f5;
+  --mtf-color-rule: #c8c8c8;
+  --mtf-color-dark: #171717;
+  --mtf-content-width: 1180px;
+  --mtf-reading-width: 760px;
+  --mtf-section-gutter: clamp(22px, 6vw, 96px);
+  --mtf-section-space: clamp(52px, 5vw, 72px);
+  --mtf-radius: 5px;
+}
+@media screen and (max-width: 767px) {
+  :root {
+    --mtf-section-gutter: 22px;
+    --mtf-section-space: 46px;
+  }
+}
+
 

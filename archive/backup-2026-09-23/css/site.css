@@ -1,0 +1,183 @@
+/* =========================================================
+	 STANDARD CONTENT SECTIONS
+	 ========================================================= */
+
+.mtf-section {
+	--mtf-section-bg: transparent;
+	--mtf-section-text: inherit;
+	--mtf-section-muted: rgba(0, 0, 0, 0.58);
+	--mtf-section-rule: rgba(0, 0, 0, 0.18);
+	--mtf-section-faint: rgba(0, 0, 0, 0.12);
+
+	box-sizing: border-box;
+
+	width: 100%;
+
+	margin: 0;
+
+	padding:
+		clamp(52px, 5vw, 72px)
+		clamp(22px, 6vw, 96px);
+
+	background:
+		var(--mtf-section-bg);
+
+	color:
+		var(--mtf-section-text);
+}
+
+
+/* =========================================================
+	 SECTION THEMES
+	 ========================================================= */
+
+.mtf-section--light {
+	--mtf-section-bg: #f5f5f5;
+	--mtf-section-text: #1a1a1a;
+	--mtf-section-muted: #777;
+	--mtf-section-rule: #c8c8c8;
+	--mtf-section-faint: #dedede;
+}
+
+
+.mtf-section--dark {
+	--mtf-section-bg: #171717;
+	--mtf-section-text: #fff;
+	--mtf-section-muted: rgba(255, 255, 255, 0.62);
+	--mtf-section-rule: rgba(255, 255, 255, 0.3);
+	--mtf-section-faint: rgba(255, 255, 255, 0.18);
+}
+
+
+/* =========================================================
+	 OPTIONAL SECTION INNER CONTAINER
+	 ========================================================= */
+
+.mtf-section__inner {
+	box-sizing: border-box;
+
+	width: 100%;
+	max-width: 1180px;
+
+	margin-inline: auto;
+}
+
+
+/* =========================================================
+	 STANDARD SECTION HEADING
+	 ========================================================= */
+
+.mtf-section__heading {
+	width: 100%;
+	max-width: 760px;
+
+	margin:
+		0 auto
+		clamp(34px, 3.5vw, 44px);
+
+	text-align: center;
+}
+
+
+/* =========================================================
+	 STANDARD SECTION EYEBROW
+	 ========================================================= */
+
+.mtf-section__eyebrow {
+	margin:
+		0 0 10px;
+
+	font-size: 0.68rem;
+	font-weight: 400;
+	line-height: 1.2;
+
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+
+	color:
+		var(--mtf-section-muted);
+}
+
+
+/* =========================================================
+	 STANDARD SECTION TITLE
+	 ========================================================= */
+
+.mtf-section__title {
+	margin: 0;
+
+	font-size: clamp(
+		1.45rem,
+		1.8vw,
+		1.9rem
+	);
+
+	font-weight: 500;
+	line-height: 1.2;
+
+	letter-spacing: 0.035em;
+	text-transform: uppercase;
+
+	color:
+		var(--mtf-section-text);
+}
+
+
+/* =========================================================
+	 STANDARD SECTION DESCRIPTION
+	 ========================================================= */
+
+.mtf-section__description {
+	max-width: 640px;
+
+	margin:
+		14px auto 0;
+
+	font-size: 0.95rem;
+	font-weight: 400;
+	line-height: 1.55;
+
+	color:
+		var(--mtf-section-muted);
+}
+
+
+/* =========================================================
+	 MOBILE — STANDARD SECTIONS
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+	.mtf-section {
+		padding:
+			46px
+			22px;
+	}
+
+
+	.mtf-section__heading {
+		margin-bottom: 30px;
+	}
+
+
+	.mtf-section__title {
+		font-size: 1.4rem;
+	}
+
+
+	.mtf-section__description {
+		margin-top: 12px;
+
+		font-size: 0.9rem;
+	}
+
+}
+
+
+/* =========================================================
+	 MOBILE HEADER
+	 ========================================================= */
+
+.header-title.header-title--use-mobile-logo {
+	padding-right: 40px;
+}

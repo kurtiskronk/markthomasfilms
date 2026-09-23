@@ -1,0 +1,71 @@
+/* FILMS — HEADER AND FOOTER ARRANGEMENT
+ * Shared type, spacing and theme colors are in tokens.css/sections.css.
+ */
+.mtf-films-header.mtf-archive-context { position: relative; }
+.mtf-films-header--enhanced.mtf-archive-context {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 46px;
+  padding: clamp(44px, 6vw, 80px) var(--mtf-section-gutter) 0;
+  background: transparent;
+}
+.mtf-films-header--enhanced .mtf-films-header__inner {
+  width: 100%;
+  max-width: var(--mtf-content-width);
+  margin: 0 auto;
+}
+.mtf-films-header--enhanced .mtf-section__heading { margin-bottom: 24px; }
+.mtf-films-header--enhanced .mtf-archive-context-title {
+  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+.mtf-films-header--enhanced .mtf-section__eyebrow { margin-bottom: 10px; }
+.mtf-films-header:not(.mtf-films-header--enhanced) .mtf-archive-context-copy {
+  max-width: var(--mtf-reading-width);
+  margin: 20px auto 0;
+  text-align: center;
+}
+.mtf-films-header__subtitle {
+  max-width: var(--mtf-reading-width);
+  margin: 15px auto 0;
+  font-size: clamp(1.07rem, 1.45vw, 1.27rem);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--mtf-section-muted, #777);
+}
+.mtf-films-header--enhanced .mtf-films-header__intro {
+  max-width: var(--mtf-reading-width);
+  margin: 24px auto 32px;
+  text-align: center;
+}
+.mtf-films-header__gallery-title {
+  margin: clamp(32px, 4vw, 52px) 0 10px;
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+}
+.mtf-films-header--enhanced .mtf-film-browser { margin-top: 22px; }
+.mtf-film-count-slot:empty { display: none; }
+.mtf-film-count-slot .mtf-film-count {
+  margin: 6px 0 0;
+  color: var(--mtf-section-muted, #777);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.mtf-films-footer { position: relative; }
+.mtf-films-footer__section .mtf-section__prose {
+  max-width: var(--mtf-reading-width);
+  margin-inline: auto;
+}
+.mtf-films-footer__section .mtf-section__heading { margin-bottom: 22px; }
+.mtf-films-footer__cta .mtf-section__description { line-height: 1.65; }
+@media screen and (max-width: 767px) {
+  .mtf-films-header--enhanced.mtf-archive-context {
+    margin-bottom: 32px;
+    padding-top: 36px;
+  }
+}

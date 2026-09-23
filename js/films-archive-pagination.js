@@ -4,10 +4,10 @@
 	window.MTF = window.MTF || {};
 
 	const MAX_FILMS_PER_MTF_PAGE =
-		36;
+		9;
 
 	const EXPECTED_NATIVE_PAGE_SIZE =
-		18;
+		9;
 
 	const GRID_SELECTOR =
 		'.blog-basic-grid.collection-content-wrapper';

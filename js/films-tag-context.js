@@ -697,7 +697,7 @@
                 title: 'Kendall Point Wedding Videographer',
                 subtitle: 'Wedding Films & Photography at Kendall Point in Boerne, Texas',
                 paragraphs: [
-                    'Mark Thomas Films has filmed more than 20 weddings at Kendall Point, giving us firsthand experience with the venue, its outdoor ceremony spaces, covered porches, ballroom, and the flow of a full wedding day. Our approach focuses on real moments, natural emotion, and the people and voices that make each celebration unique.'
+                    'Mark Thomas Films has filmed more than 40 weddings at Kendall Point, giving us firsthand experience with the venue, its outdoor ceremony spaces, covered porches, ballroom, and the flow of a full wedding day. Our approach focuses on real moments, natural emotion, and the people and voices that make each celebration unique.'
                 ],
                 galleryTitle: 'Wedding Films at Kendall Point'
             },

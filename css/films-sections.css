@@ -16,7 +16,7 @@
 }
 .mtf-films-header--enhanced .mtf-section__heading { margin-bottom: 24px; }
 .mtf-films-header--enhanced .mtf-archive-context-title {
-  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  font-size: clamp(2rem, 2vw, 2.5rem);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.025em;

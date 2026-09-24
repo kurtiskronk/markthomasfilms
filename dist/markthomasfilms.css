@@ -51,7 +51,7 @@
 
 /* !START MARK CODE */
 /* THIS IS MARK's CSS FROM HIS CODE BLOCK ORIGINALLY */
-<style>
+
 /* ==========================================================
    MARK THOMAS FILMS
    CONTACT PAGE + NATIVE SQUARESPACE SPLIT QUOTE HANDOFF
@@ -70,7 +70,7 @@
 
 /* Make First Name and Last Name bold like other labels */
 .caption-text {
-    font-weight: 600 !important;
+    font-weight: 600;
 }
   
 /* INTRO — presentation only; quote/VSCO bridge logic below is unchanged */
@@ -114,10 +114,10 @@
 }
 
 .mtf-contact-inline-link {
-  color: var(--mtf-ink) !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 1px !important;
-  text-underline-offset: 2px !important;
+  color: var(--mtf-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .mtf-contact-inline-link:hover {
@@ -132,10 +132,10 @@
   padding: 0 20px;
   box-sizing: border-box;
   background: var(--mtf-ink);
-  color: #fff !important;
+  color: #fff;
   border: 1px solid var(--mtf-ink);
   border-radius: 6px;
-  text-decoration: none !important;
+  text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   transition: opacity .2s ease, transform .2s ease;
@@ -146,37 +146,37 @@
 
 /* FORM OUTER CARD */
 .mtf-native-contact-wrapper {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 28px !important;
-  box-sizing: border-box !important;
-  background: var(--mtf-paper) !important;
-  border: 1px solid var(--mtf-line) !important;
-  border-radius: 10px !important;
-  box-shadow: none !important;
+  width: 100%;
+  margin: 0;
+  padding: 28px;
+  box-sizing: border-box;
+  background: var(--mtf-paper);
+  border: 1px solid var(--mtf-line);
+  border-radius: 10px;
+  box-shadow: none;
 }
 
-.mtf-native-contact-wrapper form { margin: 0 !important; }
+.mtf-native-contact-wrapper form { margin: 0; }
 .mtf-native-contact-wrapper .field-list,
-.mtf-native-contact-wrapper .fields { margin: 0 !important; }
+.mtf-native-contact-wrapper .fields { margin: 0; }
 
 
 /* LABELS */
 .mtf-native-contact-wrapper label,
 .mtf-native-contact-wrapper .title,
 .mtf-native-contact-wrapper legend {
-  color: var(--mtf-ink) !important;
-  font-family: inherit !important;
-  font-size: 14px !important;
-  line-height: 1.4 !important;
-  font-weight: 600 !important;
+  color: var(--mtf-ink);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 600;
 }
 
 .mtf-native-contact-wrapper .required,
 .mtf-native-contact-wrapper .description {
-  color: var(--mtf-muted) !important;
-  font-size: 12px !important;
-  font-weight: 400 !important;
+  color: var(--mtf-muted);
+  font-size: 12px;
+  font-weight: 400;
 }
 
 /* INPUTS */
@@ -188,41 +188,41 @@
 .mtf-native-contact-wrapper input[type="url"],
 .mtf-native-contact-wrapper select,
 .mtf-native-contact-wrapper textarea {
-  width: 100% !important;
-  min-height: 48px !important;
-  margin-top: 7px !important;
-  padding: 11px 13px !important;
-  box-sizing: border-box !important;
-  background: var(--mtf-white) !important;
-  color: var(--mtf-ink) !important;
-  border: 1px solid var(--mtf-line) !important;
-  border-radius: 6px !important;
-  box-shadow: none !important;
-  font-family: inherit !important;
-  font-size: 16px !important;
-  line-height: 1.35 !important;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 7px;
+  padding: 11px 13px;
+  box-sizing: border-box;
+  background: var(--mtf-white);
+  color: var(--mtf-ink);
+  border: 1px solid var(--mtf-line);
+  border-radius: 6px;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.35;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 
 .mtf-native-contact-wrapper input { accent-color: var(--mtf-ink); }
-.mtf-native-contact-wrapper textarea { min-height: 150px !important; resize: vertical !important; }
+.mtf-native-contact-wrapper textarea { min-height: 150px; resize: vertical; }
 
 .mtf-native-contact-wrapper input:focus,
 .mtf-native-contact-wrapper select:focus,
 .mtf-native-contact-wrapper textarea:focus {
-  outline: none !important;
-  border-color: var(--mtf-ink) !important;
-  box-shadow: 0 0 0 2px rgba(45,45,45,.08) !important;
+  outline: none;
+  border-color: var(--mtf-ink);
+  box-shadow: 0 0 0 2px rgba(45,45,45,.08);
 }
 
-.mtf-native-contact-wrapper select { cursor: pointer !important; }
+.mtf-native-contact-wrapper select { cursor: pointer; }
 
 /* WEDDING DATE */
 .mtf-wedding-date-field {
-  margin: -4px -8px 24px !important;
-  padding: 16px 8px 18px !important;
-  background: var(--mtf-panel) !important;
-  border-radius: 7px !important;
+  margin: -4px -8px 24px;
+  padding: 16px 8px 18px;
+  background: var(--mtf-panel);
+  border-radius: 7px;
 }
 
 /* QUOTE LINKED CONFIRMATION */
@@ -250,30 +250,30 @@
 }
 
 /* If the old Squarespace upload field still exists while you are changing the form, hide it on /contact. */
-.mtf-old-quote-upload-field { display: none !important; }
+.mtf-old-quote-upload-field { display: none; }
 
 /* SUBMIT */
 .mtf-native-contact-wrapper input[type="submit"],
 .mtf-native-contact-wrapper button[type="submit"] {
-  min-height: 48px !important;
-  padding: 13px 24px !important;
-  background: var(--mtf-ink) !important;
-  color: #fff !important;
-  border: 1px solid var(--mtf-ink) !important;
-  border-radius: 6px !important;
-  box-shadow: none !important;
-  font-family: inherit !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: .02em !important;
-  cursor: pointer !important;
-  transition: opacity .2s ease, transform .2s ease !important;
+  min-height: 48px;
+  padding: 13px 24px;
+  background: var(--mtf-ink);
+  color: #fff;
+  border: 1px solid var(--mtf-ink);
+  border-radius: 6px;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: opacity .2s ease, transform .2s ease;
 }
 
 .mtf-native-contact-wrapper input[type="submit"]:hover,
-.mtf-native-contact-wrapper button[type="submit"]:hover { opacity: .88 !important; }
+.mtf-native-contact-wrapper button[type="submit"]:hover { opacity: .88; }
 .mtf-native-contact-wrapper input[type="submit"]:active,
-.mtf-native-contact-wrapper button[type="submit"]:active { transform: translateY(1px) !important; }
+.mtf-native-contact-wrapper button[type="submit"]:active { transform: translateY(1px); }
 
 .mtf-quote-linked-panel {
   scroll-margin-top: 42px;
@@ -286,16 +286,16 @@
    Does not change form fields, submission, quote data, or bridge logic.
    ========================================================== */
 .mtf-contact-form-grid-fix {
-  position: relative !important;
+  position: relative;
 }
 
 @media (max-width: 700px) {
   .mtf-contact-intro,
-  .mtf-native-contact-wrapper { padding: 20px !important; }
+  .mtf-native-contact-wrapper { padding: 20px; }
   .mtf-contact-intro { margin: 10px 0 10px; }
   .mtf-contact-quote-button { width: 100%; }
   .mtf-native-contact-wrapper input[type="submit"],
-  .mtf-native-contact-wrapper button[type="submit"] { width: 100% !important; }
+  .mtf-native-contact-wrapper button[type="submit"] { width: 100%; }
 }
 
 .sqs-edit-mode .mtf-native-contact-wrapper { min-height: 100px; }

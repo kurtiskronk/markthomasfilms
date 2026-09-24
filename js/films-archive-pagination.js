@@ -1,13 +1,11 @@
 (function () {
+
 	'use strict';
 
-	window.MTF = window.MTF || {};
 
-	const MAX_FILMS_PER_MTF_PAGE =
-		12;
+	window.MTF =
+		window.MTF || {};
 
-	const EXPECTED_NATIVE_PAGE_SIZE =
-		9;
 
 	const GRID_SELECTOR =
 		'.blog-basic-grid.collection-content-wrapper';
@@ -15,8 +13,11 @@
 	const CARD_SELECTOR =
 		'article.blog-item';
 
+	const LOAD_MORE_BATCH_SIZE =
+		60;
+
 	const COUNT_CACHE_PREFIX =
-		'mtf-film-count-v1:';
+		'mtf-film-count-v2:';
 
 	const pageCache =
 		new Map();
@@ -68,10 +69,21 @@
 	}
 
 
+	function normalizeTag(value) {
+
+		return String(
+			value || ''
+		)
+			.trim()
+			.toLowerCase();
+
+	}
+
+
 	/* =====================================================
 		 TAG DETECTION
 
-		 Supports both:
+		 Supports:
 
 		 /films/tag/Kendall+Point
 
@@ -89,9 +101,8 @@
 
 		if (pathMatch) {
 
-			/* Convert literal + before decoding so an encoded %2B survives. */
 			let tag =
-				pathMatch[1].replace(/\+/g, ' ');
+				pathMatch[1];
 
 			try {
 
@@ -108,7 +119,12 @@
 
 			}
 
-			return tag.trim();
+			return tag
+				.replace(
+					/\+/g,
+					' '
+				)
+				.trim();
 
 		}
 
@@ -151,10 +167,6 @@
 
 	/* =====================================================
 		 PAGINATION LINKS
-
-		 We intentionally identify these primarily by their
-		 visible Squarespace labels instead of depending on
-		 fragile Squarespace-generated class names.
 		 ===================================================== */
 
 	function findPaginationAnchor(
@@ -166,16 +178,18 @@
 			return null;
 		}
 
+
 		const expectedTexts =
-		direction === 'older'
-			? [
-				'older posts',
-				'older films'
-			]
-			: [
-				'newer posts',
-				'newer films'
-			];
+			direction === 'older'
+				? [
+					'older posts',
+					'older films'
+				]
+				: [
+					'newer posts',
+					'newer films'
+				];
+
 
 		const links =
 			Array.from(
@@ -183,6 +197,7 @@
 					'a[href]'
 				)
 			);
+
 
 		const textMatch =
 			links.find(function (link) {
@@ -195,15 +210,11 @@
 
 			});
 
+
 		if (textMatch) {
 			return textMatch;
 		}
 
-
-		/*
-		 * Fallback in case Squarespace changes
-		 * the visible pagination wording.
-		 */
 
 		return root.querySelector(
 			direction === 'older'
@@ -230,6 +241,7 @@
 			return '';
 		}
 
+
 		const href =
 			link.getAttribute(
 				'href'
@@ -238,6 +250,7 @@
 		if (!href) {
 			return '';
 		}
+
 
 		try {
 
@@ -253,15 +266,45 @@
 			return href;
 
 		}
+
+	}
+
+
+	function findNativePagination() {
+
+		const olderLink =
+			findPaginationAnchor(
+				document,
+				'older'
+			);
+
+		const newerLink =
+			findPaginationAnchor(
+				document,
+				'newer'
+			);
+
+		const link =
+			olderLink ||
+			newerLink;
+
+		if (!link) {
+			return null;
+		}
+
+
+		return (
+			link.closest(
+				'.blog-list-pagination'
+			) ||
+			link.parentElement
+		);
+
 	}
 
 
 	/* =====================================================
 		 FETCH + PARSE ARCHIVE PAGE
-
-		 Results are cached for this page load so that the
-		 film count and scrolling behavior can share the
-		 same requests.
 		 ===================================================== */
 
 	function fetchArchivePage(url) {
@@ -276,11 +319,6 @@
 				window.location.href
 			);
 
-
-		/*
-		 * If we're asking for the page already displayed,
-		 * use the live document instead of fetching it.
-		 */
 
 		if (
 			normalizedURL ===
@@ -359,11 +397,92 @@
 		);
 
 		return request;
+
 	}
 
 
 	/* =====================================================
-		 FILM COUNT
+		 FILM IDENTIFIER
+
+		 Used to avoid duplicates when loading additional
+		 archive pages.
+		 ===================================================== */
+
+	function getFilmKey(card) {
+
+		if (!card) {
+			return '';
+		}
+
+
+		const titleLink =
+			card.querySelector(
+				'.blog-title a[href]'
+			);
+
+		if (titleLink) {
+
+			return normalizeURL(
+				titleLink.href
+			);
+
+		}
+
+
+		const firstLink =
+			card.querySelector(
+				'a[href]'
+			);
+
+		if (firstLink) {
+
+			return normalizeURL(
+				firstLink.href
+			);
+
+		}
+
+
+		return '';
+
+	}
+
+
+	function collectExistingFilmKeys(filmGrid) {
+
+		const keys =
+			new Set();
+
+
+		filmGrid
+			.querySelectorAll(
+				CARD_SELECTOR
+			)
+			.forEach(function (card) {
+
+				const key =
+					getFilmKey(
+						card
+					);
+
+				if (key) {
+
+					keys.add(
+						key
+					);
+
+				}
+
+			});
+
+
+		return keys;
+
+	}
+
+
+	/* =====================================================
+		 FILM COUNT CACHE
 		 ===================================================== */
 
 	function getCachedFilmCount(tag) {
@@ -373,12 +492,15 @@
 			const value =
 				sessionStorage.getItem(
 					COUNT_CACHE_PREFIX +
-					tag.toLowerCase()
+					normalizeTag(
+						tag
+					)
 				);
 
 			if (!value) {
 				return null;
 			}
+
 
 			const number =
 				parseInt(
@@ -399,6 +521,7 @@
 			return null;
 
 		}
+
 	}
 
 
@@ -411,7 +534,9 @@
 
 			sessionStorage.setItem(
 				COUNT_CACHE_PREFIX +
-					tag.toLowerCase(),
+				normalizeTag(
+					tag
+				),
 				String(
 					count
 				)
@@ -424,12 +549,17 @@
 			/* Storage unavailable. */
 
 		}
+
 	}
 
 
-	async function countAllFilms(
-		tag
-	) {
+	/* =====================================================
+		 COUNT ALL FILMS
+
+		 Walks Squarespace's native archive pagination.
+		 ===================================================== */
+
+	async function countAllFilms(tag) {
 
 		const cached =
 			getCachedFilmCount(
@@ -456,11 +586,6 @@
 			new Set();
 
 
-		/*
-		 * Safety ceiling prevents an accidental loop
-		 * if Squarespace ever returns malformed pagination.
-		 */
-
 		while (
 			pageURL &&
 			pageNumber < 100
@@ -471,6 +596,7 @@
 					pageURL
 				);
 
+
 			if (
 				visited.has(
 					normalizedURL
@@ -478,6 +604,7 @@
 			) {
 				break;
 			}
+
 
 			visited.add(
 				normalizedURL
@@ -513,8 +640,7 @@
 					page.url
 				);
 
-			pageNumber +=
-				1;
+			pageNumber += 1;
 
 		}
 
@@ -530,61 +656,6 @@
 
 
 		return total;
-	}
-
-
-	function displayFilmCount(
-		count
-	) {
-
-		if (!count) {
-			return;
-		}
-
-
-		let countElement =
-			document.querySelector(
-				'.mtf-film-count'
-			);
-
-
-		if (!countElement) {
-
-			countElement =
-				document.createElement(
-					'p'
-				);
-
-			countElement.className =
-				'mtf-film-count';
-
-
-			const countSlot = document.querySelector('.mtf-film-count-slot');
-
-			if (countSlot) {
-				countSlot.appendChild(countElement);
-			}
-			else {
-				const archiveTitle = document.querySelector('.mtf-archive-context-title');
-				if (archiveTitle) {
-					archiveTitle.insertAdjacentElement('afterend', countElement);
-				}
-				else {
-					const filmGrid = document.querySelector(GRID_SELECTOR);
-					if (!filmGrid) return;
-					filmGrid.parentNode.insertBefore(countElement, filmGrid);
-				}
-			}
-		}
-
-
-		countElement.textContent =
-			count +
-			(
-				count === 1
-					? ' film'
-					: ' films'
-			);
 
 	}
 
@@ -613,13 +684,9 @@
 			);
 
 			return;
+
 		}
 
-
-		/*
-		 * Defensive fallback if this module happens to
-		 * initialize before film-cards.js.
-		 */
 
 		if (attempt < 20) {
 
@@ -636,124 +703,335 @@
 			);
 
 		}
+
 	}
 
 
 	/* =====================================================
-		 LOGICAL "NEWER POSTS"
-
-		 Each MTF page represents two native Squarespace
-		 pages. Therefore, when we are on a later MTF page,
-		 "Newer Posts" needs to jump back two Squarespace
-		 pages instead of one.
+		 IMPORT FILM CARD
 		 ===================================================== */
 
-	async function updateNewerPagination() {
-
-		const newerLink =
-			findPaginationAnchor(
-				document,
-				'newer'
-			);
-
-		if (!newerLink) {
-			return;
-		}
-
-
-		const firstNewerURL =
-			getPaginationHref(
-				document,
-				'newer',
-				window.location.href
-			);
-
-		if (!firstNewerURL) {
-			return;
-		}
-
-
-		try {
-
-			const firstNewerPage =
-				await fetchArchivePage(
-					firstNewerURL
-				);
-
-			const secondNewerURL =
-				getPaginationHref(
-					firstNewerPage.document,
-					'newer',
-					firstNewerPage.url
-				);
-
-
-			/*
-			 * Normal MTF pagination uses the second link.
-			 *
-			 * If none exists, retain the first link as a
-			 * safe fallback for a visitor who arrived on
-			 * an old/native Squarespace pagination URL.
-			 */
-
-			newerLink.href =
-				secondNewerURL ||
-				firstNewerURL;
-
-		}
-
-		catch (error) {
-
-			console.warn(
-				'Mark Thomas Films: unable to update newer film pagination.',
-				error
-			);
-
-		}
-	}
-
-
-	/* =====================================================
-		 APPEND ONE NATIVE PAGE
-
-		 18 existing films + 18 appended films = 36.
-
-		 After appending, the visible "Older Posts" link
-		 is changed to point beyond the appended films.
-		 ===================================================== */
-
-	async function appendSecondPage(
+	function appendFilmCard(
+		sourceCard,
 		filmGrid
 	) {
 
-		const olderLink =
-			findPaginationAnchor(
-				document,
-				'older'
+		const card =
+			document.importNode(
+				sourceCard,
+				true
 			);
 
-		if (!olderLink) {
-			return;
+
+		/*
+		 * Fetched Squarespace cards can retain animation
+		 * state from the remote document.
+		 */
+
+		card.style.opacity =
+			'1';
+
+		card.style.visibility =
+			'visible';
+
+		card.style.transform =
+			'none';
+
+		card.removeAttribute(
+			'data-animation-state'
+		);
+
+
+		/*
+		 * Encourage browser-native lazy loading for
+		 * newly imported images.
+		 */
+
+		card
+			.querySelectorAll(
+				'img'
+			)
+			.forEach(function (image) {
+
+				image.loading =
+					'lazy';
+
+			});
+
+
+		/*
+		 * The film grid can contain Squarespace pagination
+		 * markup. Insert new cards before that markup when
+		 * possible.
+		 */
+
+		const nativePagination =
+			filmGrid.querySelector(
+				'.blog-list-pagination'
+			);
+
+
+		if (
+			nativePagination &&
+			nativePagination.parentNode ===
+				filmGrid
+		) {
+
+			filmGrid.insertBefore(
+				card,
+				nativePagination
+			);
+
+		}
+
+		else {
+
+			filmGrid.appendChild(
+				card
+			);
+
 		}
 
 
-		const olderURL =
-			getPaginationHref(
-				document,
-				'older',
-				window.location.href
+		processFilmCard(
+			card
+		);
+
+
+		return card;
+
+	}
+
+
+	/* =====================================================
+		 LOAD MORE CONTROLS
+		 ===================================================== */
+
+	function createLoadMoreControls(
+		filmGrid,
+		totalCount
+	) {
+
+		const existing =
+			document.querySelector(
+				'.mtf-film-load-more'
 			);
 
-		if (!olderURL) {
-			return;
+		if (existing) {
+			return existing;
 		}
 
 
-		try {
+		const wrapper =
+			document.createElement(
+				'div'
+			);
+
+		wrapper.className =
+			'mtf-film-load-more';
+
+
+		const status =
+			document.createElement(
+				'p'
+			);
+
+		status.className =
+			'mtf-film-load-more__status';
+
+		status.setAttribute(
+			'aria-live',
+			'polite'
+		);
+
+
+		const button =
+			document.createElement(
+				'button'
+			);
+
+		button.type =
+			'button';
+
+		button.className =
+			'mtf-button mtf-film-load-more__button';
+
+		button.textContent =
+			'Load More Films';
+
+
+		wrapper.appendChild(
+			status
+		);
+
+		wrapper.appendChild(
+			button
+		);
+
+
+		const nativePagination =
+			findNativePagination();
+
+
+		if (
+			nativePagination &&
+			nativePagination.parentNode
+		) {
+
+			nativePagination.parentNode.insertBefore(
+				wrapper,
+				nativePagination
+			);
+
+		}
+
+		else {
+
+			filmGrid.insertAdjacentElement(
+				'afterend',
+				wrapper
+			);
+
+		}
+
+
+		function updateStatus() {
+
+			const visibleCount =
+				filmGrid.querySelectorAll(
+					CARD_SELECTOR
+				).length;
+
+
+			if (
+				totalCount &&
+				visibleCount < totalCount
+			) {
+
+				status.textContent =
+					'Showing ' +
+					visibleCount +
+					' of ' +
+					totalCount +
+					' films';
+
+			}
+
+			else if (totalCount) {
+
+				status.textContent =
+					'Showing all ' +
+					totalCount +
+					' films';
+
+			}
+
+			else {
+
+				status.textContent =
+					visibleCount +
+					(
+						visibleCount === 1
+							? ' film'
+							: ' films'
+					);
+
+			}
+
+
+			if (
+				totalCount &&
+				visibleCount >= totalCount
+			) {
+
+				button.hidden =
+					true;
+
+			}
+
+		}
+
+
+		wrapper.updateStatus =
+			updateStatus;
+
+		wrapper.button =
+			button;
+
+		wrapper.status =
+			status;
+
+
+		updateStatus();
+
+
+		return wrapper;
+
+	}
+
+
+	/* =====================================================
+		 LOAD UP TO 60 ADDITIONAL FILMS
+
+		 Fetches as many native Squarespace archive pages as
+		 necessary until:
+
+		 - 60 new films have been appended, or
+		 - there are no more archive pages.
+		 ===================================================== */
+
+	async function loadMoreFilms(
+		filmGrid,
+		startURL
+	) {
+
+		let pageURL =
+			startURL;
+
+		let addedCount =
+			0;
+
+		let finalNextURL =
+			pageURL;
+
+		const visited =
+			new Set();
+
+		const existingKeys =
+			collectExistingFilmKeys(
+				filmGrid
+			);
+
+
+		while (
+			pageURL &&
+			addedCount <
+				LOAD_MORE_BATCH_SIZE
+		) {
+
+			const normalizedURL =
+				normalizeURL(
+					pageURL
+				);
+
+
+			if (
+				visited.has(
+					normalizedURL
+				)
+			) {
+				break;
+			}
+
+
+			visited.add(
+				normalizedURL
+			);
+
 
 			const page =
 				await fetchArchivePage(
-					olderURL
+					normalizedURL
 				);
 
 			const nextGrid =
@@ -763,179 +1041,70 @@
 					);
 
 			if (!nextGrid) {
-				return;
+				break;
 			}
 
 
-			const currentCards =
-				filmGrid.querySelectorAll(
-					CARD_SELECTOR
-				);
-
-			const nextCards =
+			const cards =
 				Array.from(
 					nextGrid.querySelectorAll(
 						CARD_SELECTOR
 					)
 				);
 
-			const remainingSlots =
-				MAX_FILMS_PER_MTF_PAGE -
-				currentCards.length;
 
-
-			if (
-				remainingSlots <= 0 ||
-				!nextCards.length
-			) {
-				return;
-			}
-
-
-			/*
-			 * Important fail-safe:
-			 *
-			 * If Mark later changes Squarespace from
-			 * 18 posts/page to 20, we do NOT append only
-			 * part of a native page because doing so would
-			 * make the following pagination skip films.
-			 */
-
-			if (
-				nextCards.length >
-				remainingSlots
+			for (
+				let index = 0;
+				index < cards.length;
+				index += 1
 			) {
 
-				console.warn(
-					'Mark Thomas Films: native archive page size has changed. ' +
-					'Automatic 36-film pagination was not applied.'
-				);
-
-				return;
-
-			}
-
-
-			const firstCurrentCard =
-				filmGrid.querySelector(
-					CARD_SELECTOR
-				);
-
-			if (!firstCurrentCard) {
-				return;
-			}
-
-
-			const cardContainer =
-				firstCurrentCard.parentNode;
-			
-			
-			/*
-			 * Squarespace places its Older/Newer Posts navigation
-			 * inside the same overall archive container.
-			 *
-			 * Find the highest ancestor of the Older Posts link
-			 * that is a direct child of the film-card container.
-			 * New cards will be inserted immediately before it.
-			 */
-			
-			let paginationReference =
-				olderLink;
-			
-			while (
-				paginationReference &&
-				paginationReference.parentNode &&
-				paginationReference.parentNode !==
-					cardContainer
-			) {
-			
-				paginationReference =
-					paginationReference.parentNode;
-			
-			}
-			
-			
-			/*
-			 * If the pagination could not be resolved as a direct
-			 * child of the card container, safely fall back to the
-			 * end of the container.
-			 */
-			
-			if (
-				!paginationReference ||
-				paginationReference.parentNode !==
-					cardContainer
-			) {
-			
-				paginationReference =
-					null;
-			
-			}
-			
-			
-			nextCards.forEach(
-				function (sourceCard) {
-			
-					const card =
-						document.importNode(
-							sourceCard,
-							true
-						);
-			
-					/*
-					 * Dynamically imported Squarespace cards retain
-					 * the pre-animation state from the fetched page.
-					 * Force them into their visible state.
-					 */
-			
-					card.style.opacity =
-						'1';
-			
-					card.style.visibility =
-						'visible';
-			
-					card.style.transform =
-						'none';
-			
-					card.removeAttribute(
-						'data-animation-state'
-					);
-			
-			
-					if (paginationReference) {
-			
-						cardContainer.insertBefore(
-							card,
-							paginationReference
-						);
-			
-					}
-			
-					else {
-			
-						cardContainer.appendChild(
-							card
-						);
-			
-					}
-			
-			
-					processFilmCard(
-						card
-					);
-			
+				if (
+					addedCount >=
+						LOAD_MORE_BATCH_SIZE
+				) {
+					break;
 				}
-			);
 
 
-			/*
-			 * The current Older Posts link originally
-			 * pointed to the page we just appended.
-			 *
-			 * Replace it with that page's Older Posts
-			 * link so the visitor advances to the next
-			 * unseen group of films.
-			 */
+				const sourceCard =
+					cards[index];
+
+				const key =
+					getFilmKey(
+						sourceCard
+					);
+
+
+				if (
+					key &&
+					existingKeys.has(
+						key
+					)
+				) {
+					continue;
+				}
+
+
+				appendFilmCard(
+					sourceCard,
+					filmGrid
+				);
+
+
+				if (key) {
+
+					existingKeys.add(
+						key
+					);
+
+				}
+
+
+				addedCount += 1;
+
+			}
+
 
 			const followingURL =
 				getPaginationHref(
@@ -945,160 +1114,50 @@
 				);
 
 
-			if (followingURL) {
+			finalNextURL =
+				followingURL;
 
-				olderLink.href =
-					followingURL;
-
-			}
-
-			else {
-
-				/*
-				 * No films remain after the appended page.
-				 */
-
-				olderLink.style.display =
-					'none';
-
-			}
-
-
-			console.log(
-				'Mark Thomas Films: appended archive films. ' +
-				filmGrid.querySelectorAll(
-					CARD_SELECTOR
-				).length +
-				' films now displayed.'
-			);
-
-		}
-
-		catch (error) {
 
 			/*
-			 * If anything goes wrong, Squarespace's native
-			 * pagination remains usable.
+			 * If this native page contained more cards than
+			 * we had room to add, stopping here would skip
+			 * some films on the next click.
+			 *
+			 * In normal Squarespace pagination this should
+			 * not happen because native page sizes are much
+			 * smaller than 60. Warn instead of silently
+			 * producing broken pagination.
 			 */
 
-			console.warn(
-				'Mark Thomas Films: unable to append additional films.',
-				error
-			);
+			if (
+				addedCount >=
+					LOAD_MORE_BATCH_SIZE &&
+				cards.length >
+					LOAD_MORE_BATCH_SIZE
+			) {
+
+				console.warn(
+					'Mark Thomas Films: a native archive page contains more than ' +
+					LOAD_MORE_BATCH_SIZE +
+					' films. Load More pagination may need adjustment.'
+				);
+
+			}
+
+
+			pageURL =
+				followingURL;
 
 		}
-	}
 
 
-	/* =====================================================
-		 SCROLL TRIGGER
+		return {
+			addedCount:
+				addedCount,
 
-		 Loads the second group before the visitor actually
-		 reaches the native pagination.
-		 ===================================================== */
-
-	function setupScrollLoading(
-		filmGrid
-	) {
-
-		const currentFilmCount =
-			filmGrid.querySelectorAll(
-				CARD_SELECTOR
-			).length;
-
-
-		if (
-			currentFilmCount >
-				EXPECTED_NATIVE_PAGE_SIZE ||
-			currentFilmCount >=
-				MAX_FILMS_PER_MTF_PAGE
-		) {
-
-			return;
-		}
-
-
-		const olderLink =
-			findPaginationAnchor(
-				document,
-				'older'
-			);
-
-		if (!olderLink) {
-			return;
-		}
-
-
-		const sentinel =
-			document.createElement(
-				'div'
-			);
-
-		sentinel.className =
-			'mtf-film-scroll-sentinel';
-
-		sentinel.setAttribute(
-			'aria-hidden',
-			'true'
-		);
-
-		filmGrid.insertAdjacentElement(
-			'afterend',
-			sentinel
-		);
-
-
-		let loading =
-			false;
-
-
-		const observer =
-			new IntersectionObserver(
-				function (entries) {
-
-					const visible =
-						entries.some(
-							function (entry) {
-
-								return entry.isIntersecting;
-
-							}
-						);
-
-					if (
-						!visible ||
-						loading
-					) {
-						return;
-					}
-
-
-					loading =
-						true;
-
-					observer.disconnect();
-
-
-					appendSecondPage(
-						filmGrid
-					)
-						.finally(function () {
-
-							sentinel.remove();
-
-						});
-
-				},
-				{
-					rootMargin:
-						'700px 0px'
-				}
-			);
-
-
-		observer.observe(
-			sentinel
-		);
+			nextURL:
+				finalNextURL
+		};
 
 	}
 
@@ -1107,7 +1166,7 @@
 		 INITIALIZE
 		 ===================================================== */
 
-	function initFilmArchivePagination() {
+	async function initFilmArchivePagination() {
 
 		const tag =
 			getCurrentTag();
@@ -1127,46 +1186,185 @@
 		}
 
 
-		/* Film count styles now live in css/films-sections.css. */
+		const nativePagination =
+			findNativePagination();
+
+		const olderLink =
+			findPaginationAnchor(
+				document,
+				'older'
+			);
 
 
 		/*
-		 * films.js creates the archive heading during its
-		 * own initialization. A zero-delay tick gives that
-		 * module an opportunity to finish first.
+		 * No Older Films link means Squarespace already has
+		 * every film on the current archive page.
 		 */
 
-		setTimeout(
-			function () {
-
-				countAllFilms(
-					tag
+		let nextURL =
+			olderLink
+				? getPaginationHref(
+					document,
+					'older',
+					window.location.href
 				)
-					.then(function (count) {
-
-						displayFilmCount(
-							count
-						);
-
-					})
-					.catch(function (error) {
-
-						console.warn(
-							'Mark Thomas Films: unable to count archive films.',
-							error
-						);
-
-					});
+				: '';
 
 
-				updateNewerPagination();
+		let totalCount =
+			null;
 
-				setupScrollLoading(
-					filmGrid
+
+		try {
+
+			totalCount =
+				await countAllFilms(
+					tag
 				);
 
-			},
-			0
+		}
+
+		catch (error) {
+
+			console.warn(
+				'Mark Thomas Films: unable to count archive films.',
+				error
+			);
+
+		}
+
+
+		const controls =
+			createLoadMoreControls(
+				filmGrid,
+				totalCount
+			);
+
+
+		/*
+		 * Hide Squarespace's native pagination only after
+		 * the custom controls have successfully initialized.
+		 *
+		 * If this script fails before this point, native
+		 * pagination remains available as a fallback.
+		 */
+
+		if (nativePagination) {
+
+			nativePagination.hidden =
+				true;
+
+			nativePagination.setAttribute(
+				'aria-hidden',
+				'true'
+			);
+
+		}
+
+
+		if (!nextURL) {
+
+			controls.button.hidden =
+				true;
+
+			controls.updateStatus();
+
+			return;
+
+		}
+
+
+		controls.button.addEventListener(
+			'click',
+			async function () {
+
+				if (
+					controls.button.disabled ||
+					!nextURL
+				) {
+					return;
+				}
+
+
+				const originalText =
+					controls.button.textContent;
+
+
+				controls.button.disabled =
+					true;
+
+				controls.button.textContent =
+					'Loading Films…';
+
+				controls.wrapper =
+					controls;
+
+
+				try {
+
+					const result =
+						await loadMoreFilms(
+							filmGrid,
+							nextURL
+						);
+
+
+					nextURL =
+						result.nextURL;
+
+
+					controls.updateStatus();
+
+
+					if (
+						!nextURL ||
+						result.addedCount === 0
+					) {
+
+						controls.button.hidden =
+							true;
+
+					}
+
+				}
+
+				catch (error) {
+
+					console.warn(
+						'Mark Thomas Films: unable to load additional films.',
+						error
+					);
+
+
+					/*
+					 * Restore native pagination if background
+					 * loading fails.
+					 */
+
+					if (nativePagination) {
+
+						nativePagination.hidden =
+							false;
+
+						nativePagination.removeAttribute(
+							'aria-hidden'
+						);
+
+					}
+
+				}
+
+				finally {
+
+					controls.button.disabled =
+						false;
+
+					controls.button.textContent =
+						originalText;
+
+				}
+
+			}
 		);
 
 	}

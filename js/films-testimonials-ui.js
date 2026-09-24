@@ -75,7 +75,6 @@
 
 
 		heading.className =
-			'mtf-film-testimonials-heading ' +
 			'mtf-section__heading';
 
 
@@ -86,7 +85,6 @@
 
 
 		eyebrow.className =
-			'mtf-film-testimonials-eyebrow ' +
 			'mtf-section__eyebrow';
 
 
@@ -105,8 +103,8 @@
 
 
 		title.className =
-			'mtf-film-testimonials-title ' +
-			'mtf-section__title';
+			'mtf-section__title ' +
+			'mtf-section__title--subsection';
 
 
 		title.textContent =
@@ -120,7 +118,6 @@
 
 
 		intro.className =
-			'mtf-film-testimonials-intro ' +
 			'mtf-section__description';
 
 

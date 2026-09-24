@@ -122,12 +122,13 @@
 }
 
 /* =========================================================
-   FILMS — UNIVERSAL FOOTER BACKGROUND
+   FILMS — UNIVERSAL FOOTER
    ========================================================= */
 
-.mtf-films-footer__shared,
-.mtf-film-testimonials {
-    --mtf-section-bg: var(--mtf-color-background);
+.mtf-section.mtf-films-footer__shared {
+    --mtf-section-bg: var(--mtf-color-background, #fff);
+
+    background: var(--mtf-color-background, #fff);
 }
 
 

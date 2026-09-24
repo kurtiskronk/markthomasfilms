@@ -121,6 +121,15 @@
   }
 }
 
+/* =========================================================
+   FILMS — UNIVERSAL FOOTER BACKGROUND
+   ========================================================= */
+
+.mtf-films-footer__shared,
+.mtf-film-testimonials {
+    --mtf-section-bg: var(--mtf-color-background);
+}
+
 
 /* ==================================================
    SOURCE: css/films-testimonials.css

@@ -70,12 +70,18 @@
   }
 }
 
+
 /* =========================================================
-   FILMS — UNIVERSAL FOOTER
+   FILMS — UNIVERSAL FOOTER BACKGROUND
+
+   All universal sections following the tag-specific
+   content use white instead of the light-gray theme.
    ========================================================= */
 
-.mtf-section.mtf-films-footer__shared {
+.mtf-section.mtf-films-footer__shared,
+body:has(.mtf-films-footer__shared)
+.mtf-section.mtf-film-testimonials {
     --mtf-section-bg: var(--mtf-color-background, #fff);
 
-    background: var(--mtf-color-background, #fff);
+    background-color: var(--mtf-color-background, #fff);
 }

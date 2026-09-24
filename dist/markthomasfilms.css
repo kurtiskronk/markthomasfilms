@@ -1236,7 +1236,7 @@ article.blog-basic-grid--container.mtf-film-card a {
 		grid-column: 1 / -1;
 		width: 100%;
 		max-width: 1180px;
-		margin: 0;
+		margin: 0 0 40px;
 		padding: 0 var(--mtf-section-gutter, 24px);
 		text-align: center;
 }

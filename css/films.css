@@ -931,3 +931,69 @@ article.blog-basic-grid--container.mtf-film-card a {
 		margin-bottom: 0.75rem;
 	}
 }
+
+
+
+
+
+/* =========================================================
+	 FILM ARCHIVE — LOAD MORE LAYOUT
+	 ========================================================= */
+
+.mtf-film-load-more {
+		box-sizing: border-box;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		/* Span all columns if the parent is also a grid. */
+		grid-column: 1 / -1;
+
+		width: 100%;
+		max-width: 1180px;
+
+		margin:
+				clamp(32px, 4vw, 48px)
+				auto;
+
+		padding:
+				0
+				var(--mtf-section-gutter, 24px);
+
+		text-align: center;
+}
+
+.mtf-film-load-more__status {
+		margin: 0 0 16px;
+		text-align: center;
+}
+
+.mtf-film-load-more__button {
+		flex: 0 0 auto;
+		align-self: center;
+}
+
+/*
+ * Hide Squarespace pagination only when
+ * the custom controls are active.
+ */
+
+body.mtf-load-more-active
+.blog-list-pagination {
+		display: none !important;
+}
+
+.mtf-film-load-more__button[hidden] {
+		display: none !important;
+}
+
+@media screen and (max-width: 767px) {
+
+		.mtf-film-load-more {
+				margin-block: 30px;
+				padding-inline: 22px;
+		}
+
+}

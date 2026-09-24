@@ -1,4 +1,3 @@
-
 /* =========================================================
 	 MARK THOMAS FILMS
 	 RELATED FILMS — TWO-CARD LAYOUT
@@ -213,12 +212,41 @@
 		text-decoration: none;
 }
 
-.mtf-related-films__all-link:hover,
-.mtf-related-films__all-link:focus-visible,
-.mtf-related-film__watch:hover,
-.mtf-related-film__watch:focus-visible {
-		text-decoration: underline;
-		text-underline-offset: 4px;
+/* Underline only CTA text, never the arrow. */
+.mtf-related-films .mtf-related-film__watch,
+.mtf-related-films .mtf-related-film__watch:hover,
+.mtf-related-films .mtf-related-film__watch:focus-visible,
+.mtf-related-films .mtf-related-films__all-link,
+.mtf-related-films .mtf-related-films__all-link:hover,
+.mtf-related-films .mtf-related-films__all-link:focus-visible {
+		text-decoration: none !important;
+}
+
+.mtf-related-film__watch-label,
+.mtf-related-films__all-label {
+		position: relative;
+		display: inline-block;
+}
+
+.mtf-related-film__watch-label::after,
+.mtf-related-films__all-label::after {
+		content: "";
+		position: absolute;
+		bottom: -3px;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform 250ms ease-in-out;
+}
+
+.mtf-related-film__watch:hover .mtf-related-film__watch-label::after,
+.mtf-related-film__watch:focus-visible .mtf-related-film__watch-label::after,
+.mtf-related-films__all-link:hover .mtf-related-films__all-label::after,
+.mtf-related-films__all-link:focus-visible .mtf-related-films__all-label::after {
+		transform: scaleX(1);
 }
 
 /* Clear keyboard focus on all related-film links. */
@@ -261,7 +289,9 @@
 @media (prefers-reduced-motion: reduce) {
 
 		.mtf-related-film__watch-arrow,
-		.mtf-related-films__all-arrow {
+		.mtf-related-films__all-arrow,
+		.mtf-related-film__watch-label::after,
+		.mtf-related-films__all-label::after {
 				transition: none;
 		}
 

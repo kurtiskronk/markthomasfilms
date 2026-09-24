@@ -168,6 +168,31 @@
 	}
 
 
+
+	/*
+	 * All-caps tags are archive-only metadata, not card labels.
+	 * Keep two-letter state abbreviations such as TX visible.
+	 * Reuse the shared cards predicate when it is available.
+	 */
+	function shouldDisplayFilmTag(value) {
+
+		if (typeof MTF.shouldDisplayFilmTag === 'function') {
+			return MTF.shouldDisplayFilmTag(value);
+		}
+
+		const lettersOnly =
+			String(value || '')
+				.trim()
+				.replace(/[^A-Za-z]/g, '');
+
+		return !(
+			lettersOnly.length >= 3 &&
+			lettersOnly === lettersOnly.toUpperCase()
+		);
+
+	}
+
+
 	/* =====================================================
 		 CURRENT FILM PAGE DETECTION
 		 ===================================================== */
@@ -434,10 +459,8 @@
 	) {
 
 		const tags =
-			Array.isArray(
-				film.tags
-			)
-				? film.tags
+			Array.isArray(film.tags)
+				? film.tags.filter(shouldDisplayFilmTag)
 				: [];
 
 
@@ -782,6 +805,9 @@
 			);
 
 
+		watchText.className =
+			'mtf-related-film__watch-label';
+
 		watchText.textContent =
 			'View Wedding Film';
 
@@ -1060,6 +1086,9 @@
 					'span'
 				);
 
+
+			label.className =
+				'mtf-related-films__all-label';
 
 			label.textContent =
 				collectionConfig.label;

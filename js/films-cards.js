@@ -164,36 +164,24 @@
 		return items;
 	}
 
+	
+	function shouldDisplayFilmTag(tag) {
+			const letters = String(tag || "")
+					.trim()
+					.replace(/[^A-Za-z]/g, "");
+	
+			// Hide tags entered with 3+ uppercase letters.
+			// Two-letter state abbreviations remain visible.
+			return letters.length < 3 ||
+					letters !== letters.toUpperCase();
+	}
+	
+	window.MTF.shouldDisplayFilmTag = shouldDisplayFilmTag;
+	
 	function hideEnteredAllCapsTags(items) {
-
-		return items.filter(function (item) {
-
-			const originalText =
-				item.text.trim();
-
-			const lettersOnly =
-				originalText.replace(
-					/[^A-Za-z]/g,
-					''
-				);
-
-			/*
-			 * CSS text-transform does not alter textContent.
-			 * This therefore checks how the tag was actually
-			 * entered in Squarespace.
-			 *
-			 * Three or more letters in ALL CAPS are hidden.
-			 * TX remains visible.
-			 */
-
-			const wasEnteredAllCaps =
-				lettersOnly.length >= 3 &&
-				lettersOnly ===
-					lettersOnly.toUpperCase();
-
-			return !wasEnteredAllCaps;
-
-		});
+			return items.filter(item =>
+					shouldDisplayFilmTag(item.text)
+			);
 	}
 
 	function renderMetaLine(

@@ -106,7 +106,7 @@ body:has(.mtf-films-footer__shared)
     gap: 0.5em;
 
     color: var(--mtf-section-text);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.5;
     text-decoration: none !important;

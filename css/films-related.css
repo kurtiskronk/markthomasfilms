@@ -1,0 +1,268 @@
+
+/* =========================================================
+	 MARK THOMAS FILMS
+	 RELATED FILMS — TWO-CARD LAYOUT
+
+	 Uses the existing tokens.css and sections.css system.
+	 Section: light gray, followed by the universal white
+	 About / Testimonials sections.
+	 ========================================================= */
+
+/* =========================================================
+	 SECTION AND HEADING
+	 ========================================================= */
+
+.mtf-related-films {
+		--mtf-related-gap: clamp(24px, 4vw, 56px);
+}
+
+.mtf-related-films .mtf-related-films__container {
+		width: 100%;
+		max-width: var(--mtf-content-width, 1180px);
+		margin-inline: auto;
+}
+
+.mtf-related-films .mtf-related-films__heading {
+		margin-bottom: clamp(30px, 3.5vw, 44px);
+}
+
+/* =========================================================
+	 TWO-CARD GRID
+	 ========================================================= */
+
+.mtf-related-films__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--mtf-related-gap);
+		align-items: start;
+}
+
+.mtf-related-film {
+		min-width: 0;
+}
+
+/* =========================================================
+	 IMAGES
+
+	 The frame reserves space before the dynamically
+	 retrieved featured image arrives. No hover zoom.
+	 ========================================================= */
+
+.mtf-related-film__media {
+		display: block;
+		width: 100%;
+		color: inherit;
+		text-decoration: none;
+		border-radius: var(--mtf-radius, 5px);
+}
+
+.mtf-related-film__image-frame {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		border-radius: var(--mtf-radius, 5px);
+		background: var(--mtf-color-faint, #dedede);
+}
+
+.mtf-related-film__image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		border-radius: inherit;
+}
+
+.mtf-related-film__image-placeholder {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(135deg, #e9e9e9, #dedede);
+}
+
+.mtf-related-film__image[hidden],
+.mtf-related-film__image-placeholder[hidden] {
+		display: none !important;
+}
+
+.mtf-related-film__image-frame--empty {
+		background: var(--mtf-color-faint, #dedede);
+}
+
+/* =========================================================
+	 CARD TEXT
+	 ========================================================= */
+
+.mtf-related-film__body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-top: clamp(16px, 2vw, 22px);
+		text-align: left;
+}
+
+.mtf-related-film__title {
+		margin: 0;
+		font-size: clamp(1.25rem, 1.7vw, 1.65rem);
+		font-weight: 500;
+		line-height: 1.3;
+		letter-spacing: -0.015em;
+		color: var(--mtf-section-text, #1a1a1a);
+}
+
+.mtf-related-film__title a {
+		color: inherit;
+		text-decoration: none;
+}
+
+.mtf-related-film__title a:hover,
+.mtf-related-film__title a:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+}
+
+/* Venue, city, and state remain individual tag links. */
+
+.mtf-related-film__meta {
+		margin-top: 7px;
+		font-size: 0.7rem;
+		font-weight: 400;
+		line-height: 1.75;
+		letter-spacing: 0.065em;
+		text-transform: uppercase;
+		color: var(--mtf-section-muted, #777);
+}
+
+.mtf-related-film__meta-link {
+		color: inherit;
+		text-decoration: none;
+}
+
+.mtf-related-film__meta-link:hover,
+.mtf-related-film__meta-link:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+}
+
+.mtf-related-film__meta-separator {
+		color: var(--mtf-section-rule, #c8c8c8);
+}
+
+/* =========================================================
+	 VIEW WEDDING FILM LINKS
+	 ========================================================= */
+
+.mtf-related-film__watch {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 15px;
+		font-size: 0.81rem;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: 0.025em;
+		color: var(--mtf-section-text, #1a1a1a);
+		text-decoration: none;
+}
+
+.mtf-related-film__watch-arrow,
+.mtf-related-films__all-arrow {
+		display: inline-block;
+		transition: transform 250ms ease;
+}
+
+.mtf-related-film__watch:hover .mtf-related-film__watch-arrow,
+.mtf-related-film__watch:focus-visible .mtf-related-film__watch-arrow,
+.mtf-related-films__all-link:hover .mtf-related-films__all-arrow,
+.mtf-related-films__all-link:focus-visible .mtf-related-films__all-arrow {
+		transform: translateX(5px);
+}
+
+/* =========================================================
+	 SECOND CARD — RIGHT-ALIGNED ON DESKTOP
+	 ========================================================= */
+
+.mtf-related-film--right .mtf-related-film__body {
+		align-items: flex-end;
+		text-align: right;
+}
+
+.mtf-related-film--right .mtf-related-film__meta {
+		text-align: right;
+}
+
+/* =========================================================
+	 EXPLORE ALL FILMS
+	 ========================================================= */
+
+.mtf-related-films__footer {
+		margin-top: clamp(36px, 4vw, 52px);
+		text-align: center;
+}
+
+.mtf-related-films__all-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 11px;
+		font-size: 0.83rem;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: 0.025em;
+		color: var(--mtf-section-text, #1a1a1a);
+		text-decoration: none;
+}
+
+.mtf-related-films__all-link:hover,
+.mtf-related-films__all-link:focus-visible,
+.mtf-related-film__watch:hover,
+.mtf-related-film__watch:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+}
+
+/* Clear keyboard focus on all related-film links. */
+
+.mtf-related-films a:focus-visible {
+		outline: 2px solid var(--mtf-section-text, #1a1a1a);
+		outline-offset: 4px;
+}
+
+/* =========================================================
+	 MOBILE — STACK CARDS AND LEFT-ALIGN BOTH
+	 ========================================================= */
+
+@media screen and (max-width: 767px) {
+
+		.mtf-related-films__grid {
+				grid-template-columns: minmax(0, 1fr);
+				gap: 38px;
+		}
+
+		.mtf-related-film--right .mtf-related-film__body {
+				align-items: flex-start;
+				text-align: left;
+		}
+
+		.mtf-related-film--right .mtf-related-film__meta {
+				text-align: left;
+		}
+
+		.mtf-related-films__footer {
+				margin-top: 36px;
+		}
+
+}
+
+/* =========================================================
+	 REDUCED MOTION
+	 ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+		.mtf-related-film__watch-arrow,
+		.mtf-related-films__all-arrow {
+				transition: none;
+		}
+
+}

@@ -1,3 +1,4 @@
+
 /* ==================================================
 	 MARK THOMAS FILMS
 	 CLOUDFLARE ASSET LOADER
@@ -19,7 +20,7 @@
 	 */
 
 	const assetVersion =
-		'2026-09-23-films-sections-r1';
+		'2026-09-24-related-films-r1';
 
 
 	const cssFile =
@@ -31,11 +32,23 @@
 		'js/films-cities-list.js',
 		'js/films-testimonials.js',
 		'js/films-footer-shared.js',
+
+		/* Related-film data and settings */
+		'js/films-related-index.js',
+		'js/films-related-config.js',
+
+		/* Existing archive and shared UI */
 		'js/films-browser.js',
 		'js/films-cards.js',
 		'js/films-testimonials-ui.js',
 		'js/films-header.js',
 		'js/films-footer.js',
+
+		/* Recommendation engine, then its UI */
+		'js/films-related.js',
+		'js/films-related-ui.js',
+
+		/* Page controller runs after dependencies */
 		'js/films.js',
 		'js/films-archive-pagination.js',
 		'js/forms.js',

@@ -93,7 +93,14 @@
         const link = document.createElement('a');
         link.className = 'mtf-films-footer__more-link';
         link.href = href;
-        link.textContent = label + ' →';
+        link.textContent = label;
+        
+        const arrow = document.createElement('span');
+        arrow.className = 'mtf-films-footer__more-arrow';
+        arrow.textContent = '→';
+        arrow.setAttribute('aria-hidden', 'true');
+        
+        link.appendChild(arrow);
     
         linkWrap.appendChild(link);
         container.appendChild(linkWrap);

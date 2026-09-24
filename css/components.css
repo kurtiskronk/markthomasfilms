@@ -311,6 +311,7 @@
     color: var(--mtf-ink);
     font-family: inherit;
     text-align: center;
+    filter: drop-shadow(3px 3px 0px #bbb);
 }
 
 form.react-form-contents {

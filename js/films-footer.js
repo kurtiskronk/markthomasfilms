@@ -78,6 +78,29 @@
       addParagraphs(copy, values);
       container.appendChild(copy);
     }
+    /* Optional centered text link */
+    
+    if (content.link) {
+    
+      const href = safeHref(content.link.url);
+      const label = text(content.link.label);
+    
+      if (href && label) {
+    
+        const linkWrap = document.createElement('div');
+        linkWrap.className = 'mtf-films-footer__more';
+    
+        const link = document.createElement('a');
+        link.className = 'mtf-films-footer__more-link';
+        link.href = href;
+        link.textContent = label + ' →';
+    
+        linkWrap.appendChild(link);
+        container.appendChild(linkWrap);
+    
+      }
+    
+    }
     section.appendChild(container);
     return section;
   }

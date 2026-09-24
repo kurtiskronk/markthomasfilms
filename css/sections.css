@@ -33,6 +33,14 @@
 	 SECTION THEMES
 	 ========================================================= */
 
+ .mtf-section--white {
+		 --mtf-section-bg: var(--mtf-color-background);
+		 --mtf-section-text: var(--mtf-color-text);
+		 --mtf-section-muted: var(--mtf-color-muted);
+		 --mtf-section-rule: var(--mtf-color-rule);
+		 --mtf-section-faint: var(--mtf-color-faint);
+ }
+ 
 .mtf-section--light {
 	--mtf-section-bg: var(--mtf-color-surface);
 	--mtf-section-text: var(--mtf-color-text);
@@ -49,6 +57,7 @@
 	--mtf-section-rule: rgba(255, 255, 255, 0.3);
 	--mtf-section-faint: rgba(255, 255, 255, 0.18);
 }
+
 
 
 /* =========================================================

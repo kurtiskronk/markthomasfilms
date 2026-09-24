@@ -18,10 +18,14 @@
         eyebrow: 'ABOUT THE FILMMAKER',
         heading: 'About Mark Thomas Films',
         paragraphs: [
-          'Mark Thomas Films documents weddings through photography and film, preserving the people, voices, surroundings and unscripted moments that make every celebration different.',
-          'Explore the wedding film collection to see real couples and the range of ceremonies, traditions and settings that shape their stories.'
+          'Mark Thomas Films creates wedding films and photography centered on the people, relationships and emotions that make every celebration different. From the anticipation before the ceremony to the vows, speeches and spontaneous moments that follow, the focus is on preserving a wedding day as it actually unfolds.',
+          'Every couple has a different story, and every wedding presents new opportunities to capture it. Explore our collection of real weddings to see how we approach different venues, traditions and celebrations, and how the voices and personalities of each couple shape their wedding film.'
         ],
-        theme: 'light'
+        link: {
+          label: 'Learn More About Mark Thomas Films',
+          url: '/about'
+        },
+        theme: 'white'
       }
     ]
   };

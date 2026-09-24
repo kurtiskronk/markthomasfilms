@@ -85,3 +85,35 @@ body:has(.mtf-films-footer__shared)
 
     background-color: var(--mtf-color-background, #fff);
 }
+
+
+/* =========================================================
+   FILMS FOOTER — OPTIONAL TEXT LINK
+   ========================================================= */
+
+.mtf-films-footer__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  text-align: center;
+}
+
+.mtf-films-footer__more-link {
+  color: var(--mtf-section-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.mtf-films-footer__more-link:hover {
+  opacity: 0.6;
+}
+
+.mtf-films-footer__more-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}

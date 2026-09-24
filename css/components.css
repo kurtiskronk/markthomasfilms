@@ -41,6 +41,265 @@
 @media (prefers-reduced-motion: reduce) { .mtf-button { transition: none; } }
 
 
+
+
+
+
+/* !START MARK CODE */
+/* THIS IS MARK's CSS FROM HIS CODE BLOCK ORIGINALLY */
+<style>
+/* ==========================================================
+   MARK THOMAS FILMS
+   CONTACT PAGE + NATIVE SQUARESPACE SPLIT QUOTE HANDOFF
+   ========================================================== */
+
+.mtf-contact-intro,
+.mtf-native-contact-wrapper,
+.mtf-quote-linked-panel {
+  --mtf-paper: #f5f5f5;
+  --mtf-panel: #e8e8e8;
+  --mtf-white: #ffffff;
+  --mtf-ink: #2d2d2d;
+  --mtf-muted: #797979;
+  --mtf-line: #c8c8c8;
+}
+
+/* Make First Name and Last Name bold like other labels */
+.caption-text {
+    font-weight: 600 !important;
+}
+  
+/* INTRO — presentation only; quote/VSCO bridge logic below is unchanged */
+.mtf-contact-intro {
+  width: 100%;
+  margin: 12px 0 12px;
+  padding: 28px;
+  box-sizing: border-box;
+  background: var(--mtf-paper);
+  border: none;
+  border-radius: 10px;
+  color: var(--mtf-ink);
+  font-family: inherit;
+  text-align: center;
+}
+
+.mtf-contact-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--mtf-muted);
+}
+
+.mtf-contact-intro h2 {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  font-weight: 500;
+  color: var(--mtf-ink);
+}
+
+.mtf-contact-intro p {
+  max-width: 760px;
+  margin: 0 auto 20px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--mtf-muted);
+}
+
+.mtf-contact-inline-link {
+  color: var(--mtf-ink) !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px !important;
+}
+
+.mtf-contact-inline-link:hover {
+  opacity: .72;
+}
+
+.mtf-contact-quote-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background: var(--mtf-ink);
+  color: #fff !important;
+  border: 1px solid var(--mtf-ink);
+  border-radius: 6px;
+  text-decoration: none !important;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.mtf-contact-quote-button:hover { opacity: .88; }
+.mtf-contact-quote-button:active { transform: translateY(1px); }
+
+/* FORM OUTER CARD */
+.mtf-native-contact-wrapper {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 28px !important;
+  box-sizing: border-box !important;
+  background: var(--mtf-paper) !important;
+  border: 1px solid var(--mtf-line) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.mtf-native-contact-wrapper form { margin: 0 !important; }
+.mtf-native-contact-wrapper .field-list,
+.mtf-native-contact-wrapper .fields { margin: 0 !important; }
+
+
+/* LABELS */
+.mtf-native-contact-wrapper label,
+.mtf-native-contact-wrapper .title,
+.mtf-native-contact-wrapper legend {
+  color: var(--mtf-ink) !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  font-weight: 600 !important;
+}
+
+.mtf-native-contact-wrapper .required,
+.mtf-native-contact-wrapper .description {
+  color: var(--mtf-muted) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+/* INPUTS */
+.mtf-native-contact-wrapper input[type="text"],
+.mtf-native-contact-wrapper input[type="email"],
+.mtf-native-contact-wrapper input[type="tel"],
+.mtf-native-contact-wrapper input[type="date"],
+.mtf-native-contact-wrapper input[type="number"],
+.mtf-native-contact-wrapper input[type="url"],
+.mtf-native-contact-wrapper select,
+.mtf-native-contact-wrapper textarea {
+  width: 100% !important;
+  min-height: 48px !important;
+  margin-top: 7px !important;
+  padding: 11px 13px !important;
+  box-sizing: border-box !important;
+  background: var(--mtf-white) !important;
+  color: var(--mtf-ink) !important;
+  border: 1px solid var(--mtf-line) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.mtf-native-contact-wrapper input { accent-color: var(--mtf-ink); }
+.mtf-native-contact-wrapper textarea { min-height: 150px !important; resize: vertical !important; }
+
+.mtf-native-contact-wrapper input:focus,
+.mtf-native-contact-wrapper select:focus,
+.mtf-native-contact-wrapper textarea:focus {
+  outline: none !important;
+  border-color: var(--mtf-ink) !important;
+  box-shadow: 0 0 0 2px rgba(45,45,45,.08) !important;
+}
+
+.mtf-native-contact-wrapper select { cursor: pointer !important; }
+
+/* WEDDING DATE */
+.mtf-wedding-date-field {
+  margin: -4px -8px 24px !important;
+  padding: 16px 8px 18px !important;
+  background: var(--mtf-panel) !important;
+  border-radius: 7px !important;
+}
+
+/* QUOTE LINKED CONFIRMATION */
+.mtf-quote-linked-panel {
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  box-sizing: border-box;
+  background: var(--mtf-white);
+  border: 1px solid var(--mtf-line);
+  border-radius: 7px;
+  color: var(--mtf-ink);
+}
+
+.mtf-quote-linked-panel strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.mtf-quote-linked-panel span {
+  display: block;
+  color: var(--mtf-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* If the old Squarespace upload field still exists while you are changing the form, hide it on /contact. */
+.mtf-old-quote-upload-field { display: none !important; }
+
+/* SUBMIT */
+.mtf-native-contact-wrapper input[type="submit"],
+.mtf-native-contact-wrapper button[type="submit"] {
+  min-height: 48px !important;
+  padding: 13px 24px !important;
+  background: var(--mtf-ink) !important;
+  color: #fff !important;
+  border: 1px solid var(--mtf-ink) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: .02em !important;
+  cursor: pointer !important;
+  transition: opacity .2s ease, transform .2s ease !important;
+}
+
+.mtf-native-contact-wrapper input[type="submit"]:hover,
+.mtf-native-contact-wrapper button[type="submit"]:hover { opacity: .88 !important; }
+.mtf-native-contact-wrapper input[type="submit"]:active,
+.mtf-native-contact-wrapper button[type="submit"]:active { transform: translateY(1px) !important; }
+
+.mtf-quote-linked-panel {
+  scroll-margin-top: 42px;
+}
+
+/* ==========================================================
+   LIVE CONTACT GAP FIX — FOOTER SAFE
+   Pulls the native Squarespace form upward only when the live
+   page leaves extra Fluid Engine space below the intro block.
+   Does not change form fields, submission, quote data, or bridge logic.
+   ========================================================== */
+.mtf-contact-form-grid-fix {
+  position: relative !important;
+}
+
+@media (max-width: 700px) {
+  .mtf-contact-intro,
+  .mtf-native-contact-wrapper { padding: 20px !important; }
+  .mtf-contact-intro { margin: 10px 0 10px; }
+  .mtf-contact-quote-button { width: 100%; }
+  .mtf-native-contact-wrapper input[type="submit"],
+  .mtf-native-contact-wrapper button[type="submit"] { width: 100% !important; }
+}
+
+.sqs-edit-mode .mtf-native-contact-wrapper { min-height: 100px; }
+/* END OF MARK'S CSS FROM CODE BLOCK - MY REPLACEMENT CODE AFTER */
+/* !END MARK CODE */
+
+
+
 .mtf-contact-intro {
     width: 100%;
     margin: 60px 0;

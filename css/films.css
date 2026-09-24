@@ -424,12 +424,8 @@
 
 	.mtf-film-load-more {
 		width: calc(100% - 32px);
-
 		margin-top: 30px;
-
-		padding:
-			0
-			16px;
+		padding: 0	16px;
 	}
 
 }
@@ -930,26 +926,16 @@ article.blog-basic-grid--container.mtf-film-card a {
 
 .mtf-film-load-more {
 		box-sizing: border-box;
-
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-
 		/* Span all columns if the parent is also a grid. */
 		grid-column: 1 / -1;
-
 		width: 100%;
 		max-width: 1180px;
-
-		margin:
-				clamp(32px, 4vw, 48px)
-				auto;
-
-		padding:
-				0
-				var(--mtf-section-gutter, 24px);
-
+		margin: 0;
+		padding: 0 var(--mtf-section-gutter, 24px);
 		text-align: center;
 }
 

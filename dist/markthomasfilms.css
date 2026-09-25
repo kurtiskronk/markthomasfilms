@@ -478,8 +478,8 @@ form.react-form-contents {
 /* =========================================================
    MARK THOMAS FILMS — INDIVIDUAL FILM HEADER
 
-   Full-width charcoal breadcrumb bar
-   Compact couple title and location metadata
+   Early title styling, reserved breadcrumb space
+   and native tag-cloud concealment.
    ========================================================= */
 
 
@@ -487,16 +487,20 @@ form.react-form-contents {
    ARTICLE SPACING
    ========================================================= */
 
-article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
+html.mtf-film-detail-page
+article:has(.blog-item-top-wrapper) {
   padding-top: 0;
 }
 
 
 /* =========================================================
    HEADER CONTAINER
+
+   Apply final positioning to the native Squarespace
+   header, before JavaScript adds its custom class.
    ========================================================= */
 
-.blog-item-top-wrapper.mtf-film-detail-header {
+html.mtf-film-detail-page .blog-item-top-wrapper {
   box-sizing: border-box;
   width: calc(100% - 44px);
   max-width: var(--mtf-content-width, 1180px);
@@ -505,22 +509,51 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   text-align: center;
 }
 
-/* Hide Squarespace's original metadata in this header. */
 
-.blog-item-top-wrapper.mtf-film-detail-header
+/* Hide Squarespace's original header metadata early. */
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .blog-item-meta-wrapper,
-.blog-item-top-wrapper.mtf-film-detail-header
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .blog-meta-item--categories {
   display: none;
 }
 
 
 /* =========================================================
-   BREADCRUMB BAR
-   Full viewport width, regardless of the article width.
+   BREADCRUMB SPACE
+
+   Draw the charcoal bar immediately. When JavaScript
+   inserts the real breadcrumbs, this placeholder
+   disappears without retaining extra space.
    ========================================================= */
 
-.blog-item-top-wrapper.mtf-film-detail-header
+html.mtf-film-detail-page
+.blog-item-top-wrapper:not(
+  :has(.mtf-film-detail__breadcrumbs)
+)::before {
+  content: "";
+  position: relative;
+  left: 50%;
+  display: block;
+  box-sizing: border-box;
+  width: 100vw;
+  min-height: 36px;
+  margin: 0 0 20px;
+  background: #373737;
+  transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   ACTUAL BREADCRUMB BAR
+   ========================================================= */
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__breadcrumbs {
   position: relative;
   left: 50%;
@@ -572,7 +605,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 
   margin: 0;
   padding: 0;
-
   list-style: none;
 }
 
@@ -580,7 +612,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   display: inline-flex;
   align-items: baseline;
   white-space: nowrap;
-
   margin: 0;
   padding: 0;
 }
@@ -591,7 +622,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 .mtf-film-detail__crumb-separator {
   display: inline-block;
   margin: 0 clamp(9px, 1.25vw, 20px);
-
   color: #c8c8c8;
 
   font-size: 1.2em;
@@ -603,26 +633,30 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 
 /* BREADCRUMB LINKS — NO UNDERLINES */
 
-.blog-item-top-wrapper.mtf-film-detail-header
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__crumb-link {
   color: #ededed;
   text-decoration: none;
   border: 0;
   opacity: .85;
-
   transition: opacity 200ms ease;
 }
 
-.blog-item-top-wrapper.mtf-film-detail-header
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__crumb-link:hover,
-.blog-item-top-wrapper.mtf-film-detail-header
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__crumb-link:focus-visible {
   color: #fff;
   opacity: 1;
   text-decoration: none;
 }
 
-.blog-item-top-wrapper.mtf-film-detail-header
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__crumb-link:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 5px;
@@ -640,11 +674,14 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 
 /* =========================================================
    COUPLE'S TITLE
-   Target the actual Squarespace H1.
+
+   Important: this targets the ORIGINAL Squarespace H1,
+   so the title does not have to wait for JavaScript.
    ========================================================= */
 
+html.mtf-film-detail-page
 .blog-item-title >
-h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
+h1.entry-title.entry-title--large {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
@@ -662,10 +699,20 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 
 /* =========================================================
    LOCATION SUBTITLE
-   Match the standard Films-page tag typography.
+
+   Reserve its space until JavaScript inserts the
+   venue and location beneath the couple's name.
    ========================================================= */
 
-.blog-item-top-wrapper.mtf-film-detail-header
+html.mtf-film-detail-page
+.blog-item-title:not(
+  :has(.mtf-film-detail__subtitle)
+) {
+  padding-bottom: calc(4px + 1.5 * .72rem);
+}
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
 .mtf-film-detail__subtitle {
   max-width: 100%;
   margin: 4px auto 0;
@@ -682,8 +729,9 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
-/* Hide Squarespace's original tags on individual film pages. */
-body:has(.blog-item-top-wrapper.mtf-film-detail-header)
+/* Hide original Squarespace tags on film detail pages. */
+
+html.mtf-film-detail-page
 .blog-meta-item--tags {
   display: none;
 }
@@ -695,15 +743,24 @@ body:has(.blog-item-top-wrapper.mtf-film-detail-header)
 
 @media (max-width: 767px) {
 
-  .blog-item-top-wrapper.mtf-film-detail-header {
+  html.mtf-film-detail-page
+  .blog-item-top-wrapper {
     width: calc(100% - 36px);
   }
 
-  .blog-item-top-wrapper.mtf-film-detail-header
+  html.mtf-film-detail-page
+  .blog-item-top-wrapper:not(
+    :has(.mtf-film-detail__breadcrumbs)
+  )::before {
+    min-height: 48px;
+  }
+
+  html.mtf-film-detail-page
+  .blog-item-top-wrapper
   .mtf-film-detail__breadcrumbs {
+    min-height: 48px;
     gap: 3px 10px;
     padding: 8px 14px;
-
     font-size: .6rem;
     letter-spacing: .13em;
   }
@@ -712,7 +769,8 @@ body:has(.blog-item-top-wrapper.mtf-film-detail-header)
     margin: 0 7px;
   }
 
-  .blog-item-top-wrapper.mtf-film-detail-header
+  html.mtf-film-detail-page
+  .blog-item-top-wrapper
   .mtf-film-detail__subtitle {
     font-size: .7rem;
     line-height: 1.55;
@@ -727,11 +785,36 @@ body:has(.blog-item-top-wrapper.mtf-film-detail-header)
 
 @media (prefers-reduced-motion: reduce) {
 
-  .blog-item-top-wrapper.mtf-film-detail-header
+  html.mtf-film-detail-page
+  .blog-item-top-wrapper
   .mtf-film-detail__crumb-link {
     transition: none;
   }
 
+}
+
+
+/* =========================================================
+   FILM ARCHIVES — HIDE THE ORIGINAL TAG CLOUD
+
+   The existing films-browser.js can still read the
+   hidden links and construct our custom dropdowns.
+   ========================================================= */
+
+html.mtf-film-archive-page
+section:has(
+  .sqs-block-tagcloud a[href*="/films/tag/"]
+):not(
+  :has(.blog-basic-grid.collection-content-wrapper)
+) {
+  display: none;
+}
+
+html.mtf-film-archive-page
+.sqs-block-tagcloud:has(
+  a[href*="/films/tag/"]
+) {
+  display: none;
 }
 
 

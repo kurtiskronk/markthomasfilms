@@ -2,30 +2,19 @@
 /* ==================================================
 	 MARK THOMAS FILMS
 	 CLOUDFLARE ASSET LOADER
+
+	 CSS is loaded directly by Squarespace's header.
+	 This loader manages JavaScript only.
 	 ================================================== */
 
 (function () {
-
 	'use strict';
-
 
 	const baseURL =
 		'https://markthomasfilms.mark-a7f.workers.dev';
 
-
-	/*
-	 * Change this value whenever deployed assets change.
-	 * This prevents the browser or CDN from reusing an
-	 * older copy of a file at the same URL.
-	 */
-
 	const assetVersion =
-		'2026-09-25-unified-film-pagination-r1';
-
-
-	const cssFile =
-		'dist/markthomasfilms.css';
-
+		'2026-09-25-early-render-r1';
 
 	const jsFiles = [
 		'js/films-tag-context.js',
@@ -45,152 +34,68 @@
 		'js/films-detail-header.js',
 		'js/films-footer.js',
 
-		/* Recommendation engine, then its UI */
+		/* Recommendation engine and UI */
 		'js/films-related.js',
 		'js/films-related-ui.js',
 
-		/* Page controller runs after dependencies */
+		/* Controllers and site modules */
 		'js/films.js',
 		'js/films-archive-pagination.js',
 		'js/forms.js',
 		'js/site.js'
 	];
 
-
 	function assetURL(filename) {
-
 		return (
 			baseURL +
 			'/' +
 			filename +
 			'?v=' +
-			encodeURIComponent(
-				assetVersion
-			)
+			encodeURIComponent(assetVersion)
 		);
-
 	}
-
-
-	/* ==================================================
-		 LOAD CSS
-		 ================================================== */
-
-	function loadCSS() {
-
-		const link =
-			document.createElement(
-				'link'
-			);
-
-
-		link.rel =
-			'stylesheet';
-
-
-		link.href =
-			assetURL(
-				cssFile
-			);
-
-
-		link.setAttribute(
-			'data-mtf-asset',
-			'stylesheet'
-		);
-
-
-		document.head.appendChild(
-			link
-		);
-
-	}
-
-
-	/* ==================================================
-		 LOAD JAVASCRIPT
-		 ================================================== */
 
 	function loadScripts() {
-
-		let completed =
-			0;
-
+		let completed = 0;
 
 		function assetFinished() {
-
 			completed += 1;
 
-
 			if (completed === jsFiles.length) {
-
 				console.info(
 					'Mark Thomas Films: Cloudflare assets loaded.'
 				);
-
 			}
-
 		}
 
+		jsFiles.forEach(function (filename) {
+			const script =
+				document.createElement('script');
 
-		jsFiles.forEach(
-			function (filename) {
+			script.src = assetURL(filename);
 
-				const script =
-					document.createElement(
-						'script'
-					);
+			/* Preserve module execution order. */
+			script.async = false;
 
+			script.setAttribute(
+				'data-mtf-asset',
+				filename
+			);
 
-				script.src =
-					assetURL(
-						filename
-					);
+			script.onload = assetFinished;
 
-
-				script.async =
-					false;
-
-
-				script.setAttribute(
-					'data-mtf-asset',
+			script.onerror = function () {
+				console.error(
+					'Mark Thomas Films: failed to load',
 					filename
 				);
 
+				assetFinished();
+			};
 
-				script.onload =
-					assetFinished;
-
-
-				script.onerror =
-					function () {
-
-						console.error(
-							'Mark Thomas Films: failed to load',
-							filename
-						);
-
-
-						assetFinished();
-
-					};
-
-
-				document.head.appendChild(
-					script
-				);
-
-			}
-		);
-
+			document.head.appendChild(script);
+		});
 	}
-
-
-	/* ==================================================
-		 INITIALIZE
-		 ================================================== */
-
-	loadCSS();
 
 	loadScripts();
 

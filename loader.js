@@ -20,7 +20,7 @@
 	 */
 
 	const assetVersion =
-		'2026-09-24-related-films-r3';
+		'2026-09-24-related-films-r7';
 
 
 	const cssFile =
@@ -42,6 +42,7 @@
 		'js/films-cards.js',
 		'js/films-testimonials-ui.js',
 		'js/films-header.js',
+		'js/films-detail-header.js',
 		'js/films-footer.js',
 
 		/* Recommendation engine, then its UI */

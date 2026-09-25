@@ -1,10 +1,11 @@
-
 /* =========================================================
 	 MARK THOMAS FILMS
 	 RELATED FILMS — RECOMMENDATION ENGINE
 
-	 Reads the published film index and selects two films:
-	 primary venue > city > state > featured/recent.
+	 Reads the published film index. All same-venue films are
+	 included when at least three are available. Otherwise
+	 choose up to 10 films from the most specific available
+	 geographic group, with same-venue films first.
 
 	 No network requests or visitor tracking happen here.
 	 films-related-ui.js will handle images and rendering.
@@ -54,11 +55,9 @@
 				try {
 						const url = new URL(value, window.location.origin);
 						const path = url.pathname.replace(/\/+$/, '');
-
 						return /^\/films\/(?!tag\/|category\/)[^/]+$/i.test(path)
 								? path
 								: '';
-
 				} catch (error) {
 						return '';
 				}
@@ -67,7 +66,6 @@
 		function stateName(tag) {
 				const raw = String(tag || '').trim();
 				const abbreviation = STATE_NAMES[raw.toUpperCase()];
-
 				if (abbreviation) return abbreviation;
 
 				return Object.values(STATE_NAMES).find(function (name) {
@@ -77,23 +75,16 @@
 
 		function uniqueTags(tags) {
 				const seen = new Set();
-
 				return (Array.isArray(tags) ? tags : []).filter(function (tag) {
 						const key = normalize(tag);
-
 						if (!key || seen.has(key)) return false;
-
 						seen.add(key);
 						return true;
 				});
 		}
 
 		function classify(film, context, cities) {
-				const metadata = {
-						venues: [],
-						cities: [],
-						states: []
-				};
+				const metadata = { venues: [], cities: [], states: [] };
 
 				uniqueTags(film.tags).forEach(function (tag) {
 						const key = normalize(tag);
@@ -102,56 +93,21 @@
 						const type = entry && entry.type;
 
 						if (state) {
-
-								metadata.states.push({
-										key: normalize(state),
-										name: state
-								});
-
+								metadata.states.push({ key: normalize(state), name: state });
 						} else if (cities.has(key)) {
-
-								metadata.cities.push({
-										key: key,
-										name: tag
-								});
-
+								metadata.cities.push({ key: key, name: tag });
 						} else if (type === 'venue' || type === 'church') {
-
-								metadata.venues.push({
-										key: key,
-										name: tag
-								});
-
-						} else if (
-								type === 'location' ||
-								type === 'setting' ||
-								REGION_TAGS.has(key)
-						) {
-
-								// A region or generic setting is not
-								// a specific venue.
-
-						} else if (
-								String(tag).replace(/[^A-Za-z]/g, '').length >= 3 &&
-								String(tag).replace(/[^A-Za-z]/g, '') ===
-								String(tag)
-										.replace(/[^A-Za-z]/g, '')
-										.toUpperCase()
-						) {
-
-								// Ignore administrative, all-caps
-								// and regional tags.
-
+								metadata.venues.push({ key: key, name: tag });
+						} else if (type === 'location' || type === 'setting' ||
+											 REGION_TAGS.has(key)) {
+								// A region or generic setting is not a specific venue.
+						} else if (String(tag).replace(/[^A-Za-z]/g, '').length >= 3 &&
+											 String(tag).replace(/[^A-Za-z]/g, '') ===
+											 String(tag).replace(/[^A-Za-z]/g, '').toUpperCase()) {
+								// Ignore administrative, all-caps and regional tags.
 						} else {
-
-								// Some genuine venue tags are not in
-								// filmTagContext yet.
-
-								metadata.venues.push({
-										key: key,
-										name: tag
-								});
-
+								// Some genuine venue tags are not in filmTagContext yet.
+								metadata.venues.push({ key: key, name: tag });
 						}
 				});
 
@@ -159,323 +115,201 @@
 		}
 
 		function overlaps(first, second) {
-				const keys = new Set(
-						second.map(function (item) {
-								return item.key;
-						})
-				);
-
-				return first.some(function (item) {
-						return keys.has(item.key);
-				});
+				const keys = new Set(second.map(function (item) { return item.key; }));
+				return first.some(function (item) { return keys.has(item.key); });
 		}
 
 		function buildCatalog() {
 				const data = MTF.filmIndex;
-
-				if (!data || !Array.isArray(data.films)) {
-						return [];
-				}
+				if (!data || !Array.isArray(data.films)) return [];
 
 				const context = new Map(
-						Object.entries(MTF.filmTagContext || {})
-								.map(function (entry) {
-										return [
-												normalize(entry[0]),
-												entry[1]
-										];
-								})
+						Object.entries(MTF.filmTagContext || {}).map(function (entry) {
+								return [normalize(entry[0]), entry[1]];
+						})
 				);
-
 				const cities = new Set(
-						Array.from(MTF.filmCities || [])
-								.map(normalize)
+						Array.from(MTF.filmCities || []).map(normalize)
 				);
-
 				const seen = new Set();
 
 				return data.films.reduce(function (catalog, film) {
 						const url = pathname(film.url);
-
-						if (!url || seen.has(url)) {
-								return catalog;
-						}
-
+						if (!url || seen.has(url)) return catalog;
 						seen.add(url);
-
 						catalog.push({
-								film: Object.assign({}, film, {
-										url: url
-								}),
-
-								metadata: classify(
-										film,
-										context,
-										cities
-								)
+								film: Object.assign({}, film, { url: url }),
+								metadata: classify(film, context, cities)
 						});
-
 						return catalog;
 				}, []);
 		}
 
 		function getRecommendations(currentURL) {
 				const catalog = buildCatalog();
-
-				const currentPath = pathname(
-						currentURL || window.location.pathname
-				);
-
+				const currentPath = pathname(currentURL || window.location.pathname);
 				const current = catalog.find(function (item) {
 						return item.film.url === currentPath;
 				});
+				if (!current) return null;
 
-				if (!current) {
-						return null;
-				}
+				const config = MTF.filmRelatedConfig || {};
 
-				const config =
-						MTF.filmRelatedConfig || {};
-
-				const limit =
-						Number.isInteger(config.maxResults) &&
-						config.maxResults > 0
-								? config.maxResults
-								: 2;
+				// Deliberately do not use the old config.maxResults=2.
+				// Venue-only collections have no cap; mixed collections do.
+				const maxBroadResults =
+						Number.isInteger(config.maxBroadResults) && config.maxBroadResults > 0
+								? config.maxBroadResults : 10;
+				const minVenueOnly =
+						Number.isInteger(config.minVenueOnly) && config.minVenueOnly > 0
+								? config.minVenueOnly : 3;
 
 				const featured = new Set(
-						(
-								Array.isArray(config.featured)
-										? config.featured
-										: []
-						)
+						(Array.isArray(config.featured) ? config.featured : [])
 								.map(pathname)
 								.filter(Boolean)
 				);
-
 				const others = catalog.filter(function (item) {
 						return item.film.url !== currentPath;
 				});
 
-				/*
-				 * Choose the primary venue.
-				 *
-				 * If a film has multiple venues, count the
-				 * OTHER published films at each venue.
-				 *
-				 * Use the venue with the largest collection.
-				 * A tie retains the current film's tag order.
-				 */
+				if (!others.length) return null;
 
-				const rankedVenues =
-						current.metadata.venues
-								.map(function (venue) {
-										return {
-												venue: venue,
+				// The primary venue is the current film's venue that appears
+				// most frequently elsewhere; ties retain Squarespace tag order.
+				const rankedVenues = current.metadata.venues.map(function (venue) {
+						return {
+								venue: venue,
+								count: others.filter(function (item) {
+										return item.metadata.venues.some(function (candidate) {
+												return candidate.key === venue.key;
+										});
+								}).length
+						};
+				}).sort(function (a, b) { return b.count - a.count; });
 
-												count: others.filter(function (item) {
-														return item.metadata.venues
-																.some(function (candidate) {
-																		return candidate.key ===
-																				venue.key;
-																});
-												}).length
-										};
-								})
-								.sort(function (a, b) {
-										return b.count - a.count;
-								});
-
-				const primary = rankedVenues.length
-						? rankedVenues[0].venue
-						: null;
-
-				/*
-				 * Relevance tests.
-				 */
+				const primary = rankedVenues.length ? rankedVenues[0].venue : null;
 
 				function matchesVenue(item) {
-						return primary &&
-								item.metadata.venues.some(function (venue) {
-										return venue.key === primary.key;
-								});
+						return Boolean(primary && item.metadata.venues.some(function (venue) {
+								return venue.key === primary.key;
+						}));
 				}
 
 				function matchesCity(item) {
-						return overlaps(
-								item.metadata.cities,
-								current.metadata.cities
-						);
+						return overlaps(item.metadata.cities, current.metadata.cities);
 				}
 
 				function matchesState(item) {
-						return overlaps(
-								item.metadata.states,
-								current.metadata.states
-						);
+						return overlaps(item.metadata.states, current.metadata.states);
 				}
-
-				/*
-				 * Within a relevance group, featured films
-				 * come first, followed by publication date.
-				 *
-				 * A featured film from another state will
-				 * NEVER displace an available venue match.
-				 */
 
 				function newestFirst(a, b) {
 						const featuredDifference =
 								Number(featured.has(b.film.url)) -
 								Number(featured.has(a.film.url));
+						if (featuredDifference) return featuredDifference;
 
-						if (featuredDifference) {
-								return featuredDifference;
-						}
-
-						const dateDifference =
-								String(b.film.published || '')
-										.localeCompare(
-												String(a.film.published || '')
-										);
-
-						return dateDifference ||
-								a.film.url.localeCompare(b.film.url);
+						const dateDifference = String(b.film.published || '')
+								.localeCompare(String(a.film.published || ''));
+						return dateDifference || a.film.url.localeCompare(b.film.url);
 				}
 
-				const tests = {
-						venue: matchesVenue,
-						city: matchesCity,
-						state: matchesState,
-						all: function () {
-								return true;
-						}
-				};
+				const venueMatches = others.filter(matchesVenue).sort(newestFirst);
+				const sameCityMatches = others.filter(matchesCity).sort(newestFirst);
+				const sameStateMatches = others.filter(matchesState).sort(newestFirst);
 
-				const standardOrder = [
-						'venue',
-						'city',
-						'state',
-						'all'
-				];
+				const venueOnly = venueMatches.length >= minVenueOnly;
+				let selected = [];
 
-				const configured =
-						Array.isArray(config.priority)
-								? config.priority
-								: [];
-
-				const priority = Array.from(
-						new Set(
-								configured
-										.filter(function (tier) {
-												return standardOrder.includes(tier);
-										})
-										.concat(standardOrder)
-						)
-				);
-
-				/*
-				 * Fill the recommendation positions.
-				 *
-				 * The current film is already excluded.
-				 * selectedURLs prevents duplicate results
-				 * across different relevance groups.
-				 */
-
-				const selected = [];
-				const selectedURLs = new Set();
-
-				priority.forEach(function (tier) {
-						if (selected.length >= limit) {
-								return;
-						}
-
-						others
-								.filter(function (item) {
-										return (
-												!selectedURLs.has(item.film.url) &&
-												tests[tier](item)
-										);
-								})
-								.sort(newestFirst)
-								.forEach(function (item) {
-										if (selected.length >= limit) {
-												return;
-										}
-
-										selectedURLs.add(
-												item.film.url
-										);
-
-										selected.push({
-												item: item,
-												matchType: tier
-										});
+				if (venueOnly) {
+						// The principal trust signal: show ALL weddings at this venue.
+						selected = venueMatches.map(function (item) {
+								return { item: item, matchType: 'venue' };
+						});
+				} else {
+						// Keep the heading specific: choose ONE geographic scope.
+						// If Boerne has other films, don't pad with unrelated TX films.
+						let candidates;
+						if (sameCityMatches.some(function (item) { return !matchesVenue(item); })) {
+								candidates = others.filter(function (item) {
+										return matchesVenue(item) || matchesCity(item);
 								});
-				});
+						} else if (sameStateMatches.some(function (item) { return !matchesVenue(item); })) {
+								candidates = others.filter(function (item) {
+										return matchesVenue(item) || matchesState(item);
+								});
+						} else if (venueMatches.length) {
+								// No broader geographic matches: the small venue set is
+								// still accurate and useful by itself.
+								candidates = venueMatches;
+						} else if (sameCityMatches.length) {
+								candidates = sameCityMatches;
+						} else if (sameStateMatches.length) {
+								candidates = sameStateMatches;
+						} else {
+								// Mexico with no other Mexico films falls back to the
+								// general portfolio rather than suggesting false locality.
+								candidates = others;
+						}
 
-				if (!selected.length) {
-						return null;
+						// Venue > city > state > other, then featured and recency
+						// INSIDE each tier. Never duplicate a film across tiers.
+						const priorities = ['venue', 'city', 'state', 'all'];
+						const seen = new Set();
+
+						priorities.forEach(function (tier) {
+								if (selected.length >= maxBroadResults) return;
+								candidates.filter(function (item) {
+										if (seen.has(item.film.url)) return false;
+										if (tier === 'venue') return matchesVenue(item);
+										if (tier === 'city') return matchesCity(item) && !matchesVenue(item);
+										if (tier === 'state') {
+												return matchesState(item) && !matchesCity(item) && !matchesVenue(item);
+										}
+										return !matchesVenue(item) && !matchesCity(item) && !matchesState(item);
+								}).sort(newestFirst).forEach(function (item) {
+										if (selected.length >= maxBroadResults) return;
+										seen.add(item.film.url);
+										selected.push({ item: item, matchType: tier });
+								});
+						});
 				}
 
-				/*
-				 * ADAPTIVE SECTION HEADING
-				 *
-				 * The heading must describe ALL selected
-				 * recommendations, not just the first one.
-				 *
-				 * Venue > City > State > All Films
-				 *
-				 * For venue headings, consider only the
-				 * selected primary venue.
-				 */
+				if (!selected.length) return null;
 
+				// A geographic headline is used only if EVERY selected film
+				// shares that same location with the current film.
 				let headingType = 'all';
 				let headingName = '';
 
-				if (
-						primary &&
-						selected.every(function (selection) {
-								return matchesVenue(selection.item);
-						})
-				) {
-
+				if (primary && selected.every(function (selection) {
+						return matchesVenue(selection.item);
+				})) {
 						headingType = 'venue';
 						headingName = primary.name;
-
 				} else {
-
-						const sharedCity =
-								current.metadata.cities.find(function (city) {
-										return selected.every(function (selection) {
-												return selection.item.metadata.cities
-														.some(function (candidate) {
-																return candidate.key ===
-																		city.key;
-														});
+						const sharedCity = current.metadata.cities.find(function (city) {
+								return selected.every(function (selection) {
+										return selection.item.metadata.cities.some(function (candidate) {
+												return candidate.key === city.key;
 										});
 								});
-
-						const sharedState =
-								current.metadata.states.find(function (state) {
-										return selected.every(function (selection) {
-												return selection.item.metadata.states
-														.some(function (candidate) {
-																return candidate.key ===
-																		state.key;
-														});
+						});
+						const sharedState = current.metadata.states.find(function (state) {
+								return selected.every(function (selection) {
+										return selection.item.metadata.states.some(function (candidate) {
+												return candidate.key === state.key;
 										});
 								});
+						});
 
 						if (sharedCity) {
-
 								headingType = 'city';
 								headingName = sharedCity.name;
-
 						} else if (sharedState) {
-
 								headingType = 'state';
 								headingName = sharedState.name;
-
 						}
 				}
 
@@ -483,52 +317,31 @@
 						venue: 'More Weddings at {name}',
 						city: 'More Weddings in {name}',
 						state: 'More {name} Wedding Films',
-						all: 'Explore More Wedding Films'
+						all: 'More Wedding Films'
 				};
-
-				const template =
-						(
-								config.headings &&
-								config.headings[headingType]
-						) ||
-						defaultHeadings[headingType];
-
-				/*
-				 * Return data to the presentation module.
-				 *
-				 * matchType records why each film was chosen.
-				 * The UI can ignore it when rendering the cards.
-				 */
+				// Use the existing venue/city/state overrides if provided.
+				// For the no-location case, the agreed heading is exactly
+				// "More Wedding Films" (not the old config's "Explore More").
+				const configuredHeadings = config.headings || {};
+				const template = headingType === 'all'
+						? (configuredHeadings.fallback || defaultHeadings.all)
+						: (configuredHeadings[headingType] || defaultHeadings[headingType]);
 
 				return {
 						current: current.film,
-
-						primaryVenue:
-								primary ? primary.name : null,
-
+						primaryVenue: primary ? primary.name : null,
 						headingType: headingType,
-
-						heading: template.replace(
-								'{name}',
-								headingName
-						),
-
+						heading: template.replace('{name}', headingName),
+						venueOnly: venueOnly,
+						sameVenueCount: venueMatches.length,
 						films: selected.map(function (selection) {
-								return Object.assign(
-										{},
-										selection.item.film,
-										{
-												matchType:
-														selection.matchType
-										}
-								);
+								return Object.assign({}, selection.item.film, {
+										matchType: selection.matchType
+								});
 						})
 				};
 		}
 
-		MTF.filmRelated = {
-				getRecommendations:
-						getRecommendations
-		};
+		MTF.filmRelated = { getRecommendations: getRecommendations };
 
 })();

@@ -91,15 +91,19 @@
         linkWrap.className = 'mtf-films-footer__more';
     
         const link = document.createElement('a');
-        link.className = 'mtf-films-footer__more-link';
+        link.className = 'mtf-arrow-link';
         link.href = href;
-        link.textContent = label;
-        
+
+        const linkLabel = document.createElement('span');
+        linkLabel.className = 'mtf-arrow-link__label';
+        linkLabel.textContent = label;
+
         const arrow = document.createElement('span');
-        arrow.className = 'mtf-films-footer__more-arrow';
+        arrow.className = 'mtf-arrow-link__arrow';
         arrow.textContent = '→';
         arrow.setAttribute('aria-hidden', 'true');
-        
+
+        link.appendChild(linkLabel);
         link.appendChild(arrow);
     
         linkWrap.appendChild(link);

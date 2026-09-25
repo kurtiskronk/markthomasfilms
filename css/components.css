@@ -1,4 +1,6 @@
+
 /* MARK THOMAS FILMS — REUSABLE COMPONENTS */
+
 .mtf-button {
   box-sizing: border-box;
   display: inline-flex;
@@ -18,19 +20,36 @@
   text-decoration: none;
   transition: opacity 180ms ease;
 }
+
 .mtf-button--primary {
   border-color: var(--mtf-color-dark);
   background: var(--mtf-color-dark);
   color: #fff;
 }
+
 .mtf-section--dark .mtf-button--primary {
   border-color: #fff;
   background: #fff;
   color: var(--mtf-color-dark);
 }
-@media (hover: hover) { .mtf-button:hover { opacity: 0.8; } }
-.mtf-button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-.mtf-cta { max-width: 860px; margin-inline: auto; text-align: center; }
+
+@media (hover: hover) {
+  .mtf-button:hover {
+    opacity: 0.8;
+  }
+}
+
+.mtf-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.mtf-cta {
+  max-width: 860px;
+  margin-inline: auto;
+  text-align: center;
+}
+
 .mtf-cta__actions {
   display: flex;
   justify-content: center;
@@ -38,11 +57,92 @@
   gap: 12px;
   margin-top: 28px;
 }
-@media (prefers-reduced-motion: reduce) { .mtf-button { transition: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mtf-button {
+    transition: none;
+  }
+}
 
 
+/* ==========================================================
+   LINKS — SHARED ARROW LINK
 
+   Global text CTA used by Related Films and shared footers.
+   Underline animates on the label only; the arrow slides right.
+   Section-specific styles control placement, not appearance.
+   ========================================================== */
 
+a.mtf-arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 0.81rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+}
+
+a.mtf-arrow-link:hover,
+a.mtf-arrow-link:focus-visible {
+  text-decoration: none;
+}
+
+/* Animate the text underline independently of the arrow. */
+
+.mtf-arrow-link__label {
+  position: relative;
+  display: inline-block;
+}
+
+.mtf-arrow-link__label::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 250ms ease-in-out;
+}
+
+.mtf-arrow-link:hover .mtf-arrow-link__label::after,
+.mtf-arrow-link:focus-visible .mtf-arrow-link__label::after {
+  transform: scaleX(1);
+}
+
+/* Give the arrow its own animation, with no underline. */
+
+.mtf-arrow-link__arrow {
+  display: inline-block;
+  flex: none;
+  transition: transform 250ms ease;
+}
+
+.mtf-arrow-link:hover .mtf-arrow-link__arrow,
+.mtf-arrow-link:focus-visible .mtf-arrow-link__arrow {
+  transform: translateX(5px);
+}
+
+/* Keyboard accessibility */
+
+a.mtf-arrow-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .mtf-arrow-link__label::after,
+  .mtf-arrow-link__arrow {
+    transition: none;
+  }
+}
 
 
 /* !START MARK CODE */
@@ -65,11 +165,13 @@
 }
 
 /* Make First Name and Last Name bold like other labels */
+
 .caption-text {
-    font-weight: 600;
+  font-weight: 600;
 }
-  
+
 /* INTRO — presentation only; quote/VSCO bridge logic below is unchanged */
+
 .mtf-contact-intro {
   width: 100%;
   margin: 12px 0 12px;
@@ -137,10 +239,16 @@
   transition: opacity .2s ease, transform .2s ease;
 }
 
-.mtf-contact-quote-button:hover { opacity: .88; }
-.mtf-contact-quote-button:active { transform: translateY(1px); }
+.mtf-contact-quote-button:hover {
+  opacity: .88;
+}
+
+.mtf-contact-quote-button:active {
+  transform: translateY(1px);
+}
 
 /* FORM OUTER CARD */
+
 .mtf-native-contact-wrapper {
   width: 100%;
   margin: 0;
@@ -152,12 +260,17 @@
   box-shadow: none;
 }
 
-.mtf-native-contact-wrapper form { margin: 0; }
-.mtf-native-contact-wrapper .field-list,
-.mtf-native-contact-wrapper .fields { margin: 0; }
+.mtf-native-contact-wrapper form {
+  margin: 0;
+}
 
+.mtf-native-contact-wrapper .field-list,
+.mtf-native-contact-wrapper .fields {
+  margin: 0;
+}
 
 /* LABELS */
+
 .mtf-native-contact-wrapper label,
 .mtf-native-contact-wrapper .title,
 .mtf-native-contact-wrapper legend {
@@ -176,6 +289,7 @@
 }
 
 /* INPUTS */
+
 .mtf-native-contact-wrapper input[type="text"],
 .mtf-native-contact-wrapper input[type="email"],
 .mtf-native-contact-wrapper input[type="tel"],
@@ -200,8 +314,14 @@
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 
-.mtf-native-contact-wrapper input { accent-color: var(--mtf-ink); }
-.mtf-native-contact-wrapper textarea { min-height: 150px; resize: vertical; }
+.mtf-native-contact-wrapper input {
+  accent-color: var(--mtf-ink);
+}
+
+.mtf-native-contact-wrapper textarea {
+  min-height: 150px;
+  resize: vertical;
+}
 
 .mtf-native-contact-wrapper input:focus,
 .mtf-native-contact-wrapper select:focus,
@@ -211,9 +331,12 @@
   box-shadow: 0 0 0 2px rgba(45,45,45,.08);
 }
 
-.mtf-native-contact-wrapper select { cursor: pointer; }
+.mtf-native-contact-wrapper select {
+  cursor: pointer;
+}
 
 /* WEDDING DATE */
+
 .mtf-wedding-date-field {
   margin: -4px -8px 24px;
   padding: 16px 8px 18px;
@@ -222,6 +345,7 @@
 }
 
 /* QUOTE LINKED CONFIRMATION */
+
 .mtf-quote-linked-panel {
   margin: 0 0 22px;
   padding: 16px 18px;
@@ -246,9 +370,13 @@
 }
 
 /* If the old Squarespace upload field still exists while you are changing the form, hide it on /contact. */
-.mtf-old-quote-upload-field { display: none; }
+
+.mtf-old-quote-upload-field {
+  display: none;
+}
 
 /* SUBMIT */
+
 .mtf-native-contact-wrapper input[type="submit"],
 .mtf-native-contact-wrapper button[type="submit"] {
   min-height: 48px;
@@ -267,9 +395,14 @@
 }
 
 .mtf-native-contact-wrapper input[type="submit"]:hover,
-.mtf-native-contact-wrapper button[type="submit"]:hover { opacity: .88; }
+.mtf-native-contact-wrapper button[type="submit"]:hover {
+  opacity: .88;
+}
+
 .mtf-native-contact-wrapper input[type="submit"]:active,
-.mtf-native-contact-wrapper button[type="submit"]:active { transform: translateY(1px); }
+.mtf-native-contact-wrapper button[type="submit"]:active {
+  transform: translateY(1px);
+}
 
 .mtf-quote-linked-panel {
   scroll-margin-top: 42px;
@@ -277,43 +410,58 @@
 
 /* ==========================================================
    LIVE CONTACT GAP FIX — FOOTER SAFE
+
    Pulls the native Squarespace form upward only when the live
    page leaves extra Fluid Engine space below the intro block.
    Does not change form fields, submission, quote data, or bridge logic.
    ========================================================== */
+
 .mtf-contact-form-grid-fix {
   position: relative;
 }
 
 @media (max-width: 700px) {
   .mtf-contact-intro,
-  .mtf-native-contact-wrapper { padding: 20px; }
-  .mtf-contact-intro { margin: 10px 0 10px; }
-  .mtf-contact-quote-button { width: 100%; }
+  .mtf-native-contact-wrapper {
+    padding: 20px;
+  }
+
+  .mtf-contact-intro {
+    margin: 10px 0 10px;
+  }
+
+  .mtf-contact-quote-button {
+    width: 100%;
+  }
+
   .mtf-native-contact-wrapper input[type="submit"],
-  .mtf-native-contact-wrapper button[type="submit"] { width: 100%; }
+  .mtf-native-contact-wrapper button[type="submit"] {
+    width: 100%;
+  }
 }
 
-.sqs-edit-mode .mtf-native-contact-wrapper { min-height: 100px; }
+.sqs-edit-mode .mtf-native-contact-wrapper {
+  min-height: 100px;
+}
+
 /* END OF MARK'S CSS FROM CODE BLOCK - MY REPLACEMENT CODE AFTER */
 /* !END MARK CODE */
 
 
-
 .mtf-contact-intro {
-    width: 100%;
-    margin: 60px 0;
-    padding: 66px;
-    box-sizing: border-box;
-    background: var(--mtf-paper);
-    border: none;
-    border-radius: 50px 10px;
-    color: var(--mtf-ink);
-    font-family: inherit;
-    text-align: center;
-    filter: drop-shadow(3px 3px 0px #bbb);
+  width: 100%;
+  margin: 60px 0;
+  padding: 66px;
+  box-sizing: border-box;
+  background: var(--mtf-paper);
+  border: none;
+  border-radius: 50px 10px;
+  color: var(--mtf-ink);
+  font-family: inherit;
+  text-align: center;
+  filter: drop-shadow(3px 3px 0px #bbb);
 }
 
 form.react-form-contents {
-    padding-bottom: 60px;
+  padding-bottom: 60px;
 }

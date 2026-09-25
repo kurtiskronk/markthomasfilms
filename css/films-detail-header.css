@@ -1,0 +1,186 @@
+/* =========================================================
+   MARK THOMAS FILMS — INDIVIDUAL FILM HEADER
+   Small-caps breadcrumbs + editorial couple title + location
+
+   Scoped to film pages enhanced by films-detail-header.js.
+   Does not change main /films or tag archive headers.
+   ========================================================= */
+
+.blog-item-top-wrapper.mtf-film-detail-header {
+  box-sizing: border-box;
+  width: calc(100% - 44px);
+  max-width: var(--mtf-content-width, 1180px);
+  margin: 0 auto clamp(44px, 5vw, 76px);
+  padding: clamp(38px, 4.8vw, 68px) 0 0;
+  text-align: center;
+}
+
+/* Hide the old date/category strip only after the new header exists.
+   Squarespace's actual post tags remain intact for archive links. */
+.blog-item-top-wrapper.mtf-film-detail-header .blog-item-meta-wrapper,
+.blog-item-top-wrapper.mtf-film-detail-header .blog-meta-item--categories {
+  display: none;
+}
+
+/* =========================================================
+   BREADCRUMB BAR
+   ========================================================= */
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__breadcrumbs {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px clamp(14px, 2.1vw, 34px);
+  max-width: 100%;
+  margin: 0 auto clamp(40px, 5vw, 74px);
+  color: var(--mtf-section-text, #333);
+  font-family: inherit;
+  font-size: clamp(0.64rem, 0.75vw, 0.76rem);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.mtf-film-detail__crumb-label {
+  flex: 0 0 auto;
+  color: var(--mtf-section-muted, #777);
+  white-space: nowrap;
+}
+
+.mtf-film-detail__crumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mtf-film-detail__crumb {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+.mtf-film-detail__crumb-separator {
+  color: var(--mtf-section-muted, #777);
+  display: inline-block;
+  margin: 0 clamp(12px, 1.45vw, 25px);
+  font-size: 1.25em;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__crumb-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 0;
+  opacity: 0.75;
+  transition: opacity 200ms ease;
+}
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__crumb-link:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__crumb-link:focus-visible {
+  opacity: 1;
+  text-decoration: none;
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}
+
+.mtf-film-detail__crumb-current {
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  color: var(--mtf-section-text, #1a1a1a);
+}
+
+/* =========================================================
+   NATIVE FILM TITLE — RETAIN THE EXISTING H1
+   ========================================================= */
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__couple-title {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  color: var(--mtf-section-text, #1b1b1b);
+  font-family: var(
+    --mtf-film-display-font,
+    'Didot', 'Bodoni MT', 'Times New Roman', Georgia, serif
+  );
+  font-size: clamp(3.1rem, 6vw, 6rem);
+  font-weight: 400;
+  line-height: 1.07;
+  letter-spacing: -0.035em;
+  text-transform: none;
+  overflow-wrap: break-word;
+}
+
+.blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__subtitle {
+  max-width: 920px;
+  margin: clamp(15px, 2.1vw, 28px) auto 0;
+  color: var(--mtf-section-muted, #6e6e6e);
+  font-family: var(
+    --mtf-film-display-font,
+    'Didot', 'Bodoni MT', 'Times New Roman', Georgia, serif
+  );
+  font-size: clamp(1rem, 1.55vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+  text-transform: none;
+}
+
+/* =========================================================
+   PHONE / NARROW TABLET
+   ========================================================= */
+
+@media (max-width: 767px) {
+  .blog-item-top-wrapper.mtf-film-detail-header {
+    width: calc(100% - 36px);
+    padding-top: 28px;
+    margin-bottom: 40px;
+  }
+
+  .blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__breadcrumbs {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.61rem;
+    letter-spacing: 0.17em;
+    margin-bottom: 32px;
+  }
+
+  .mtf-film-detail__crumb-separator {
+    margin: 0 9px;
+  }
+
+  .blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__couple-title {
+    font-size: clamp(2.8rem, 10vw, 4.4rem);
+    letter-spacing: -0.035em;
+  }
+
+  .blog-item-top-wrapper.mtf-film-detail-header .mtf-film-detail__subtitle {
+    margin-top: 14px;
+    max-width: 100%;
+    font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+    letter-spacing: 0.07em;
+    line-height: 1.65;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mtf-film-detail__crumb-link {
+    transition: none;
+  }
+}

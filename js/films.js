@@ -23,21 +23,6 @@
   }
 
 
-  /* Keep Squarespace's native older/newer URLs and rename only labels. */
-
-  function renameFilmPagination() {
-    document.querySelectorAll('.blog-list-pagination .older a').forEach(function (link) {
-      const label = link.querySelector('.next-label') || link.querySelector('span');
-      if (label) label.textContent = 'Older Films';
-    });
-
-    document.querySelectorAll('.blog-list-pagination .newer a').forEach(function (link) {
-      const label = link.querySelector('.prev-label, .previous-label') || link.querySelector('span');
-      if (label) label.textContent = 'Newer Films';
-    });
-  }
-
-
   function getCurrentArchive() {
     const pathname = window.location.pathname;
     const pathMatch = pathname.match(/^\/films\/(tag|category)\/([^/]+)\/?$/i);
@@ -193,9 +178,6 @@
     ) {
       return;
     }
-
-    renameFilmPagination();
-
 
     const filmGrid = document.querySelector(
       '.blog-basic-grid.collection-content-wrapper'

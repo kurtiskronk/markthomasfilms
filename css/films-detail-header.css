@@ -206,6 +206,13 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
+/* Hide Squarespace's original tags on individual film pages. */
+body:has(.blog-item-top-wrapper.mtf-film-detail-header)
+.blog-meta-item--tags {
+  display: none;
+}
+
+
 /* =========================================================
    MOBILE
    ========================================================= */

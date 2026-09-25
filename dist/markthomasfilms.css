@@ -682,6 +682,13 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
+/* Hide Squarespace's original tags on individual film pages. */
+body:has(.blog-item-top-wrapper.mtf-film-detail-header)
+.blog-meta-item--tags {
+  display: none;
+}
+
+
 /* =========================================================
    MOBILE
    ========================================================= */
@@ -1554,6 +1561,7 @@ body:has(.mtf-films-footer__shared)
    SOURCE: css/films.css
    ================================================== */
 
+
 /* =========================================================
 	 INDIVIDUAL FILM — HEADER
 	 ========================================================= */
@@ -1591,7 +1599,6 @@ body:has(.mtf-films-footer__shared)
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
-
 
 
 /* =========================================================
@@ -1720,11 +1727,9 @@ body:has(.mtf-films-footer__shared)
 }
 
 @media (hover: hover) {
-
 	.mtf-dropdown summary:hover {
 		border-color: rgba(0, 0, 0, 0.42);
 	}
-
 }
 
 .mtf-dropdown[open] summary {
@@ -1843,12 +1848,11 @@ body:has(.mtf-films-footer__shared)
 }
 
 @media (hover: hover) {
-
 	.mtf-link-list a:hover {
 		background: rgba(0, 0, 0, 0.045);
 	}
-
 }
+
 
 /* =========================================================
 	 FILM BROWSER — CURRENT ITEM
@@ -1933,58 +1937,6 @@ body:has(.mtf-films-footer__shared)
 	text-transform: uppercase;
 }
 
-/* =========================================================
-	 FILM ARCHIVE — LOAD MORE
-	 ========================================================= */
-
-.mtf-film-load-more {
-	box-sizing: border-box;
-	width: calc(100% - 48px);
-	max-width: 1180px;
-	margin:	0;
-	padding: 0	24px;
-	text-align: center;
-}
-
-
-.mtf-film-load-more__status {
-	margin:	0	0	14px;
-	font-size: 0.78rem;
-	font-weight: 400;
-	line-height: 1.4;
-	letter-spacing: 0.02em;
-	opacity: 0.58;
-}
-
-.item-pagination--prev-next {
-	display: none;
-}
-
-.mtf-film-load-more__button {
-	min-width: 190px;
-}
-
-
-.mtf-film-load-more__button:disabled {
-	cursor: wait;
-	opacity: 0.55;
-}
-
-
-.mtf-film-load-more__button[hidden] {
-	display: none;
-}
-
-
-@media screen and (max-width: 767px) {
-
-	.mtf-film-load-more {
-		width: calc(100% - 32px);
-		margin-top: 30px;
-		padding: 0	16px;
-	}
-
-}
 
 /* =========================================================
 	 FILM CARDS
@@ -2003,13 +1955,11 @@ article.blog-basic-grid--container.mtf-film-card {
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card:hover {
 		transform: translateY(-4px);
 		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
 	}
-
 }
 
 
@@ -2023,15 +1973,11 @@ article.blog-basic-grid--container.mtf-film-card
 > a.image-wrapper.mtf-film-media {
 	position: relative;
 	display: block;
-
 	width: 100%;
 	height: auto;
 	aspect-ratio: 16 / 9;
-
 	padding-bottom: 0;
-
 	overflow: hidden;
-
 	border-radius: 5px 5px 0 0;
 }
 
@@ -2041,29 +1987,22 @@ a.image-wrapper.mtf-film-media
 img.mtf-film-image {
 	position: absolute;
 	inset: 0;
-
 	display: block;
-
 	width: 100%;
 	height: 100%;
-
 	object-fit: cover;
-
 	transform: scale(1);
-
 	transition:
 		transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card:hover
 	a.image-wrapper.mtf-film-media
 	img.mtf-film-image {
 		transform: scale(1.045);
 	}
-
 }
 
 
@@ -2116,13 +2055,11 @@ article.blog-basic-grid--container.mtf-film-card
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card
 	.mtf-film-categories a:hover {
 		opacity: 0.6;
 	}
-
 }
 
 
@@ -2151,13 +2088,11 @@ article.blog-basic-grid--container.mtf-film-card
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card
 	.mtf-film-tags a:hover {
 		opacity: 0.55;
 	}
-
 }
 
 
@@ -2196,13 +2131,11 @@ article.blog-basic-grid--container.mtf-film-card
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card:hover
 	.blog-title a {
 		opacity: 0.75;
 	}
-
 }
 
 
@@ -2254,13 +2187,11 @@ article.blog-basic-grid--container.mtf-film-card
 }
 
 @media (hover: hover) {
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card
 	.mtf-watch-film:hover {
 		opacity: 0.6;
 	}
-
 }
 
 
@@ -2275,22 +2206,19 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
-/* ==================================================
+/* =========================================================
 	 CENTER SMALL FILM ARCHIVES
-	 ================================================== */
+	 ========================================================= */
 
 @media screen and (min-width: 768px) {
 
 	/* One card */
-
 	.blog-basic-grid.collection-content-wrapper
 	> article.blog-item:only-child {
 		grid-column: 2;
 	}
 
-
 	/* Two cards */
-
 	.blog-basic-grid.collection-content-wrapper:has(
 		> article.blog-item:nth-child(2):last-child
 	) {
@@ -2298,7 +2226,6 @@ article.blog-basic-grid--container.mtf-film-card a {
 		justify-content: center;
 		gap: 40px;
 	}
-
 
 	.blog-basic-grid.collection-content-wrapper:has(
 		> article.blog-item:nth-child(2):last-child
@@ -2420,12 +2347,10 @@ article.blog-basic-grid--container.mtf-film-card a {
 		transition: none;
 	}
 
-
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card:hover {
 		transform: none;
 	}
-
 
 	.blog-basic-grid.collection-content-wrapper
 	article.blog-basic-grid--container.mtf-film-card:hover
@@ -2434,12 +2359,10 @@ article.blog-basic-grid--container.mtf-film-card a {
 		transform: none;
 	}
 
-
 	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
 	.user-items-list-carousel__slide:hover {
 		translate: none;
 	}
-
 
 	.user-items-list-item-container[data-section-id="6a94aa25f4ec927f5a6d55ce"]
 	.user-items-list-carousel__slide:hover
@@ -2450,83 +2373,86 @@ article.blog-basic-grid--container.mtf-film-card a {
 }
 
 
+/* Prevent dropdown scrolling from spilling into the page. */
 
-
-
-
-
-
-/* Prevent dropdown scrolling from spilling into the page */
 .mtf-dropdown-panel,
 .mtf-link-list {
 	overscroll-behavior-y: contain;
 }
 
-
-
-
-
 @media screen and (min-width: 768px) {
-	body[class*="collection-type-blog"] .blog-item-top-wrapper .blog-item-meta-wrapper {
+	body[class*="collection-type-blog"]
+	.blog-item-top-wrapper
+	.blog-item-meta-wrapper {
 		margin-bottom: 0.75rem;
 	}
 }
 
 
-
-
-
 /* =========================================================
-	 FILM ARCHIVE — LOAD MORE LAYOUT
+	 FILM ARCHIVE — SHARED LOAD MORE
+
+	 Used on /films and venue/city/category archives.
 	 ========================================================= */
 
 .mtf-film-load-more {
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		/* Span all columns if the parent is also a grid. */
-		grid-column: 1 / -1;
-		width: 100%;
-		max-width: 1180px;
-		margin: 0 0 40px;
-		padding: 0 var(--mtf-section-gutter, 24px);
-		text-align: center;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	grid-column: 1 / -1;
+	width: calc(100% - 48px);
+	max-width: 1180px;
+	margin: 0 auto 40px;
+	padding: 0 var(--mtf-section-gutter, 24px);
+	text-align: center;
 }
 
 .mtf-film-load-more__status {
-		margin: 0 0 16px;
-		text-align: center;
+	margin: 0 0 16px;
+	font-size: 0.78rem;
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: 0.02em;
+	text-align: center;
+	opacity: 0.58;
 }
 
 .mtf-film-load-more__button {
-		flex: 0 0 auto;
-		align-self: center;
+	flex: 0 0 auto;
+	align-self: center;
+	min-width: 190px;
 }
 
-/*
- * Hide Squarespace pagination only when
- * the custom controls are active.
- */
-
-body.mtf-load-more-active
-.blog-list-pagination {
-		display: none !important;
+.mtf-film-load-more__button:disabled {
+	cursor: wait;
+	opacity: 0.55;
 }
 
 .mtf-film-load-more__button[hidden] {
-		display: none !important;
+	display: none;
 }
 
-@media screen and (max-width: 767px) {
+/*
+ * Hide Squarespace archive navigation only when our
+ * Load More controller is active.
+ * Individual film previous/next links remain untouched.
+ */
 
-		.mtf-film-load-more {
-				margin-block: 30px;
-				padding-inline: 22px;
-		}
-
+body.mtf-load-more-active .blog-list-pagination,
+body.mtf-load-more-active .item-pagination--prev-next {
+	display: none;
 }
+
+@media (max-width: 767px) {
+	.mtf-film-load-more {
+		width: calc(100% - 32px);
+		margin-block: 30px;
+		padding-inline: 16px;
+	}
+}
+
 
 /* ==================================================
    SOURCE: css/forms.css

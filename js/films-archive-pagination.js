@@ -1,16 +1,11 @@
+
 /* =========================================================
-	 MARK THOMAS FILMS — FILM ARCHIVE: LOAD MORE
+	 MARK THOMAS FILMS — SHARED FILM ARCHIVE PAGINATION
 
-	 Native Squarespace pagination remains in the HTML as a
-	 fallback. On the first tag-archive page, this module:
-	 - Keeps the initial Squarespace film cards in place.
-	 - Replaces visible Older/Newer navigation with Load More.
-	 - Appends up to 60 additional films per click.
-	 - Preserves unfinished native pages between clicks.
-	 - Leaves the header, footer and testimonials untouched.
-
-	 Directly opened ?offset= pages keep native navigation so
-	 visitors arriving through an old link can go backward.
+	 One Load More controller for /films and /films/tag/*.
+	 Also supports category archives without a second codepath.
+	 Uses Squarespace's own next-page URLs internally;
+	 native archive pagination is hidden after initialization.
 	 ========================================================= */
 (function () {
 	'use strict';
@@ -20,7 +15,7 @@
 	const GRID_SELECTOR = '.blog-basic-grid.collection-content-wrapper';
 	const CARD_SELECTOR = 'article.blog-item';
 	const BATCH_SIZE = 60;
-	const COUNT_CACHE_PREFIX = 'mtf-film-count-v5:';
+	const COUNT_CACHE_PREFIX = 'mtf-film-count-v6:';
 	const pageCache = new Map();
 
 	function absoluteURL(value, base) {
@@ -34,36 +29,53 @@
 		}
 	}
 
-	function getCurrentTag() {
-		const path = window.location.pathname.match(/^\/films\/tag\/([^/]+)\/?$/i);
-		if (path) {
-			let value = path[1].replace(/\+/g, ' ');
-			try { value = decodeURIComponent(value); } catch (error) { /* Keep original. */ }
-			return value.trim();
-		}
-		if (!/^\/films\/?$/i.test(window.location.pathname)) return '';
-		return (new URLSearchParams(window.location.search).get('tag') || '').trim();
+	function canonicalArchiveURL(type, name) {
+		if (type === 'all') return window.location.origin + '/films';
+		return window.location.origin + '/films/' + type + '/' +
+			encodeURIComponent(name).replace(/%20/g, '+');
 	}
 
-	function isLaterPage() {
+	function getCurrentArchive() {
+		const path = window.location.pathname;
+		const match = path.match(/^\/films\/(tag|category)\/([^/]+)\/?$/i);
 		const params = new URLSearchParams(window.location.search);
-		return params.has('offset') || params.has('page');
-	}
 
-	function canonicalTagURL(tag) {
-		return window.location.origin + '/films/tag/' +
-			encodeURIComponent(tag).replace(/%20/g, '+');
+		if (match) {
+			// Literal + separates words; percent-encoded %2B remains a plus sign.
+			let name = match[2].replace(/\+/g, ' ');
+			try { name = decodeURIComponent(name); } catch (error) { /* Keep input. */ }
+			name = name.trim();
+			if (!name) return null;
+			const type = match[1].toLowerCase();
+			return {
+				key: type + ':' + name.toLowerCase(),
+				url: canonicalArchiveURL(type, name)
+			};
+		}
+
+		if (!/^\/films\/?$/i.test(path)) return null;
+
+		for (const type of ['tag', 'category']) {
+			const name = (params.get(type) || '').trim();
+			if (name) return {
+				key: type + ':' + name.toLowerCase(),
+				url: canonicalArchiveURL(type, name)
+			};
+		}
+
+		return { key: 'all', url: canonicalArchiveURL('all', '') };
 	}
 
 	function paginationLink(root, direction) {
 		if (!root) return null;
-		const className = direction === 'older' ? '.older' : '.newer';
-		const scoped = root.querySelector('.blog-list-pagination ' + className + ' a[href]');
-		if (scoped) return scoped;
+		const selector = direction === 'older' ? '.older' : '.newer';
+		const direct = root.querySelector('.blog-list-pagination ' + selector + ' a[href]');
+		if (direct) return direct;
 
 		const labels = direction === 'older'
 			? ['older posts', 'older films']
 			: ['newer posts', 'newer films'];
+
 		return Array.from(root.querySelectorAll('.blog-list-pagination a[href]'))
 			.find(function (link) {
 				return labels.includes(link.textContent.trim().toLowerCase());
@@ -109,8 +121,7 @@
 				};
 			})
 			.catch(function (error) {
-				// An unsuccessful request must be retryable on the next click.
-				pageCache.delete(address);
+				pageCache.delete(address); // Retry failed requests on the next click.
 				throw error;
 			});
 
@@ -118,25 +129,32 @@
 		return request;
 	}
 
-	async function countAllFilms(tag) {
-		const cacheKey = COUNT_CACHE_PREFIX + tag.trim().toLowerCase();
+	async function countAllFilms(archive) {
+		const cacheKey = COUNT_CACHE_PREFIX + archive.key;
 		try {
 			const cached = Number(sessionStorage.getItem(cacheKey));
 			if (Number.isInteger(cached) && cached > 0) return cached;
-		} catch (error) { /* Storage may be disabled. */ }
+		} catch (error) { /* Storage may be unavailable. */ }
 
-		let url = canonicalTagURL(tag);
+		let url = archive.url;
 		const visited = new Set();
 		const unique = new Set();
 		let withoutKey = 0;
+		let complete = true;
 
 		while (url && visited.size < 200) {
-			if (visited.has(url)) break;
+			if (visited.has(url)) {
+				complete = false;
+				break;
+			}
 			visited.add(url);
 
 			const page = await fetchArchivePage(url);
 			const grid = page.document.querySelector(GRID_SELECTOR);
-			if (!grid) break;
+			if (!grid) {
+				complete = false;
+				break;
+			}
 			grid.querySelectorAll(CARD_SELECTOR).forEach(function (card) {
 				const key = filmKey(card);
 				if (key) unique.add(key);
@@ -145,12 +163,13 @@
 			url = olderURL(page.document, page.url);
 		}
 
+		if (url) complete = false; // Prevent caching a partial total.
 		const total = unique.size + withoutKey;
-		if (total > 0) {
+		if (complete && total > 0) {
 			try { sessionStorage.setItem(cacheKey, String(total)); }
-			catch (error) { /* Storage may be disabled. */ }
+			catch (error) { /* Storage may be unavailable. */ }
 		}
-		return total;
+		return complete ? total : 0;
 	}
 
 	function processCard(card) {
@@ -174,7 +193,6 @@
 			}
 		});
 
-		// Insert alongside existing cards, not after Squarespace pagination.
 		const cards = grid.querySelectorAll(CARD_SELECTOR);
 		const last = cards.length ? cards[cards.length - 1] : null;
 		if (last) last.insertAdjacentElement('afterend', card);
@@ -182,8 +200,8 @@
 		processCard(card);
 	}
 
-	/* The cursor includes an index, so stopping halfway through a
-		 native Squarespace page never skips the unconsumed cards. */
+	// The URL + index cursor avoids skipping cards when a batch stops
+	// halfway through a native Squarespace pagination page.
 	async function loadBatch(grid, state) {
 		let added = 0;
 		const visited = new Set();
@@ -216,14 +234,14 @@
 				state.cursor.url = following && following !== page.url ? following : '';
 				state.cursor.index = 0;
 			}
-			// Otherwise, the next click resumes at cursor.index on this page.
 		}
 
+		if (state.cursor.url && visited.size >= 200) {
+			throw new Error('Archive exceeded the pagination safety limit.');
+		}
 		return added;
 	}
 
-	// Preserve the archive-count slot used by films-header.js.
-	// The separate "Showing X of Y" status remains below the film grid.
 	function displayArchiveCount(count) {
 		if (!Number.isInteger(count) || count <= 0) return;
 		const slot = document.querySelector('.mtf-film-count-slot');
@@ -237,95 +255,46 @@
 		element.textContent = count + (count === 1 ? ' film' : ' films');
 	}
 
-	function nativePaginationNodes() {
-		const nodes = Array.from(document.querySelectorAll('.blog-list-pagination'));
-		['older', 'newer'].forEach(function (direction) {
-			const link = paginationLink(document, direction);
-			if (!link) return;
-			const parent = link.closest('.blog-list-pagination, .blog-pagination, .pagination') ||
-				link.closest('.older, .newer');
-			if (parent && !nodes.includes(parent)) nodes.push(parent);
-		});
-		return nodes;
-	}
-
-	function hideNative(state) {
-		state.native.forEach(function (item) {
-			item.node.style.setProperty('display', 'none', 'important');
-		});
-	}
-
-	function restoreNative(state) {
-		state.native.forEach(function (item) {
-			if (item.display) item.node.style.setProperty('display', item.display, item.priority);
-			else item.node.style.removeProperty('display');
-		});
-	}
-
 	function createControls(grid) {
 		const wrapper = document.createElement('div');
 		wrapper.className = 'mtf-film-load-more';
 
-		// Structural styles ensure this is a complete row, even if the
-		// Squarespace parent itself happens to use CSS Grid.
-		Object.assign(wrapper.style, {
-			boxSizing: 'border-box',
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-			justifyContent: 'center',
-			gridColumn: '1 / -1',
-			flexBasis: '100%',
-			clear: 'both',
-			width: '100%',
-			maxWidth: '1180px',
-			marginLeft: 'auto',
-			marginRight: 'auto',
-			textAlign: 'center'
-		});
-
 		const status = document.createElement('p');
 		status.className = 'mtf-film-load-more__status';
+		status.setAttribute('role', 'status');
 		status.setAttribute('aria-live', 'polite');
-		status.style.textAlign = 'center';
 
 		const button = document.createElement('button');
 		button.type = 'button';
 		button.className = 'mtf-button mtf-film-load-more__button';
 		button.textContent = 'Load More Films';
 
-		wrapper.appendChild(status);
-		wrapper.appendChild(button);
-
-		// IMPORTANT: outside .blog-basic-grid, never among the cards.
-		grid.insertAdjacentElement('afterend', wrapper);
-		return { wrapper: wrapper, status: status, button: button };
+		wrapper.append(status, button);
+		grid.insertAdjacentElement('afterend', wrapper); // Never a grid card.
+		return { wrapper, status, button };
 	}
 
 	function init() {
-		const tag = getCurrentTag();
-		if (!tag || isLaterPage()) return;
+		const archive = getCurrentArchive();
+		if (!archive) return;
+
+		// Only turn the initial collection page into Load More. Pagination
+		// URLs remain internal fetch targets, not visible navigation choices.
+		const params = new URLSearchParams(window.location.search);
+		if (params.has('offset') || params.has('page')) return;
 
 		const grid = document.querySelector(GRID_SELECTOR);
 		if (!grid || document.querySelector('.mtf-film-load-more')) return;
-		const firstURL = olderURL(document, window.location.href);
-		if (!firstURL) return;
 
+		const firstURL = olderURL(document, window.location.href);
 		const state = {
 			cursor: { url: firstURL, index: 0 },
 			keys: existingKeys(grid),
 			total: null,
-			loading: false,
-			native: nativePaginationNodes().map(function (node) {
-				return {
-					node: node,
-					display: node.style.getPropertyValue('display'),
-					priority: node.style.getPropertyPriority('display')
-				};
-			})
+			loading: false
 		};
-
 		const ui = createControls(grid);
+		document.body.classList.add('mtf-load-more-active');
 
 		function displayedCount() {
 			return grid.querySelectorAll(CARD_SELECTOR).length;
@@ -334,30 +303,33 @@
 		function updateStatus() {
 			const shown = displayedCount();
 			const total = state.total && state.total >= shown ? state.total : null;
-			ui.status.textContent = total
-				? 'Showing ' + shown + ' of ' + total + ' films'
-				: 'Showing ' + shown + ' films';
 			if (!state.cursor.url) {
 				ui.status.textContent = 'Showing all ' + shown + ' films';
 				ui.button.hidden = true;
-				ui.button.style.setProperty('display', 'none', 'important');
+			} else {
+				ui.status.textContent = total
+					? 'Showing ' + shown + ' of ' + total + ' films'
+					: 'Showing ' + shown + ' films';
+				ui.button.hidden = false;
 			}
 		}
 
-		hideNative(state);
 		updateStatus();
 
-		// Count in the background: don't delay the button while 38 or more
-		// film pages are being counted.
-		countAllFilms(tag).then(function (total) {
-			if (total > 0) {
-				state.total = total;
-				displayArchiveCount(total);
-			}
-			if (!state.loading) updateStatus();
-		}).catch(function (error) {
-			console.warn('MTF: unable to count films:', error);
-		});
+		if (firstURL) {
+			// Count asynchronously; never delay the Load More button.
+			countAllFilms(archive).then(function (total) {
+				if (total > 0) {
+					state.total = total;
+					displayArchiveCount(total);
+				}
+				if (!state.loading) updateStatus();
+			}).catch(function (error) {
+				console.warn('MTF: unable to count films:', error);
+			});
+		} else {
+			displayArchiveCount(displayedCount());
+		}
 
 		ui.button.addEventListener('click', async function () {
 			if (state.loading || !state.cursor.url) return;
@@ -369,21 +341,13 @@
 
 			try {
 				const added = await loadBatch(grid, state);
-				if (added === 0 && state.cursor.url) {
+				if (!added && state.cursor.url) {
 					throw new Error('No additional films were returned.');
 				}
-
-				// Keep the native fallback pointing at the next unconsumed page.
-				const older = paginationLink(document, 'older');
-				if (older && state.cursor.url) older.href = state.cursor.url;
-				hideNative(state);
 				updateStatus();
 			} catch (error) {
 				console.warn('MTF: unable to load more films:', error);
-				const older = paginationLink(document, 'older');
-				if (older && state.cursor.url) older.href = state.cursor.url;
-				restoreNative(state);
-				ui.status.textContent = 'Unable to load more films. Try again or use Older Films below.';
+				ui.status.textContent = 'Unable to load more films. Please try again.';
 			} finally {
 				state.loading = false;
 				ui.button.disabled = false;
@@ -393,7 +357,7 @@
 		});
 	}
 
-	window.MTF.filmArchivePagination = { init: init };
+	window.MTF.filmArchivePagination = { init };
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', init, { once: true });
 	} else {

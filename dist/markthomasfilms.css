@@ -476,27 +476,19 @@ form.react-form-contents {
 
 
 /* =========================================================
-   MARK THOMAS FILMS — COMPACT INDIVIDUAL FILM HEADER
-
-   Small-caps breadcrumbs, native Squarespace title,
-   and standard Films-page tag typography.
+   MARK THOMAS FILMS — INDIVIDUAL FILM HEADER
+   Compact breadcrumbs, title and location styling.
    ========================================================= */
 
 
-/* =========================================================
-   ARTICLE SPACING
-   ========================================================= */
-
-/* Only target an article containing our film detail header. */
+/* ARTICLE SPACING */
 
 article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   padding-top: 8px;
 }
 
 
-/* =========================================================
-   HEADER CONTAINER
-   ========================================================= */
+/* HEADER CONTAINER */
 
 .blog-item-top-wrapper.mtf-film-detail-header {
   box-sizing: border-box;
@@ -507,8 +499,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   text-align: center;
 }
 
-/* Hide Squarespace's original metadata in this header. */
-
 .blog-item-top-wrapper.mtf-film-detail-header
 .blog-item-meta-wrapper,
 .blog-item-top-wrapper.mtf-film-detail-header
@@ -517,9 +507,7 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 }
 
 
-/* =========================================================
-   BREADCRUMBS
-   ========================================================= */
+/* BREADCRUMBS */
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__breadcrumbs {
@@ -530,6 +518,7 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   gap: 5px clamp(12px, 1.8vw, 28px);
   max-width: 100%;
   margin: 0 auto 20px;
+
   color: var(--mtf-section-text, #333);
   font-family: inherit;
   font-size: clamp(.63rem, .72vw, .74rem);
@@ -540,17 +529,11 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   text-align: center;
 }
 
-
-/* NAVIGATE TO LABEL */
-
 .mtf-film-detail__crumb-label {
   flex: 0 0 auto;
   color: var(--mtf-section-muted, #777);
   white-space: nowrap;
 }
-
-
-/* BREADCRUMB LIST */
 
 .mtf-film-detail__crumb-list {
   display: flex;
@@ -570,9 +553,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   margin: 0;
   padding: 0;
 }
-
-
-/* SEPARATORS */
 
 .mtf-film-detail__crumb-separator {
   display: inline-block;
@@ -610,9 +590,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   outline-offset: 5px;
 }
 
-
-/* CURRENT FILM */
-
 .mtf-film-detail__crumb-current {
   color: var(--mtf-section-text, #1a1a1a);
   font-weight: 700;
@@ -623,14 +600,16 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 /* =========================================================
    COUPLE'S TITLE
 
-   Keep Squarespace's native H1 for semantics and SEO.
+   Match the actual Squarespace H1.
+   One font-size declaration across all breakpoints.
    ========================================================= */
 
-.blog-item-top-wrapper.mtf-film-detail-header
-.mtf-film-detail__couple-title {
+.blog-item-title >
+h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
   width: 100%;
   max-width: 100%;
-  margin: 10px auto;
+  margin: 0 auto;
+
   color: var(--mtf-section-text, #1b1b1b);
   font-family: inherit;
   font-size: 2.6rem;
@@ -642,17 +621,14 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 }
 
 
-/* =========================================================
-   LOCATION SUBTITLE
-
-   Match the standard Films-page tag typography.
-   ========================================================= */
+/* LOCATION SUBTITLE */
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__subtitle {
   max-width: 100%;
   margin: 4px auto 0;
   padding: 0;
+
   color: inherit;
   font-family: inherit;
   font-size: .72rem;
@@ -664,9 +640,7 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+/* MOBILE */
 
 @media (max-width: 767px) {
 
@@ -687,7 +661,6 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
     margin: 0 8px;
   }
 
-
   .blog-item-top-wrapper.mtf-film-detail-header
   .mtf-film-detail__subtitle {
     font-size: .7rem;
@@ -697,9 +670,7 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 }
 
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
 

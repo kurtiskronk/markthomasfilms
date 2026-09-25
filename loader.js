@@ -20,7 +20,7 @@
 	 */
 
 	const assetVersion =
-		'2026-09-24-related-films-r11';
+		'2026-09-24-related-films-r12';
 
 
 	const cssFile =

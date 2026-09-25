@@ -1,18 +1,24 @@
 
 /* =========================================================
    MARK THOMAS FILMS — INDIVIDUAL FILM HEADER
-   Compact breadcrumbs, title and location styling.
+
+   Full-width charcoal breadcrumb bar
+   Compact couple title and location metadata
    ========================================================= */
 
 
-/* ARTICLE SPACING */
+/* =========================================================
+   ARTICLE SPACING
+   ========================================================= */
 
 article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
-  padding-top: 8px;
+  padding-top: 0;
 }
 
 
-/* HEADER CONTAINER */
+/* =========================================================
+   HEADER CONTAINER
+   ========================================================= */
 
 .blog-item-top-wrapper.mtf-film-detail-header {
   box-sizing: border-box;
@@ -23,6 +29,8 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   text-align: center;
 }
 
+/* Hide Squarespace's original metadata in this header. */
+
 .blog-item-top-wrapper.mtf-film-detail-header
 .blog-item-meta-wrapper,
 .blog-item-top-wrapper.mtf-film-detail-header
@@ -31,42 +39,64 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 }
 
 
-/* BREADCRUMBS */
+/* =========================================================
+   BREADCRUMB BAR
+   Full viewport width, regardless of the article width.
+   ========================================================= */
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__breadcrumbs {
+  position: relative;
+  left: 50%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 5px clamp(12px, 1.8vw, 28px);
-  max-width: 100%;
-  margin: 0 auto 20px;
+  gap: 4px clamp(12px, 1.8vw, 28px);
 
-  color: var(--mtf-section-text, #333);
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: none;
+  min-height: 36px;
+  margin: 0 0 20px;
+  padding: 7px 20px;
+
+  transform: translateX(-50%);
+
+  background: #373737;
+  color: #f4f4f4;
+
   font-family: inherit;
-  font-size: clamp(.63rem, .72vw, .74rem);
+  font-size: .66rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   letter-spacing: .22em;
   text-transform: uppercase;
   text-align: center;
 }
 
+
+/* NAVIGATE TO LABEL */
+
 .mtf-film-detail__crumb-label {
   flex: 0 0 auto;
-  color: var(--mtf-section-muted, #777);
+  color: #dedede;
   white-space: nowrap;
 }
 
+
+/* BREADCRUMB LIST */
+
 .mtf-film-detail__crumb-list {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0;
+
   margin: 0;
   padding: 0;
+
   list-style: none;
 }
 
@@ -74,14 +104,20 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
   display: inline-flex;
   align-items: baseline;
   white-space: nowrap;
+
   margin: 0;
   padding: 0;
 }
 
+
+/* SEPARATORS */
+
 .mtf-film-detail__crumb-separator {
   display: inline-block;
   margin: 0 clamp(9px, 1.25vw, 20px);
-  color: var(--mtf-section-muted, #777);
+
+  color: #c8c8c8;
+
   font-size: 1.2em;
   font-weight: 400;
   line-height: 1;
@@ -93,10 +129,11 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__crumb-link {
-  color: inherit;
+  color: #ededed;
   text-decoration: none;
   border: 0;
-  opacity: .75;
+  opacity: .85;
+
   transition: opacity 200ms ease;
 }
 
@@ -104,18 +141,22 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 .mtf-film-detail__crumb-link:hover,
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__crumb-link:focus-visible {
+  color: #fff;
   opacity: 1;
   text-decoration: none;
 }
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__crumb-link:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid #fff;
   outline-offset: 5px;
 }
 
+
+/* CURRENT FILM */
+
 .mtf-film-detail__crumb-current {
-  color: var(--mtf-section-text, #1a1a1a);
+  color: #fff;
   font-weight: 700;
   letter-spacing: .18em;
 }
@@ -123,9 +164,7 @@ article:has(.blog-item-top-wrapper.mtf-film-detail-header) {
 
 /* =========================================================
    COUPLE'S TITLE
-
-   Match the actual Squarespace H1.
-   One font-size declaration across all breakpoints.
+   Target the actual Squarespace H1.
    ========================================================= */
 
 .blog-item-title >
@@ -145,7 +184,10 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
-/* LOCATION SUBTITLE */
+/* =========================================================
+   LOCATION SUBTITLE
+   Match the standard Films-page tag typography.
+   ========================================================= */
 
 .blog-item-top-wrapper.mtf-film-detail-header
 .mtf-film-detail__subtitle {
@@ -164,7 +206,9 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
-/* MOBILE */
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 767px) {
 
@@ -174,15 +218,15 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 
   .blog-item-top-wrapper.mtf-film-detail-header
   .mtf-film-detail__breadcrumbs {
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    font-size: .61rem;
-    letter-spacing: .15em;
+    gap: 3px 10px;
+    padding: 8px 14px;
+
+    font-size: .6rem;
+    letter-spacing: .13em;
   }
 
   .mtf-film-detail__crumb-separator {
-    margin: 0 8px;
+    margin: 0 7px;
   }
 
   .blog-item-top-wrapper.mtf-film-detail-header
@@ -194,10 +238,13 @@ h1.entry-title.entry-title--large.mtf-film-detail__couple-title {
 }
 
 
-/* REDUCED MOTION */
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
+  .blog-item-top-wrapper.mtf-film-detail-header
   .mtf-film-detail__crumb-link {
     transition: none;
   }

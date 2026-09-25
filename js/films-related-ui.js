@@ -1,46 +1,31 @@
+
 /* =========================================================
 	 MARK THOMAS FILMS
-	 RELATED FILMS — CAROUSEL UI
-
-	 Renders related-film recommendations on individual
-	 wedding film pages.
-
-	 Responsibilities:
-	 - Ask films-related.js for related recommendations.
-	 - Build a two-up carousel on desktop / one-up on mobile.
-	 - Fetch images for the visible cards and adjacent previews.
-	 - Extract the Squarespace featured image.
-	 - Render clickable image + title cards.
-	 - Support arrows, drag, swipe, and progress dragging.
+	 RELATED FILMS — CONTINUOUS CAROUSEL UI
 	 ========================================================= */
 
 (function () {
-
 	'use strict';
 
 	window.MTF = window.MTF || {};
 	const MTF = window.MTF;
-
 	const imageCache = new Map();
 
+	/* HELPERS */
+
 	function normalizePath(value) {
-		if (!value) {
-			return '';
-		}
+		if (!value) return '';
 
 		try {
 			const url = new URL(value, window.location.origin);
 			return url.pathname.replace(/\/+$/, '');
-		}
-		catch (error) {
+		} catch (error) {
 			return '';
 		}
 	}
 
 	function normalizeImageURL(value) {
-		if (!value) {
-			return '';
-		}
+		if (!value) return '';
 
 		try {
 			const url = new URL(value, window.location.origin);
@@ -48,8 +33,7 @@
 				url.protocol = 'https:';
 			}
 			return url.href;
-		}
-		catch (error) {
+		} catch (error) {
 			return '';
 		}
 	}
@@ -65,7 +49,8 @@
 	}
 
 	function createTagURL(tag) {
-		return '/films/tag/' + encodeURIComponent(tag).replace(/%20/g, '+');
+		return '/films/tag/' +
+			encodeURIComponent(tag).replace(/%20/g, '+');
 	}
 
 	function shouldDisplayFilmTag(value) {
@@ -92,25 +77,33 @@
 		);
 	}
 
+	/* IMAGE RETRIEVAL */
+
 	function extractImageFromDocument(documentRoot) {
-		if (!documentRoot) {
-			return '';
-		}
+		if (!documentRoot) return '';
 
-		const ogImage = documentRoot.querySelector('meta[property="og:image"]');
+		const ogImage = documentRoot.querySelector(
+			'meta[property="og:image"]'
+		);
+
 		if (ogImage) {
-			const url = normalizeImageURL(ogImage.getAttribute('content'));
-			if (url) {
-				return url;
-			}
+			const url = normalizeImageURL(
+				ogImage.getAttribute('content')
+			);
+
+			if (url) return url;
 		}
 
-		const twitterImage = documentRoot.querySelector('meta[name="twitter:image"]');
+		const twitterImage = documentRoot.querySelector(
+			'meta[name="twitter:image"]'
+		);
+
 		if (twitterImage) {
-			const url = normalizeImageURL(twitterImage.getAttribute('content'));
-			if (url) {
-				return url;
-			}
+			const url = normalizeImageURL(
+				twitterImage.getAttribute('content')
+			);
+
+			if (url) return url;
 		}
 
 		const image = documentRoot.querySelector(
@@ -124,11 +117,9 @@
 				image.getAttribute('src')
 			];
 
-			for (let index = 0; index < candidates.length; index += 1) {
-				const candidate = normalizeImageURL(candidates[index]);
-				if (candidate) {
-					return candidate;
-				}
+			for (const value of candidates) {
+				const candidate = normalizeImageURL(value);
+				if (candidate) return candidate;
 			}
 		}
 
@@ -137,10 +128,7 @@
 
 	async function fetchFilmImage(filmURL) {
 		const path = normalizePath(filmURL);
-
-		if (!path) {
-			return '';
-		}
+		if (!path) return '';
 
 		if (imageCache.has(path)) {
 			return imageCache.get(path);
@@ -157,15 +145,20 @@
 				}
 
 				const html = await response.text();
-				const pageDocument = new DOMParser().parseFromString(html, 'text/html');
+
+				const pageDocument = new DOMParser().parseFromString(
+					html,
+					'text/html'
+				);
+
 				return extractImageFromDocument(pageDocument);
-			}
-			catch (error) {
+			} catch (error) {
 				console.warn(
 					'Mark Thomas Films: unable to retrieve related-film image for',
 					path,
 					error
 				);
+
 				return '';
 			}
 		})();
@@ -173,6 +166,8 @@
 		imageCache.set(path, promise);
 		return promise;
 	}
+
+	/* CARD METADATA */
 
 	function buildMetadata(film) {
 		const tags = Array.isArray(film.tags)
@@ -196,7 +191,8 @@
 
 			if (metadata.children.length) {
 				const separator = document.createElement('span');
-				separator.className = 'mtf-related-film__meta-separator';
+				separator.className =
+					'mtf-related-film__meta-separator';
 				separator.textContent = ' · ';
 				separator.setAttribute('aria-hidden', 'true');
 				metadata.appendChild(separator);
@@ -212,8 +208,11 @@
 		return metadata;
 	}
 
-	function createImageElements(film, imageFrame) {
+	/* CARD IMAGES */
+
+	function createImageElements(film, frame) {
 		const image = document.createElement('img');
+
 		image.className = 'mtf-related-film__image';
 		image.alt = film.title + ' wedding film';
 		image.decoding = 'async';
@@ -223,31 +222,39 @@
 		image.hidden = true;
 
 		const placeholder = document.createElement('div');
-		placeholder.className = 'mtf-related-film__image-placeholder';
+		placeholder.className =
+			'mtf-related-film__image-placeholder';
 		placeholder.setAttribute('aria-hidden', 'true');
 
-		imageFrame.appendChild(image);
-		imageFrame.appendChild(placeholder);
+		frame.appendChild(image);
+		frame.appendChild(placeholder);
 
-		return { image: image, placeholder: placeholder };
+		return { image, placeholder };
 	}
 
 	function populateImage(frame, image, placeholder, filmURL) {
 		fetchFilmImage(filmURL).then(function (imageURL) {
 			if (!imageURL) {
-				frame.classList.add('mtf-related-film__image-frame--empty');
+				frame.classList.add(
+					'mtf-related-film__image-frame--empty'
+				);
 				return;
 			}
 
 			image.addEventListener('load', function () {
 				image.hidden = false;
 				placeholder.hidden = true;
-				frame.classList.add('mtf-related-film__image-frame--loaded');
+
+				frame.classList.add(
+					'mtf-related-film__image-frame--loaded'
+				);
 			}, { once: true });
 
 			image.src = imageURL;
 		});
 	}
+
+	/* CARD CREATION */
 
 	function createCard(film) {
 		const article = document.createElement('article');
@@ -259,13 +266,17 @@
 		mediaLink.className = 'mtf-related-film__media';
 		mediaLink.href = filmURL;
 		mediaLink.draggable = false;
-		mediaLink.setAttribute('aria-label', 'View ' + film.title + ' wedding film');
+		mediaLink.setAttribute(
+			'aria-label',
+			'View ' + film.title + ' wedding film'
+		);
 
-		const imageFrame = document.createElement('div');
-		imageFrame.className = 'mtf-related-film__image-frame';
+		const frame = document.createElement('div');
+		frame.className = 'mtf-related-film__image-frame';
 
-		const imageElements = createImageElements(film, imageFrame);
-		mediaLink.appendChild(imageFrame);
+		const imageElements = createImageElements(film, frame);
+
+		mediaLink.appendChild(frame);
 		article.appendChild(mediaLink);
 
 		const body = document.createElement('div');
@@ -277,25 +288,26 @@
 		const titleLink = document.createElement('a');
 		titleLink.href = filmURL;
 		titleLink.textContent = film.title;
+
 		title.appendChild(titleLink);
 		body.appendChild(title);
 
 		const metadata = buildMetadata(film);
+
 		if (metadata.children.length) {
 			body.appendChild(metadata);
 		}
 
 		article.appendChild(body);
 
+		// Fetch only when the card approaches the viewport.
 		article._mtfLoadImage = function () {
-			if (article.__mtfImageRequested) {
-				return;
-			}
+			if (article.__mtfImageRequested) return;
 
 			article.__mtfImageRequested = true;
 
 			populateImage(
-				imageFrame,
+				frame,
 				imageElements.image,
 				imageElements.placeholder,
 				filmURL
@@ -305,418 +317,550 @@
 		return article;
 	}
 
-	function createEdgePreview(direction) {
-		const edge = document.createElement('div');
-		edge.className = 'mtf-related-films__edge mtf-related-films__edge--' + direction;
+	/* NAVIGATION BUTTONS */
 
-		const preview = document.createElement('div');
-		preview.className = 'mtf-related-films__edge-preview';
-
-		const image = document.createElement('img');
-		image.className = 'mtf-related-films__edge-image';
-		image.alt = '';
-		image.loading = 'eager';
-		image.decoding = 'async';
-		image.draggable = false;
-		image.hidden = true;
-
-		const placeholder = document.createElement('div');
-		placeholder.className = 'mtf-related-films__edge-placeholder';
-		placeholder.setAttribute('aria-hidden', 'true');
-
-		preview.appendChild(image);
-		preview.appendChild(placeholder);
-		preview.setAttribute('aria-hidden', 'true');
-
+	function navButton(direction) {
 		const button = document.createElement('button');
+
 		button.type = 'button';
-		button.className = 'mtf-related-films__edge-button';
+		button.className =
+			'mtf-related-films__nav-button ' +
+			'mtf-related-films__nav-button--' + direction;
+
 		button.setAttribute(
 			'aria-label',
 			direction === 'prev'
-				? 'Show previous related film'
-				: 'Show next related film'
+				? 'Previous related wedding film'
+				: 'Next related wedding film'
 		);
+
 		button.textContent = direction === 'prev' ? '←' : '→';
 
-		edge.appendChild(preview);
-		edge.appendChild(button);
-
-		return {
-			element: edge,
-			image: image,
-			placeholder: placeholder,
-			button: button
-		};
+		return button;
 	}
+
+	/* SECTION CREATION */
 
 	function createSection(recommendations) {
 		const config = MTF.filmRelatedConfig || {};
+		const films = recommendations.films;
 
 		const section = document.createElement('section');
-		section.className = 'mtf-related-films mtf-section mtf-section--light';
+
+		section.className =
+			'mtf-related-films mtf-section mtf-section--light';
+
 		section.setAttribute('data-mtf-related-films', '');
 
+		if (films.length === 1) {
+			section.classList.add('mtf-related-films--single');
+		}
+
 		const container = document.createElement('div');
-		container.className = 'mtf-section__container mtf-related-films__container';
+
+		container.className =
+			'mtf-section__container mtf-related-films__container';
+
+		/* HEADING */
 
 		const heading = document.createElement('div');
-		heading.className = 'mtf-section__heading mtf-related-films__heading';
+
+		heading.className =
+			'mtf-section__heading mtf-related-films__heading';
 
 		const eyebrow = document.createElement('p');
 		eyebrow.className = 'mtf-section__eyebrow';
-		eyebrow.textContent = config.eyebrow || 'CONTINUE EXPLORING';
+		eyebrow.textContent =
+			config.eyebrow || 'CONTINUE EXPLORING';
+
 		heading.appendChild(eyebrow);
 
 		const title = document.createElement('h2');
-		title.className = 'mtf-section__title mtf-section__title--subsection';
+
+		title.className =
+			'mtf-section__title mtf-section__title--subsection';
+
 		title.textContent = recommendations.heading;
 		title.id = 'mtf-related-films-title';
+
 		section.setAttribute('aria-labelledby', title.id);
 		heading.appendChild(title);
 
-		if (recommendations.venueOnly && recommendations.sameVenueCount >= 6) {
+		if (
+			recommendations.venueOnly &&
+			recommendations.sameVenueCount >= 6
+		) {
 			const venueCount = document.createElement('p');
-			venueCount.className = 'mtf-related-films__venue-count';
+
+			venueCount.className =
+				'mtf-related-films__venue-count';
+
 			venueCount.textContent =
-				recommendations.sameVenueCount + ' more wedding films at this venue';
+				recommendations.sameVenueCount +
+				' more wedding films at this venue';
+
 			heading.appendChild(venueCount);
 		}
 
 		container.appendChild(heading);
 
+		/* CAROUSEL STRUCTURE */
+
+		const stage = document.createElement('div');
+		stage.className = 'mtf-related-films__stage';
+
 		const carousel = document.createElement('div');
 		carousel.className = 'mtf-related-films__carousel';
-		carousel.setAttribute('aria-roledescription', 'carousel');
 
-		const prevEdge = createEdgePreview('prev');
-		const nextEdge = createEdgePreview('next');
+		carousel.setAttribute(
+			'aria-roledescription',
+			'carousel'
+		);
 
 		const viewport = document.createElement('div');
 		viewport.className = 'mtf-related-films__viewport';
-		viewport.setAttribute('aria-label', 'Related wedding film carousel');
+
+		viewport.setAttribute(
+			'aria-label',
+			'Related wedding films'
+		);
 
 		const track = document.createElement('div');
 		track.className = 'mtf-related-films__track';
 
-		const cards = recommendations.films.map(createCard);
+		const cards = films.map(createCard);
+
 		cards.forEach(function (card) {
 			track.appendChild(card);
 		});
 
 		viewport.appendChild(track);
-		carousel.appendChild(prevEdge.element);
+
+		/* ARROWS */
+
+		const navigation = document.createElement('div');
+
+		navigation.className =
+			'mtf-related-films__navigation';
+
+		const prevButton = navButton('prev');
+		const nextButton = navButton('next');
+
+		navigation.appendChild(prevButton);
+		navigation.appendChild(nextButton);
+
 		carousel.appendChild(viewport);
-		carousel.appendChild(nextEdge.element);
-		container.appendChild(carousel);
+		carousel.appendChild(navigation);
 
-		const mobileNav = document.createElement('div');
-		mobileNav.className = 'mtf-related-films__mobile-nav';
+		stage.appendChild(carousel);
+		container.appendChild(stage);
 
-		const mobilePrev = document.createElement('button');
-		mobilePrev.type = 'button';
-		mobilePrev.className = 'mtf-related-films__mobile-button';
-		mobilePrev.textContent = '←';
-		mobilePrev.setAttribute('aria-label', 'Previous related film');
-
-		const mobileNext = document.createElement('button');
-		mobileNext.type = 'button';
-		mobileNext.className = 'mtf-related-films__mobile-button';
-		mobileNext.textContent = '→';
-		mobileNext.setAttribute('aria-label', 'Next related film');
-
-		mobileNav.appendChild(mobilePrev);
-		mobileNav.appendChild(mobileNext);
-		container.appendChild(mobileNav);
+		/* PROGRESS BAR */
 
 		const controls = document.createElement('div');
-		controls.className = 'mtf-related-films__controls';
+
+		controls.className =
+			'mtf-related-films__controls';
 
 		const progress = document.createElement('div');
-		progress.className = 'mtf-related-films__progress';
+
+		progress.className =
+			'mtf-related-films__progress';
+
 		progress.setAttribute('role', 'slider');
 		progress.setAttribute('tabindex', '0');
-		progress.setAttribute('aria-label', 'Browse related wedding films');
+
+		progress.setAttribute(
+			'aria-label',
+			'Browse related wedding films'
+		);
+
 		progress.setAttribute('aria-valuemin', '1');
 
 		const progressTrack = document.createElement('div');
-		progressTrack.className = 'mtf-related-films__progress-track';
+
+		progressTrack.className =
+			'mtf-related-films__progress-track';
 
 		const progressFill = document.createElement('div');
-		progressFill.className = 'mtf-related-films__progress-fill';
+
+		progressFill.className =
+			'mtf-related-films__progress-fill';
 
 		progress.appendChild(progressTrack);
 		progress.appendChild(progressFill);
 
 		const count = document.createElement('p');
-		count.className = 'mtf-related-films__count';
+
+		count.className =
+			'mtf-related-films__count';
 
 		controls.appendChild(progress);
 		controls.appendChild(count);
+
 		container.appendChild(controls);
 
-		const collectionConfig = config.collectionLink || {};
-		if (collectionConfig.label && collectionConfig.url) {
+		/* EXPLORE ALL FILMS */
+
+		const collection = config.collectionLink || {};
+
+		if (collection.label && collection.url) {
 			const footer = document.createElement('div');
-			footer.className = 'mtf-related-films__footer';
 
-			const collectionLink = document.createElement('a');
-			collectionLink.className = 'mtf-related-films__all-link';
-			collectionLink.href = collectionConfig.url;
-			collectionLink.textContent = collectionConfig.label;
+			footer.className =
+				'mtf-related-films__footer';
 
-			footer.appendChild(collectionLink);
+			const link = document.createElement('a');
+
+			link.className =
+				'mtf-related-films__all-link';
+
+			link.href = collection.url;
+			link.textContent = collection.label;
+
+			footer.appendChild(link);
 			container.appendChild(footer);
 		}
 
 		section.appendChild(container);
 
+		// Geometry must be measured after DOM insertion.
 		section._mtfInitCarousel = function () {
 			initCarousel({
-			section: section,
-			films: recommendations.films,
-			cards: cards,
-			viewport: viewport,
-			track: track,
-			prevEdge: prevEdge,
-			nextEdge: nextEdge,
-			mobilePrev: mobilePrev,
-			mobileNext: mobileNext,
-			progress: progress,
-			progressFill: progressFill,
-			count: count
+				section,
+				films,
+				stage,
+				viewport,
+				track,
+				cards,
+				prevButton,
+				nextButton,
+				progress,
+				progressFill,
+				count
 			});
 		};
 
 		return section;
 	}
 
+	/* CONTINUOUS CAROUSEL */
+
 	function initCarousel(parts) {
-		const section = parts.section;
-		const films = parts.films;
-		const cards = parts.cards;
-		const viewport = parts.viewport;
-		const track = parts.track;
-		const prevEdge = parts.prevEdge;
-		const nextEdge = parts.nextEdge;
-		const mobilePrev = parts.mobilePrev;
-		const mobileNext = parts.mobileNext;
-		const progress = parts.progress;
-		const progressFill = parts.progressFill;
-		const count = parts.count;
+		const {
+			section,
+			films,
+			stage,
+			viewport,
+			track,
+			cards,
+			prevButton,
+			nextButton,
+			progress,
+			progressFill,
+			count
+		} = parts;
 
 		const state = {
 			index: 0,
-			visibleCount: 2,
-			gap: 0,
-			stepWidth: 0,
-			pointerId: null,
+			visible: 2,
+			step: 0,
+			inset: 0,
 			startX: 0,
 			startY: 0,
 			deltaX: 0,
-			dragging: false,
-			moved: false,
+			pointerId: null,
+			isDragging: false,
 			suppressClick: false,
-			progressPointerId: null,
-			unused: 0
+			progressPointer: null,
+			pendingFrame: null
 		};
 
-		function getVisibleCount() {
+		const reducedMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)'
+		);
+
+		function visibleCount() {
 			return window.matchMedia('(max-width: 767px)').matches
 				? 1
 				: Math.min(2, films.length);
 		}
 
 		function maxIndex() {
-			return Math.max(0, films.length - state.visibleCount);
+			return Math.max(0, films.length - state.visible);
 		}
 
-		function clampIndex(value) {
+		function clamp(value) {
 			return Math.max(0, Math.min(maxIndex(), value));
 		}
 
-		function currentRangeLabel() {
-			const start = state.index + 1;
-			const end = Math.min(films.length, state.index + state.visibleCount);
+		function rangeText() {
+			const from = state.index + 1;
 
-			if (state.visibleCount === 1) {
-				return start + ' of ' + films.length;
-			}
-
-			return start + '–' + end + ' of ' + films.length;
-		}
-
-		function updateProgress() {
-			const total = films.length;
-			const max = maxIndex();
-			const fillFraction = total <= state.visibleCount
-				? 1
-				: (state.visibleCount / total);
-			const travel = 1 - fillFraction;
-			const position = max === 0
-				? 0
-				: (state.index / max) * travel;
-
-			progressFill.style.width = (fillFraction * 100) + '%';
-			progressFill.style.left = (position * 100) + '%';
-
-			progress.setAttribute('aria-valuemax', String(max + 1));
-			progress.setAttribute('aria-valuenow', String(state.index + 1));
-			progress.setAttribute('aria-valuetext', currentRangeLabel());
-
-			count.textContent = currentRangeLabel();
-			progress.setAttribute('aria-disabled', String(max === 0));
-			progress.setAttribute('tabindex', max === 0 ? '-1' : '0');
-		}
-
-		function applyEdgeImage(edge, film, disabled) {
-			edge.element.classList.toggle('is-disabled', disabled);
-			edge.button.disabled = disabled;
-
-			const filmPath = film ? normalizePath(film.url) : '';
-			if (!filmPath) {
-				edge.image.hidden = true;
-				edge.placeholder.hidden = false;
-				edge._currentPath = '';
-				return;
-			}
-
-			// Dragging must not request the same image on every pointermove.
-			if (edge._currentPath === filmPath) {
-				return;
-			}
-
-			edge._currentPath = filmPath;
-			edge._requestId = (edge._requestId || 0) + 1;
-			const requestId = edge._requestId;
-
-			edge.image.hidden = true;
-			edge.placeholder.hidden = false;
-
-			fetchFilmImage(filmPath).then(function (imageURL) {
-				// Ignore a stale promise when someone advances rapidly.
-				if (requestId !== edge._requestId || !imageURL) return;
-
-				const showLoadedImage = function () {
-					if (requestId !== edge._requestId) return;
-					edge.image.hidden = false;
-					edge.placeholder.hidden = true;
-				};
-
-				edge.image.addEventListener('load', showLoadedImage, { once: true });
-				if (edge.image.src !== imageURL) {
-					edge.image.src = imageURL;
-				} else if (edge.image.complete) {
-					showLoadedImage();
-				}
-			});
-		}
-
-		function updateEdges() {
-			const prevIndex = state.index - 1;
-			const nextIndex = state.index + state.visibleCount;
-
-			applyEdgeImage(
-				prevEdge,
-				films[prevIndex] || films[state.index] || null,
-				state.index === 0
+			const to = Math.min(
+				films.length,
+				from + state.visible - 1
 			);
 
-			applyEdgeImage(
-				nextEdge,
-				films[nextIndex] || films[films.length - 1] || null,
-				state.index >= maxIndex()
-			);
-
-			mobilePrev.disabled = state.index === 0;
-			mobileNext.disabled = state.index >= maxIndex();
+			return state.visible === 1
+				? from + ' of ' + films.length
+				: from + '–' + to + ' of ' + films.length;
 		}
 
-		function preloadVisibleCards() {
-			const start = Math.max(0, state.index - 1);
-			const end = Math.min(films.length - 1, state.index + state.visibleCount);
+		/* PRELOAD CURRENT AND ADJACENT CARDS */
 
-			for (let i = start; i <= end; i += 1) {
-				if (cards[i] && typeof cards[i]._mtfLoadImage === 'function') {
+		function preloadNearby() {
+			const first = Math.max(0, state.index - 1);
+
+			const last = Math.min(
+				films.length - 1,
+				state.index + state.visible
+			);
+
+			for (let i = first; i <= last; i += 1) {
+				if (
+					typeof cards[i]._mtfLoadImage === 'function'
+				) {
 					cards[i]._mtfLoadImage();
 				}
 			}
 		}
 
-		function render(animate) {
-			const offset = state.index * state.stepWidth;
-			const dragOffset = state.dragging ? state.deltaX : 0;
+		/* ACTIVE / PREVIEW / OFFSTAGE STATES */
 
-			if (animate) {
-				// Re-enable transitions after a no-transition drag frame.
-				if (track.style.transition === 'none') {
-					void track.offsetWidth;
-					track.style.transition = '';
-				}
-			} else {
-				track.style.transition = 'none';
-			}
-
-			track.style.transform = 'translate3d(' +
-				((offset * -1) + dragOffset) + 'px, 0, 0)';
-
+		function updateCards() {
 			cards.forEach(function (card, index) {
-				const visible = index >= state.index &&
-					index < state.index + state.visibleCount;
-				card.inert = !visible;
-				card.setAttribute('aria-hidden', String(!visible));
-			});
+				const active =
+					index >= state.index &&
+					index < state.index + state.visible;
 
-			updateProgress();
-			updateEdges();
-			preloadVisibleCards();
+				const preview =
+					index === state.index - 1 ||
+					index === state.index + state.visible;
+
+				card.classList.toggle('is-active', active);
+				card.classList.toggle('is-preview', preview);
+
+				card.classList.toggle(
+					'is-offstage',
+					!active && !preview
+				);
+
+				// Preview cards are decorative until they
+				// move into the active viewing area.
+				card.inert = !active;
+
+				card.setAttribute(
+					'aria-hidden',
+					String(!active)
+				);
+			});
 		}
 
-		function measure() {
-			state.visibleCount = getVisibleCount();
-			state.index = clampIndex(state.index);
+		/* PROGRESS BAR */
 
-			const style = window.getComputedStyle(track);
-			state.gap = parseFloat(style.columnGap || style.gap || '0') || 0;
+		function updateProgress() {
+			const fraction = Math.min(
+				1,
+				state.visible / films.length
+			);
 
-			if (cards[0]) {
-				state.stepWidth = cards[0].getBoundingClientRect().width + state.gap;
-			}
-			else {
-				state.stepWidth = 0;
-			}
+			const travel = 1 - fraction;
 
-			render(false);
-			window.requestAnimationFrame(function () {
-				if (!state.dragging) track.style.transition = '';
-			});
-			section.classList.toggle(
-				'mtf-related-films--single',
-				films.length <= state.visibleCount
+			const progressPosition = maxIndex() === 0
+				? 0
+				: (state.index / maxIndex()) * travel;
+
+			progressFill.style.width =
+				(fraction * 100) + '%';
+
+			progressFill.style.left =
+				(progressPosition * 100) + '%';
+
+			progress.setAttribute(
+				'aria-valuemax',
+				String(maxIndex() + 1)
+			);
+
+			progress.setAttribute(
+				'aria-valuenow',
+				String(state.index + 1)
+			);
+
+			progress.setAttribute(
+				'aria-valuetext',
+				rangeText()
+			);
+
+			progress.setAttribute(
+				'aria-disabled',
+				String(maxIndex() === 0)
+			);
+
+			progress.tabIndex =
+				maxIndex() === 0 ? -1 : 0;
+
+			count.textContent = rangeText();
+		}
+
+		/* BUTTON AVAILABILITY */
+
+		function updateNavigation() {
+			const atStart = state.index === 0;
+			const atEnd = state.index >= maxIndex();
+
+			prevButton.disabled = atStart;
+			nextButton.disabled = atEnd;
+
+			prevButton.classList.toggle(
+				'is-unavailable',
+				atStart
+			);
+
+			nextButton.classList.toggle(
+				'is-unavailable',
+				atEnd
 			);
 		}
 
-		function setIndex(nextIndex, animate) {
-			state.index = clampIndex(nextIndex);
-			state.dragging = false;
-			state.deltaX = 0;
-			render(animate !== false);
+		/* TRACK POSITION */
+
+		function position(animate, draggingOffset) {
+			const x =
+				state.inset -
+				state.index * state.step +
+				(draggingOffset || 0);
+
+			if (!animate || reducedMotion.matches) {
+				track.style.transition = 'none';
+			} else if (track.style.transition === 'none') {
+				// Commit the current drag position first.
+				void track.offsetWidth;
+				track.style.transition = '';
+			}
+
+			track.style.transform =
+				'translate3d(' + x + 'px, 0, 0)';
+
+			if (!animate || reducedMotion.matches) {
+				requestAnimationFrame(function () {
+					if (!state.isDragging) {
+						track.style.transition = '';
+					}
+				});
+			}
 		}
 
-		function step(direction) {
-			setIndex(state.index + direction, true);
+		/* RE-RENDER */
+
+		function update(animate) {
+			updateCards();
+			updateNavigation();
+			updateProgress();
+			preloadNearby();
+
+			// Offscreen cards may have longer metadata.
+			// Height follows the active cards only.
+			let visibleHeight = 0;
+
+			for (
+				let i = state.index;
+				i < state.index + state.visible;
+				i += 1
+			) {
+				visibleHeight = Math.max(
+					visibleHeight,
+					cards[i].offsetHeight
+				);
+			}
+
+			viewport.style.height =
+				Math.ceil(visibleHeight + 28) + 'px';
+
+			position(animate, 0);
 		}
 
-		function dragThreshold() {
-			return Math.min(120, Math.max(40, state.stepWidth * 0.18));
+		/* RESPONSIVE MEASUREMENTS */
+
+		function measure() {
+			state.visible = visibleCount();
+			state.index = clamp(state.index);
+
+			const stageRect =
+				stage.getBoundingClientRect();
+
+			const viewportRect =
+				viewport.getBoundingClientRect();
+
+			const trackStyle =
+				window.getComputedStyle(track);
+
+			const gap =
+				parseFloat(
+					trackStyle.columnGap || trackStyle.gap
+				) || 0;
+
+			const cardWidth = Math.max(
+				1,
+				(
+					stageRect.width -
+					gap * (state.visible - 1)
+				) / state.visible
+			);
+
+			state.step = cardWidth + gap;
+
+			state.inset = Math.max(
+				0,
+				stageRect.left - viewportRect.left
+			);
+
+			track.style.setProperty(
+				'--mtf-related-card-width',
+				cardWidth + 'px'
+			);
+
+			stage.style.setProperty(
+				'--mtf-related-side-space',
+				state.inset + 'px'
+			);
+
+			stage.style.setProperty(
+				'--mtf-related-card-image-height',
+				(cardWidth * 9 / 16) + 'px'
+			);
+
+			section.classList.toggle(
+				'mtf-related-films--single',
+				films.length <= state.visible
+			);
+
+			update(false);
 		}
+
+		function goTo(index, animate) {
+			state.index = clamp(index);
+			update(animate !== false);
+		}
+
+		function move(direction) {
+			goTo(state.index + direction, true);
+		}
+
+		/* DRAG AND SWIPE */
 
 		function onPointerDown(event) {
-			if (films.length <= state.visibleCount || state.pointerId !== null) {
+			if (
+				maxIndex() === 0 ||
+				state.pointerId !== null
+			) {
 				return;
 			}
 
-			if (event.button !== undefined && event.button !== 0) {
+			if (
+				event.button !== undefined &&
+				event.button !== 0
+			) {
 				return;
 			}
 
@@ -724,232 +868,378 @@
 			state.startX = event.clientX;
 			state.startY = event.clientY;
 			state.deltaX = 0;
-			state.moved = false;
-			state.dragging = false;
-			// Do NOT capture on down: a simple click on the image/title
-			// must still activate the anchor in desktop/mobile browsers.
+			state.isDragging = false;
 		}
 
 		function onPointerMove(event) {
-			if (event.pointerId !== state.pointerId) return;
-
-			const deltaX = event.clientX - state.startX;
-			const deltaY = event.clientY - state.startY;
-
-			if (!state.dragging) {
-				if (Math.abs(deltaX) < 7) return;
-				if (Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
-
-				state.dragging = true;
-				state.moved = true;
-				viewport.setPointerCapture(event.pointerId);
-				viewport.classList.add('is-dragging');
+			if (event.pointerId !== state.pointerId) {
+				return;
 			}
 
-			state.deltaX = deltaX;
-			track.style.transition = 'none';
-			track.style.transform = 'translate3d(' +
-				((state.index * state.stepWidth * -1) + deltaX) + 'px, 0, 0)';
+			const dx = event.clientX - state.startX;
+			const dy = event.clientY - state.startY;
+
+			if (!state.isDragging) {
+				if (
+					Math.abs(dx) < 8 ||
+					Math.abs(dx) < Math.abs(dy) * 1.25
+				) {
+					return;
+				}
+
+				state.isDragging = true;
+				viewport.classList.add('is-dragging');
+
+				if (viewport.setPointerCapture) {
+					viewport.setPointerCapture(event.pointerId);
+				}
+			}
+
+			state.deltaX = dx;
+			position(false, dx);
 		}
 
 		function finishPointer(event, cancelled) {
-			if (event.pointerId !== state.pointerId) return;
-
-			const wasDragging = state.dragging;
-			const deltaX = state.deltaX;
-
-			if (wasDragging && viewport.hasPointerCapture(event.pointerId)) {
-				viewport.releasePointerCapture(event.pointerId);
+			if (event.pointerId !== state.pointerId) {
+				return;
 			}
 
-			viewport.classList.remove('is-dragging');
-			state.dragging = false;
-			state.pointerId = null;
-			state.startX = 0;
-			state.startY = 0;
-			state.deltaX = 0;
-			state.moved = false;
+			const dragging = state.isDragging;
+			const dx = state.deltaX;
 
-			if (wasDragging) {
+			if (
+				dragging &&
+				viewport.hasPointerCapture &&
+				viewport.hasPointerCapture(event.pointerId)
+			) {
+				viewport.releasePointerCapture(
+					event.pointerId
+				);
+			}
+
+			state.pointerId = null;
+			state.isDragging = false;
+			state.deltaX = 0;
+
+			viewport.classList.remove('is-dragging');
+
+			if (dragging) {
 				state.suppressClick = true;
-				// Click fires immediately after pointerup. Clear on a later task.
+
 				window.setTimeout(function () {
 					state.suppressClick = false;
-				}, 80);
+				}, 100);
 
-				const movedEnough = !cancelled && Math.abs(deltaX) > dragThreshold();
-				const direction = deltaX < 0 ? 1 : -1;
-				setIndex(state.index + (movedEnough ? direction : 0), true);
+				const threshold = Math.min(
+					90,
+					Math.max(35, state.step * .17)
+				);
+
+				if (
+					!cancelled &&
+					Math.abs(dx) > threshold
+				) {
+					move(dx < 0 ? 1 : -1);
+				} else {
+					update(true);
+				}
 			}
 		}
 
-		function onViewportClickCapture(event) {
+		function onClickCapture(event) {
 			if (!state.suppressClick) return;
+
 			event.preventDefault();
 			event.stopPropagation();
 		}
 
-		function progressIndexFromClientX(clientX) {
-			const rect = progress.getBoundingClientRect();
-			const ratio = rect.width > 0
-				? Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
-				: 0;
+		/* PROGRESS-BAR SCRUBBING */
+
+		function seekFromClientX(x) {
+			const rect =
+				progress.getBoundingClientRect();
+
+			const ratio = Math.max(
+				0,
+				Math.min(
+					1,
+					(x - rect.left) / Math.max(1, rect.width)
+				)
+			);
+
 			return Math.round(ratio * maxIndex());
 		}
 
-		function onProgressPointerDown(event) {
-			if (films.length <= state.visibleCount) {
+		function progressDown(event) {
+			if (maxIndex() === 0) return;
+
+			if (
+				event.button !== undefined &&
+				event.button !== 0
+			) {
 				return;
 			}
 
-			state.progressPointerId = event.pointerId;
-			progress.setPointerCapture(event.pointerId);
+			state.progressPointer = event.pointerId;
+
+			if (progress.setPointerCapture) {
+				progress.setPointerCapture(event.pointerId);
+			}
+
 			progress.classList.add('is-dragging');
-			setIndex(progressIndexFromClientX(event.clientX), false);
+
+			goTo(
+				seekFromClientX(event.clientX),
+				false
+			);
 		}
 
-		function onProgressPointerMove(event) {
-			if (event.pointerId !== state.progressPointerId) {
+		function progressMove(event) {
+			if (
+				event.pointerId !== state.progressPointer
+			) {
 				return;
 			}
 
-			setIndex(progressIndexFromClientX(event.clientX), false);
+			goTo(
+				seekFromClientX(event.clientX),
+				false
+			);
 		}
 
-		function onProgressPointerUp(event) {
-			if (event.pointerId !== state.progressPointerId) {
+		function progressUp(event, cancelled) {
+			if (
+				event.pointerId !== state.progressPointer
+			) {
 				return;
 			}
 
-			if (progress.hasPointerCapture(event.pointerId)) {
-				progress.releasePointerCapture(event.pointerId);
+			if (
+				progress.hasPointerCapture &&
+				progress.hasPointerCapture(event.pointerId)
+			) {
+				progress.releasePointerCapture(
+					event.pointerId
+				);
 			}
+
+			state.progressPointer = null;
 			progress.classList.remove('is-dragging');
-			setIndex(progressIndexFromClientX(event.clientX), true);
-			state.progressPointerId = null;
+
+			if (!cancelled) {
+				goTo(
+					seekFromClientX(event.clientX),
+					false
+				);
+			}
 		}
 
-		function onProgressKeyDown(event) {
-			if (films.length <= state.visibleCount) {
-				return;
-			}
+		/* KEYBOARD NAVIGATION */
+
+		function progressKeydown(event) {
+			if (maxIndex() === 0) return;
 
 			switch (event.key) {
 				case 'ArrowLeft':
-				case 'Left':
 					event.preventDefault();
-					step(-1);
+					move(-1);
 					break;
 
 				case 'ArrowRight':
-				case 'Right':
 					event.preventDefault();
-					step(1);
+					move(1);
 					break;
 
 				case 'Home':
 					event.preventDefault();
-					setIndex(0, true);
+					goTo(0, true);
 					break;
 
 				case 'End':
 					event.preventDefault();
-					setIndex(maxIndex(), true);
+					goTo(maxIndex(), true);
 					break;
 			}
 		}
 
-		prevEdge.button.addEventListener('click', function () {
-			step(-1);
-		});
+		/* EVENT LISTENERS */
 
-		nextEdge.button.addEventListener('click', function () {
-			step(1);
-		});
+		prevButton.addEventListener(
+			'click',
+			function () {
+				move(-1);
+			}
+		);
 
-		mobilePrev.addEventListener('click', function () {
-			step(-1);
-		});
+		nextButton.addEventListener(
+			'click',
+			function () {
+				move(1);
+			}
+		);
 
-		mobileNext.addEventListener('click', function () {
-			step(1);
-		});
+		viewport.addEventListener(
+			'pointerdown',
+			onPointerDown
+		);
 
-		viewport.addEventListener('pointerdown', onPointerDown);
-		viewport.addEventListener('pointermove', onPointerMove);
-		viewport.addEventListener('pointerup', function (event) {
-			finishPointer(event, false);
-		});
-		viewport.addEventListener('pointercancel', function (event) {
-			finishPointer(event, true);
-		});
-		viewport.addEventListener('click', onViewportClickCapture, true);
+		viewport.addEventListener(
+			'pointermove',
+			onPointerMove
+		);
 
-		progress.addEventListener('pointerdown', onProgressPointerDown);
-		progress.addEventListener('pointermove', onProgressPointerMove);
-		progress.addEventListener('pointerup', onProgressPointerUp);
-		progress.addEventListener('pointercancel', function (event) {
-			if (event.pointerId !== state.progressPointerId) return;
-			progress.classList.remove('is-dragging');
-			state.progressPointerId = null;
-			render(true);
-		});
-		progress.addEventListener('keydown', onProgressKeyDown);
+		viewport.addEventListener(
+			'pointerup',
+			function (event) {
+				finishPointer(event, false);
+			}
+		);
 
-		let resizeFrame = null;
-		window.addEventListener('resize', function () {
-			if (resizeFrame) {
-				window.cancelAnimationFrame(resizeFrame);
+		viewport.addEventListener(
+			'pointercancel',
+			function (event) {
+				finishPointer(event, true);
+			}
+		);
+
+		viewport.addEventListener(
+			'click',
+			onClickCapture,
+			true
+		);
+
+		viewport.addEventListener(
+			'dragstart',
+			function (event) {
+				event.preventDefault();
+			}
+		);
+
+		progress.addEventListener(
+			'pointerdown',
+			progressDown
+		);
+
+		progress.addEventListener(
+			'pointermove',
+			progressMove
+		);
+
+		progress.addEventListener(
+			'pointerup',
+			function (event) {
+				progressUp(event, false);
+			}
+		);
+
+		progress.addEventListener(
+			'pointercancel',
+			function (event) {
+				progressUp(event, true);
+			}
+		);
+
+		progress.addEventListener(
+			'keydown',
+			progressKeydown
+		);
+
+		/* RESIZING */
+
+		function scheduleMeasure() {
+			if (state.pendingFrame) {
+				cancelAnimationFrame(state.pendingFrame);
 			}
 
-			resizeFrame = window.requestAnimationFrame(function () {
-				measure();
-			});
-		});
+			state.pendingFrame =
+				requestAnimationFrame(measure);
+		}
+
+		if ('ResizeObserver' in window) {
+			const resizeObserver = new ResizeObserver(
+				scheduleMeasure
+			);
+
+			resizeObserver.observe(stage);
+			resizeObserver.observe(viewport);
+		}
+
+		window.addEventListener(
+			'resize',
+			scheduleMeasure
+		);
 
 		measure();
 	}
 
+	/* SECTION INSERTION */
+
 	function insertSection(section, options) {
 		options = options || {};
 
-		if (options.before && options.before.parentNode) {
-			options.before.parentNode.insertBefore(section, options.before);
+		if (
+			options.before &&
+			options.before.parentNode
+		) {
+			options.before.parentNode.insertBefore(
+				section,
+				options.before
+			);
+
 			return true;
 		}
 
-		if (options.after && options.after.parentNode) {
-			options.after.parentNode.insertBefore(section, options.after.nextSibling);
+		if (
+			options.after &&
+			options.after.parentNode
+		) {
+			options.after.parentNode.insertBefore(
+				section,
+				options.after.nextSibling
+			);
+
 			return true;
 		}
 
 		const footer = document.querySelector('footer');
+
 		if (footer && footer.parentNode) {
-			footer.parentNode.insertBefore(section, footer);
+			footer.parentNode.insertBefore(
+				section,
+				footer
+			);
+
 			return true;
 		}
 
 		return false;
 	}
 
+	/* INITIALIZATION */
+
 	function init(options) {
 		if (!isIndividualFilmPage()) {
 			return null;
 		}
 
-		const existingSection = document.querySelector('[data-mtf-related-films]');
-		if (existingSection) {
-			return existingSection;
+		const existing = document.querySelector(
+			'[data-mtf-related-films]'
+		);
+
+		if (existing) {
+			return existing;
 		}
 
 		if (
 			!MTF.filmRelated ||
-			typeof MTF.filmRelated.getRecommendations !== 'function'
+			typeof MTF.filmRelated.getRecommendations !==
+				'function'
 		) {
 			return null;
 		}
 
-		const recommendations = MTF.filmRelated.getRecommendations();
+		const recommendations =
+			MTF.filmRelated.getRecommendations();
 
 		if (
 			!recommendations ||
@@ -959,16 +1249,21 @@
 			return null;
 		}
 
-		const section = createSection(recommendations);
-		const inserted = insertSection(section, options);
+		const section =
+			createSection(recommendations);
 
-		if (!inserted) {
-			console.warn('Mark Thomas Films: unable to insert related films section.');
+		if (!insertSection(section, options)) {
+			console.warn(
+				'Mark Thomas Films: unable to insert related films section.'
+			);
+
 			return null;
 		}
 
-		// Measure only after insertion; detached cards have zero width.
-		if (typeof section._mtfInitCarousel === 'function') {
+		// Detached elements measure as zero width.
+		if (
+			typeof section._mtfInitCarousel === 'function'
+		) {
 			section._mtfInitCarousel();
 			delete section._mtfInitCarousel;
 		}
@@ -977,8 +1272,8 @@
 	}
 
 	MTF.filmRelatedUI = {
-		init: init,
-		fetchFilmImage: fetchFilmImage
+		init,
+		fetchFilmImage
 	};
 
 })();

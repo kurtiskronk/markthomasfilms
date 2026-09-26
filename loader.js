@@ -12,7 +12,7 @@
 		'https://markthomasfilms.mark-a7f.workers.dev';
 
 	const assetVersion =
-		'2026-09-26-tweaking-blog-styling-r12';
+		'2026-09-26-tweaking-blog-styling-r13';
 
 	const jsFiles = [
 		'js/films-tag-context.js',

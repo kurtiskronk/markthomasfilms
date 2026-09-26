@@ -1,0 +1,41 @@
+
+/* =========================================================
+	 MARK THOMAS FILMS
+	 BLOG SERIES HEADER
+
+	 Optional series label above the native article H1.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-top-wrapper > .mtf-multi-part-series {
+	display: block;
+	width: 100%;
+
+	margin: 0 0 20px;
+	padding: 0;
+
+	color: var(--mtf-blog-ink, #202020);
+
+	font-family: inherit;
+	font-size: .75rem;
+	font-weight: 600;
+	line-height: 1.5;
+	letter-spacing: .18em;
+
+	text-align: center;
+	text-transform: uppercase;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+	html.mtf-editorial-blog
+	.blog-item-top-wrapper > .mtf-multi-part-series {
+		margin-bottom: 16px;
+		font-size: .66rem;
+		letter-spacing: .12em;
+	}
+
+}

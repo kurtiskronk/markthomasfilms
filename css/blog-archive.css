@@ -1,15 +1,34 @@
 
 /* =========================================================
 	 MARK THOMAS FILMS — JOURNAL ARCHIVE
+
+	 Full-width photographic hero
+	 Narrower, two-column editorial archive
+	 Category above title
+	 Series tag and part number below title
+	 Responsive single-column mobile layout
 	 ========================================================= */
+
+
+/* VARIABLES */
 
 html.mtf-blog-archive-page {
 	--mtf-journal-ink: #202020;
 	--mtf-journal-muted: #65666b;
 	--mtf-journal-line: rgba(32, 32, 32, .17);
-	--mtf-journal-width: 1530px;
-	--mtf-journal-serif: Georgia, "Times New Roman", serif;
-	--mtf-journal-sans: Arial, Helvetica, sans-serif;
+
+	--mtf-journal-hero-width: 1530px;
+	--mtf-journal-list-width: 1000px;
+
+	--mtf-journal-serif:
+		Georgia,
+		"Times New Roman",
+		serif;
+
+	--mtf-journal-sans:
+		Arial,
+		Helvetica,
+		sans-serif;
 }
 
 
@@ -17,19 +36,23 @@ html.mtf-blog-archive-page {
 	 HERO
 	 ========================================================= */
 
-html.mtf-blog-archive-page .mtf-journal-hero {
+html.mtf-blog-archive-page
+.mtf-journal-hero {
 	position: relative;
 	left: 50%;
 
 	box-sizing: border-box;
+
 	width: 100vw;
 	min-height: clamp(265px, 19vw, 320px);
 
 	margin: 0;
 	overflow: hidden;
+
 	transform: translateX(-50%);
 
 	background-color: #5d584e;
+
 	background-image:
 		linear-gradient(
 			90deg,
@@ -39,16 +62,28 @@ html.mtf-blog-archive-page .mtf-journal-hero {
 		),
 		url("https://images.squarespace-cdn.com/content/6a93177fab3bb776e4354e2b/d5464ac6-fbae-4560-be7f-52967e67af4b/mtf-back-porch-sunset-hill-country.png");
 
-	background-position: center, center 48%;
-	background-size: cover, cover;
+	background-position:
+		center,
+		center 48%;
+
+	background-size:
+		cover,
+		cover;
+
 	background-repeat: no-repeat;
 
 	color: #fff;
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__inner {
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__inner {
 	box-sizing: border-box;
-	width: min(100%, var(--mtf-journal-width));
+
+	width: min(
+		100%,
+		var(--mtf-journal-hero-width)
+	);
 
 	margin: 0 auto;
 
@@ -57,70 +92,105 @@ html.mtf-blog-archive-page .mtf-journal-hero__inner {
 		clamp(25px, 4vw, 62px);
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__eyebrow,
-html.mtf-blog-archive-page .mtf-journal-hero__subtitle {
+
+/* HERO EYEBROW AND SUBTITLE */
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__eyebrow,
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__subtitle {
 	font-family: var(--mtf-journal-sans);
 	font-size: 12px;
 	font-weight: 500;
 	line-height: 1.75;
+
 	letter-spacing: .21em;
 	text-transform: uppercase;
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__eyebrow {
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__eyebrow {
 	display: flex;
 	align-items: center;
 	gap: 14px;
+
 	margin: 0 0 14px;
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__eyebrow::after {
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__eyebrow::after {
 	content: "";
+
 	width: 125px;
 	height: 1px;
+
 	background: rgba(255, 255, 255, .7);
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__title {
+
+/* HERO TITLE */
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__title {
 	max-width: 780px;
+
 	margin: 0 0 16px;
 
 	color: #fff;
+
 	font-family: var(--mtf-journal-serif);
 	font-size: clamp(30px, 3.1vw, 2.6rem);
 	font-weight: 400;
 	line-height: 1.12;
+
 	letter-spacing: -.025em;
 	text-transform: none;
 }
 
-html.mtf-blog-archive-page .mtf-journal-hero__subtitle {
+
+html.mtf-blog-archive-page
+.mtf-journal-hero__subtitle {
 	margin: 0;
 }
 
 
 /* =========================================================
 	 ARCHIVE CONTAINER
+
+	 Keep the hero full-width, but narrow the
+	 article listing to 1,000px.
 	 ========================================================= */
 
 html.mtf-blog-archive-page
 .blog-single-column.collection-content-wrapper {
 	box-sizing: border-box;
+
 	width: 100%;
 	max-width: none;
+
 	margin-top: 0;
 	padding-top: 0;
 }
 
-html.mtf-blog-archive-page .blog-single-column--wrapper {
+
+html.mtf-blog-archive-page
+.blog-single-column--wrapper {
 	display: block;
+
 	box-sizing: border-box;
 
 	width: 100%;
-	max-width: var(--mtf-journal-width);
+	max-width: var(--mtf-journal-list-width);
 
 	margin: 0 auto;
-	padding: 0 clamp(25px, 4vw, 62px) 60px;
+
+	padding:
+		0
+		clamp(24px, 3vw, 42px)
+		60px;
 }
 
 
@@ -140,6 +210,7 @@ html.mtf-blog-archive-page
 	width: 100%;
 	max-width: none;
 	min-height: 0;
+
 	margin: 0;
 
 	padding:
@@ -147,19 +218,22 @@ html.mtf-blog-archive-page
 		0
 		clamp(24px, 2.1vw, 30px);
 
-	border-bottom: 1px solid var(--mtf-journal-line);
+	border-bottom:
+		1px solid var(--mtf-journal-line);
 
 	background: transparent;
 	box-shadow: none;
 
 	opacity: 1;
 	visibility: visible;
+
 	animation: none;
 	transition: none;
 	transform: none;
 
 	cursor: pointer;
 }
+
 
 html.mtf-blog-archive-page
 .blog-single-column--wrapper
@@ -191,6 +265,9 @@ article.blog-single-column--container
 
 /* =========================================================
 	 TWO-COLUMN ARTICLE LAYOUT
+
+	 Fixed 40px gap.
+	 Slightly wider excerpt column.
 	 ========================================================= */
 
 html.mtf-blog-archive-page
@@ -208,11 +285,13 @@ article.blog-single-column--container
 		auto
 		minmax(0, 1fr);
 
-	column-gap: clamp(38px, 6vw, 102px);
+	column-gap: 40px;
+
 	align-items: start;
 
 	width: 100%;
 	max-width: none;
+
 	margin: 0;
 	padding: 0;
 }
@@ -222,13 +301,16 @@ article.blog-single-column--container
 	 CATEGORY ABOVE ARTICLE TITLE
 	 ========================================================= */
 
-html.mtf-blog-archive-page .mtf-journal-eyebrow {
+html.mtf-blog-archive-page
+.mtf-journal-eyebrow {
 	display: flex;
+
 	grid-column: 1;
 	grid-row: 1;
 
 	align-items: center;
 	gap: 15px;
+
 	min-width: 0;
 
 	margin: 0 0 10px;
@@ -237,12 +319,16 @@ html.mtf-blog-archive-page .mtf-journal-eyebrow {
 	font-size: 11px;
 	font-weight: 600;
 	line-height: 1.6;
+
 	letter-spacing: .18em;
 	text-transform: uppercase;
 }
 
-html.mtf-blog-archive-page .mtf-journal-eyebrow::after {
+
+html.mtf-blog-archive-page
+.mtf-journal-eyebrow::after {
 	content: "";
+
 	flex: 1;
 
 	width: 120px;
@@ -264,6 +350,7 @@ article.blog-single-column--container
 	grid-row: 2;
 
 	min-width: 0;
+
 	margin: 0 0 10px;
 	padding: 0;
 
@@ -275,9 +362,11 @@ article.blog-single-column--container
 	line-height: 1.2;
 
 	letter-spacing: -.025em;
+
 	text-align: left;
 	text-transform: none;
 }
+
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
@@ -291,13 +380,16 @@ article.blog-single-column--container
 	 TAG AND SERIES NUMBER
 	 ========================================================= */
 
-html.mtf-blog-archive-page .mtf-journal-taxonomy {
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy {
 	display: flex;
+
 	grid-column: 1;
 	grid-row: 3;
 
 	align-items: baseline;
 	flex-wrap: wrap;
+
 	gap: 8px 16px;
 
 	min-width: 0;
@@ -314,35 +406,57 @@ html.mtf-blog-archive-page .mtf-journal-taxonomy {
 	text-transform: uppercase;
 }
 
-html.mtf-blog-archive-page .mtf-journal-taxonomy__tags,
-html.mtf-blog-archive-page .mtf-journal-taxonomy__categories {
+
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy__tags,
+
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy__categories {
 	display: inline-flex;
+
 	align-items: baseline;
 	flex-wrap: wrap;
+
 	gap: 9px;
 }
 
-html.mtf-blog-archive-page .mtf-journal-eyebrow a,
-html.mtf-blog-archive-page .mtf-journal-taxonomy a {
+
+html.mtf-blog-archive-page
+.mtf-journal-eyebrow a,
+
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy a {
 	color: inherit;
 	text-decoration: none;
+
 	transition: opacity .2s ease;
 }
 
-html.mtf-blog-archive-page .mtf-journal-eyebrow a:hover,
-html.mtf-blog-archive-page .mtf-journal-taxonomy a:hover {
+
+html.mtf-blog-archive-page
+.mtf-journal-eyebrow a:hover,
+
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy a:hover {
 	opacity: .65;
 }
 
 
 /* =========================================================
-	 EXCERPT COLUMN — 1REM
+	 EXCERPT COLUMN
+
+	 Stacking order places the entire excerpt above
+	 the animated page curl.
 	 ========================================================= */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
 .blog-excerpt {
+	position: relative;
+	z-index: 3;
+
 	display: flex;
+
 	grid-column: 2;
 	grid-row: 1 / 4;
 
@@ -351,23 +465,32 @@ article.blog-single-column--container
 	align-items: stretch;
 
 	box-sizing: border-box;
+
 	width: 100%;
 	height: auto;
 	max-height: none;
 
 	margin: 0;
+
 	padding: 30px 15px 0 0;
+
 	overflow: visible;
 }
+
+
+/* ACTUAL SQUARESPACE EXCERPT */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
 .blog-excerpt-wrapper {
 	display: block;
+
 	height: auto;
 	max-height: none;
+
 	overflow: visible;
 }
+
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
@@ -385,7 +508,7 @@ article.blog-single-column--container
 }
 
 
-/* HIDE FULL ARTICLE BODIES IN ARCHIVES */
+/* HIDE COMPLETE ARTICLE CONTENT IN ARCHIVE */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
@@ -393,6 +516,9 @@ article.blog-single-column--container
 .blog-body-wrapper {
 	display: none;
 }
+
+
+/* HIDE NATIVE SQUARESPACE READ MORE */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container
@@ -407,10 +533,17 @@ article.blog-single-column--container
 
 /* =========================================================
 	 CUSTOM READ MORE
+
+	 Higher stacking order than the page curl.
 	 ========================================================= */
 
-html.mtf-blog-archive-page .mtf-journal-read-more {
+html.mtf-blog-archive-page
+.mtf-journal-read-more {
+	position: relative;
+	z-index: 4;
+
 	display: inline-block;
+
 	align-self: flex-end;
 
 	margin-top: auto;
@@ -424,6 +557,7 @@ html.mtf-blog-archive-page .mtf-journal-read-more {
 	line-height: 1.5;
 
 	letter-spacing: .20em;
+
 	text-decoration: none;
 	text-transform: uppercase;
 	white-space: nowrap;
@@ -431,13 +565,20 @@ html.mtf-blog-archive-page .mtf-journal-read-more {
 	transition: opacity .2s ease;
 }
 
-html.mtf-blog-archive-page .mtf-journal-read-more:hover {
+
+html.mtf-blog-archive-page
+.mtf-journal-read-more:hover {
 	opacity: .6;
 }
 
 
 /* =========================================================
 	 ANIMATED PAGE CURL
+
+	 Shadow: z-index 1
+	 Fold:   z-index 2
+	 Excerpt: z-index 3
+	 Read More: z-index 4
 	 ========================================================= */
 
 html.mtf-blog-archive-page
@@ -448,77 +589,100 @@ article.blog-single-column--container::after {
 	content: "";
 
 	position: absolute;
+
 	right: 0;
 	bottom: 0;
 
 	width: clamp(44px, 4vw, 66px);
 	height: clamp(44px, 4vw, 66px);
 
-	clip-path: polygon(
-		100% 0,
-		100% 100%,
-		0 100%
-	);
+	clip-path:
+		polygon(
+			100% 0,
+			100% 100%,
+			0 100%
+		);
 
 	pointer-events: none;
 
 	opacity: 0;
+
 	transform: scale(.04);
 	transform-origin: 100% 100%;
 
 	transition:
-		transform .34s cubic-bezier(.22, 1, .36, 1),
+		transform .34s
+			cubic-bezier(.22, 1, .36, 1),
 		opacity .22s ease;
 }
+
+
+/* SHADOW UNDER FOLDED CORNER */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container::before {
 	z-index: 1;
 
-	background: linear-gradient(
-		135deg,
-		transparent 47%,
-		rgba(145, 128, 112, .22) 76%
-	);
+	background:
+		linear-gradient(
+			135deg,
+			transparent 47%,
+			rgba(145, 128, 112, .22) 76%
+		);
 
 	filter: blur(3px);
-	transform: translate(3px, 3px) scale(.04);
+
+	transform:
+		translate(3px, 3px)
+		scale(.04);
 }
+
+
+/* FOLDED PAPER */
 
 html.mtf-blog-archive-page
 article.blog-single-column--container::after {
 	z-index: 2;
 
-	background: linear-gradient(
-		140deg,
-		#fff 0%,
-		#fefdfb 40%,
-		#eee9e2 70%,
-		#cdc5bc 100%
-	);
+	background:
+		linear-gradient(
+			140deg,
+			#fff 0%,
+			#fefdfb 40%,
+			#eee9e2 70%,
+			#cdc5bc 100%
+		);
 
 	border-bottom-right-radius: 5px;
 
-	filter: drop-shadow(
-		-3px 3px 2px rgba(48, 36, 26, .08)
-	);
+	filter:
+		drop-shadow(
+			-3px 3px 2px
+			rgba(48, 36, 26, .08)
+		);
 }
 
 
 /* HOVER ANIMATION */
 
 @media (hover: hover) and (pointer: fine) {
+
 	html.mtf-blog-archive-page
 	article.blog-single-column--container:hover::before {
 		opacity: 1;
-		transform: translate(3px, 3px) scale(1);
+
+		transform:
+			translate(3px, 3px)
+			scale(1);
 	}
+
 
 	html.mtf-blog-archive-page
 	article.blog-single-column--container:hover::after {
 		opacity: 1;
 		transform: scale(1);
 	}
+
 }
 
 
@@ -527,8 +691,12 @@ article.blog-single-column--container::after {
 html.mtf-blog-archive-page
 article.blog-single-column--container:focus-within::before {
 	opacity: 1;
-	transform: translate(3px, 3px) scale(1);
+
+	transform:
+		translate(3px, 3px)
+		scale(1);
 }
+
 
 html.mtf-blog-archive-page
 article.blog-single-column--container:focus-within::after {
@@ -536,10 +704,18 @@ article.blog-single-column--container:focus-within::after {
 	transform: scale(1);
 }
 
-html.mtf-blog-archive-page .blog-title a:focus-visible,
-html.mtf-blog-archive-page .mtf-journal-eyebrow a:focus-visible,
-html.mtf-blog-archive-page .mtf-journal-taxonomy a:focus-visible,
-html.mtf-blog-archive-page .mtf-journal-read-more:focus-visible {
+
+html.mtf-blog-archive-page
+.blog-title a:focus-visible,
+
+html.mtf-blog-archive-page
+.mtf-journal-eyebrow a:focus-visible,
+
+html.mtf-blog-archive-page
+.mtf-journal-taxonomy a:focus-visible,
+
+html.mtf-blog-archive-page
+.mtf-journal-read-more:focus-visible {
 	outline: 2px solid #776c5b;
 	outline-offset: 5px;
 }
@@ -547,21 +723,30 @@ html.mtf-blog-archive-page .mtf-journal-read-more:focus-visible {
 
 /* =========================================================
 	 MOBILE
+
+	 Single column at 800px.
+	 No extra excerpt top padding.
 	 ========================================================= */
 
 @media (max-width: 800px) {
 
-	html.mtf-blog-archive-page .mtf-journal-hero {
+	html.mtf-blog-archive-page
+	.mtf-journal-hero {
 		min-height: 265px;
 	}
 
-	html.mtf-blog-archive-page .mtf-journal-hero__inner {
+
+	html.mtf-blog-archive-page
+	.mtf-journal-hero__inner {
 		padding: 38px 25px;
 	}
 
-	html.mtf-blog-archive-page .blog-single-column--wrapper {
+
+	html.mtf-blog-archive-page
+	.blog-single-column--wrapper {
 		padding: 0 25px 48px;
 	}
+
 
 	html.mtf-blog-archive-page
 	.blog-single-column--wrapper
@@ -569,18 +754,26 @@ html.mtf-blog-archive-page .mtf-journal-read-more:focus-visible {
 		padding: 32px 0 22px;
 	}
 
+
 	html.mtf-blog-archive-page
 	article.blog-single-column--container
 	.blog-single-column--text {
-		grid-template-columns: minmax(0, 1fr);
-		grid-template-rows: auto auto auto auto;
+		grid-template-columns:
+			minmax(0, 1fr);
+
+		grid-template-rows:
+			auto auto auto auto;
+
 		gap: 0;
 	}
 
-	html.mtf-blog-archive-page .mtf-journal-eyebrow {
+
+	html.mtf-blog-archive-page
+	.mtf-journal-eyebrow {
 		grid-column: 1;
 		grid-row: 1;
 	}
+
 
 	html.mtf-blog-archive-page
 	article.blog-single-column--container
@@ -589,19 +782,25 @@ html.mtf-blog-archive-page .mtf-journal-read-more:focus-visible {
 		grid-row: 2;
 	}
 
-	html.mtf-blog-archive-page .mtf-journal-taxonomy {
+
+	html.mtf-blog-archive-page
+	.mtf-journal-taxonomy {
 		grid-column: 1;
 		grid-row: 3;
+
 		margin-bottom: 22px;
 	}
+
 
 	html.mtf-blog-archive-page
 	article.blog-single-column--container
 	.blog-excerpt {
 		grid-column: 1;
 		grid-row: 4;
+
 		padding: 0 15px 0 0;
 	}
+
 }
 
 
@@ -625,4 +824,5 @@ html.mtf-blog-archive-page .mtf-journal-read-more:focus-visible {
 	.mtf-journal-taxonomy a {
 		transition: none;
 	}
+
 }

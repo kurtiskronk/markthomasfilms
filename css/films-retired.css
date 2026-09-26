@@ -1,0 +1,66 @@
+
+/* =========================================================
+	 MARK THOMAS FILMS — RETIRED WEDDING FILMS
+	 ========================================================= */
+
+.mtf-retired-film {
+	width: 100%;
+	overflow: hidden;
+	background: #111;
+}
+
+.mtf-retired-film__image {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #111;
+}
+
+.mtf-retired-film__image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.mtf-retired-film__message {
+	box-sizing: border-box;
+	padding: 34px 30px 38px;
+	background: #111;
+	color: #fff;
+	text-align: center;
+}
+
+.mtf-retired-film__heading {
+	margin: 0 0 12px;
+	color: #fff;
+	font-family: inherit;
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.mtf-retired-film__copy {
+	max-width: 700px;
+	margin: 0 auto;
+	color: #f0f0f0;
+	font-family: inherit;
+	font-size: 17px;
+	line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+
+	.mtf-retired-film__message {
+		padding: 26px 22px 30px;
+	}
+
+	.mtf-retired-film__heading {
+		font-size: 23px;
+	}
+
+	.mtf-retired-film__copy {
+		font-size: 16px;
+	}
+
+}

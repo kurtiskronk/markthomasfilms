@@ -1,0 +1,288 @@
+
+/* =========================================================
+	 MARK THOMAS FILMS — EDITORIAL BLOG
+
+	 Individual posts under /blog/ only.
+	 Page identification happens early in Squarespace's
+	 Header Code Injection.
+	 ========================================================= */
+
+html.mtf-editorial-blog {
+	--mtf-blog-paper: #f5f2ec;
+	--mtf-blog-ink: #111;
+	--mtf-blog-line: rgba(0, 0, 0, .2);
+}
+
+/* BACKGROUND */
+
+html.mtf-editorial-blog body,
+html.mtf-editorial-blog main,
+html.mtf-editorial-blog #page,
+html.mtf-editorial-blog .page-section,
+html.mtf-editorial-blog .blog-item-wrapper {
+	background: var(--mtf-blog-paper);
+}
+
+/* ARTICLE CONTAINER */
+
+html.mtf-editorial-blog .blog-item-wrapper {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 1100px;
+	margin-inline: auto;
+	padding-inline: 40px;
+}
+
+/* HEADER */
+
+html.mtf-editorial-blog .blog-item-header,
+html.mtf-editorial-blog .blog-item-top-wrapper {
+	box-sizing: border-box;
+	text-align: center;
+}
+
+html.mtf-editorial-blog .blog-item-header {
+	margin-bottom: 38px;
+	padding: 70px 0 38px;
+	border-bottom: 1px solid var(--mtf-blog-line);
+}
+
+/* ARTICLE TITLE */
+
+html.mtf-editorial-blog .blog-item-title h1,
+html.mtf-editorial-blog h1.entry-title {
+	width: 100%;
+	max-width: 820px;
+	margin-inline: auto;
+	color: #0f0f0f;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(46px, 5.2vw, 68px);
+	font-weight: 400;
+	line-height: 1.02;
+	letter-spacing: -.025em;
+	text-align: center;
+	text-transform: none;
+}
+
+/* DATE, AUTHOR AND METADATA */
+
+html.mtf-editorial-blog .blog-item-meta-wrapper,
+html.mtf-editorial-blog .blog-meta-item,
+html.mtf-editorial-blog .blog-item-meta {
+	color: #1b1b1b;
+	font-size: 11px;
+	letter-spacing: .16em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+/* CONTENT WIDTH */
+
+html.mtf-editorial-blog .blog-item-content {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 1000px;
+	margin-inline: auto;
+	padding-bottom: 75px;
+	color: var(--mtf-blog-ink);
+}
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html,
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html .sqs-block-content,
+html.mtf-editorial-blog
+.blog-item-content .html-block .sqs-block-content {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 660px;
+	margin-inline: auto;
+}
+
+/* BODY COPY */
+
+html.mtf-editorial-blog .blog-item-content p {
+	margin: 0 0 18px;
+	color: var(--mtf-blog-ink);
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 18px;
+	line-height: 1.68;
+	letter-spacing: 0;
+}
+
+/* ARTICLE HEADINGS */
+
+html.mtf-editorial-blog .blog-item-content h2 {
+	margin: 58px 0 22px;
+	padding-top: 34px;
+	border-top: 1px solid var(--mtf-blog-line);
+	color: #0f0f0f;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(29px, 3.5vw, 38px);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: -.015em;
+	text-align: left;
+	text-transform: none;
+}
+
+html.mtf-editorial-blog .blog-item-content h3 {
+	margin: 42px 0 18px;
+	color: #0f0f0f;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 1.25;
+	text-transform: none;
+}
+
+/* FIRST HEADING, WHEN DIRECTLY INSIDE ARTICLE CONTENT */
+
+html.mtf-editorial-blog
+.blog-item-content > h2:first-child {
+	margin: 0 0 34px;
+	padding-top: 0;
+	border-top: 0;
+	color: #161616;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: .18em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+/* PULL QUOTES */
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 660px;
+	margin: 46px auto;
+	padding: 0;
+}
+
+html.mtf-editorial-blog blockquote {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 660px;
+	margin-inline: auto;
+	padding: 30px 20px;
+	border-top: 1px solid rgba(0, 0, 0, .25);
+	border-bottom: 1px solid rgba(0, 0, 0, .25);
+	border-right: 0;
+	border-left: 0;
+	text-align: center;
+	quotes: none;
+}
+
+html.mtf-editorial-blog blockquote::before,
+html.mtf-editorial-blog blockquote::after,
+html.mtf-editorial-blog blockquote p::before,
+html.mtf-editorial-blog blockquote p::after {
+	content: none;
+}
+
+html.mtf-editorial-blog blockquote p,
+html.mtf-editorial-blog
+.sqs-block-quote blockquote {
+	margin: 0;
+	color: #0f0f0f;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(24px, 3vw, 31px);
+	font-style: italic;
+	font-weight: 400;
+	line-height: 1.38;
+	text-align: center;
+}
+
+html.mtf-editorial-blog
+.sqs-block-quote figcaption,
+html.mtf-editorial-blog
+.sqs-block-quote .source {
+	margin-top: 16px;
+	color: #333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	letter-spacing: .12em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+/* LINKS AND BLOCK SPACING */
+
+html.mtf-editorial-blog .blog-item-content a {
+	color: #0f0f0f;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
+}
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block {
+	padding-block: 4px;
+}
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+	html.mtf-editorial-blog .blog-item-wrapper {
+		padding-inline: 22px;
+	}
+
+	html.mtf-editorial-blog .blog-item-header {
+		margin-bottom: 30px;
+		padding: 45px 0 28px;
+	}
+
+	html.mtf-editorial-blog .blog-item-title h1,
+	html.mtf-editorial-blog h1.entry-title {
+		font-size: 42px;
+		line-height: 1.04;
+	}
+
+	html.mtf-editorial-blog .blog-item-content {
+		max-width: 100%;
+	}
+
+	html.mtf-editorial-blog
+	.blog-item-content .sqs-block-html,
+	html.mtf-editorial-blog
+	.blog-item-content .sqs-block-html .sqs-block-content,
+	html.mtf-editorial-blog
+	.blog-item-content .html-block .sqs-block-content {
+		max-width: 100%;
+	}
+
+	html.mtf-editorial-blog .blog-item-content p {
+		margin-bottom: 17px;
+		font-size: 17px;
+		line-height: 1.65;
+	}
+
+	html.mtf-editorial-blog .blog-item-content h2 {
+		margin-top: 46px;
+		padding-top: 28px;
+		font-size: 30px;
+	}
+
+	html.mtf-editorial-blog
+	.blog-item-content .sqs-block-quote {
+		max-width: 100%;
+		margin-block: 38px;
+	}
+
+	html.mtf-editorial-blog blockquote {
+		max-width: 100%;
+		padding: 26px 10px;
+	}
+
+	html.mtf-editorial-blog blockquote p,
+	html.mtf-editorial-blog
+	.sqs-block-quote blockquote {
+		font-size: 24px;
+	}
+
+}

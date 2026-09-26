@@ -14,7 +14,7 @@
 		'https://markthomasfilms.mark-a7f.workers.dev';
 
 	const assetVersion =
-		'2026-09-25-early-render-r1';
+		'2026-09-25-blog-retired-r1';
 
 	const jsFiles = [
 		'js/films-tag-context.js',
@@ -31,6 +31,7 @@
 		'js/films-cards.js',
 		'js/films-testimonials-ui.js',
 		'js/films-header.js',
+		'js/filmes-detail-header.js',
 		'js/films-detail-header.js',
 		'js/films-footer.js',
 

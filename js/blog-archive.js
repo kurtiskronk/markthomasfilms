@@ -274,6 +274,7 @@
 		}
 
 
+		
 		function applyTaxonomy(
 				card,
 				categories,
@@ -282,95 +283,96 @@
 		) {
 				const title =
 						card.querySelector('.blog-title');
-
+		
 				if (!title) return;
-
-				// Remove previous generated metadata.
-
+		
+				// Remove previously generated metadata.
 				card.querySelector(
 						'.mtf-journal-eyebrow'
 				)?.remove();
-
+		
 				card.querySelector(
 						'.mtf-journal-taxonomy'
 				)?.remove();
-
-
-				/* CATEGORY ABOVE TITLE */
-
+		
+		
+				/* CATEGORY ABOVE THE TITLE */
+		
 				if (categories.length) {
 						const eyebrow =
 								document.createElement('div');
-
+		
 						eyebrow.className =
 								'mtf-journal-eyebrow';
-
+		
 						const link =
 								document.createElement('a');
-
-						link.href =
-								categories[0].href;
-
-						link.textContent =
-								categories[0].name;
-
+		
+						link.href = categories[0].href;
+						link.textContent = categories[0].name;
+		
 						eyebrow.appendChild(link);
-
 						title.before(eyebrow);
 				}
-
-
-				/* TAG BELOW TITLE */
-
+		
+		
+				/* TAG BELOW THE TITLE */
+		
 				if (tags.length) {
 						const nav =
 								document.createElement('nav');
-
+		
 						nav.className =
 								'mtf-journal-taxonomy';
-
+		
 						nav.setAttribute(
 								'aria-label',
 								part !== null
 										? 'Article series and part'
 										: 'Article tags'
 						);
-
+		
 						nav.appendChild(
 								taxonomyGroup(
 										[tags[0]],
 										'tags'
 								)
 						);
-
-
-						
+		
+		
 						/* AUTOMATIC PART NUMBER */
-						
+		
 						if (part !== null) {
 								const separator =
 										document.createElement('span');
-						
+		
 								separator.textContent = '·';
-						
+		
 								separator.setAttribute(
 										'aria-hidden',
 										'true'
 								);
-						
+		
 								const number =
 										document.createElement('span');
-						
+		
 								number.className =
 										'mtf-journal-series-part';
-						
+		
 								number.textContent =
 										'Part ' + part;
-						
+		
 								nav.appendChild(separator);
 								nav.appendChild(number);
 						}
+		
+		
+						/* INSERT THE COMPLETED NAVIGATION */
+		
+						title.after(nav);
+				}
 		}
+
 
 
 		/* =====================================================

@@ -489,7 +489,7 @@ article.blog-single-column--container
 	max-height: none;
 
 	margin: 0;
-	padding: 2px 15px 0 0;
+	padding: 30px 15px 0 0;
 
 	overflow: visible;
 }
@@ -826,7 +826,7 @@ html.mtf-blog-archive-page
 		grid-column: 1;
 		grid-row: 4;
 
-		padding-right: 15px;
+		padding: 0 15px 0 0;
 	}
 }
 

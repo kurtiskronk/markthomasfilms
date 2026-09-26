@@ -633,6 +633,212 @@ html.mtf-editorial-blog
 }
 
 
+
+
+
+
+/* =========================================================
+	 MARK THOMAS FILMS
+	 REUSABLE EDITORIAL ARTICLE TEMPLATE
+
+	 Applies only to our custom HTML article content.
+	 Page background, native H1, breadcrumbs and related
+	 posts are managed by their existing stylesheets.
+	 ========================================================= */
+
+
+/* ARTICLE CONTAINER */
+
+html.mtf-editorial-blog .mtf-editorial-article {
+	box-sizing: border-box;
+
+	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 0;
+
+	color: var(--mtf-blog-ink, #202020);
+}
+
+
+/* BODY PARAGRAPHS */
+
+html.mtf-editorial-blog
+.mtf-editorial-article > p {
+	margin: 0 0 1.4em;
+
+	color: inherit;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	line-height: 1.7;
+	letter-spacing: 0;
+}
+
+
+/* SERIES EYEBROW */
+
+html.mtf-editorial-blog
+.mtf-editorial-article > .mtf-editorial-eyebrow {
+	margin: 0 0 34px;
+
+	font-family: inherit;
+	font-size: .75rem;
+	font-weight: 600;
+	line-height: 1.5;
+	letter-spacing: .16em;
+
+	text-align: center;
+	text-transform: uppercase;
+}
+
+
+/* SECTION HEADINGS */
+
+html.mtf-editorial-blog
+.mtf-editorial-article > h2 {
+	margin: 52px 0 22px;
+	padding: 28px 0 0;
+
+	border-top: 1px solid
+		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+
+	color: inherit;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.6rem, 2.5vw, 1.9rem);
+	font-weight: 400;
+	line-height: 1.25;
+	letter-spacing: -.015em;
+
+	text-align: left;
+	text-transform: none;
+}
+
+
+/* LINKS WITHIN ARTICLES */
+
+html.mtf-editorial-blog
+.mtf-editorial-article a {
+	color: inherit;
+
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
+}
+
+
+/* OPTIONAL PULL QUOTES FOR FUTURE ARTICLES */
+
+html.mtf-editorial-blog
+.mtf-editorial-article > .mtf-editorial-pullquote {
+	box-sizing: border-box;
+
+	margin: 44px auto;
+	padding: 30px 20px;
+
+	border-top: 1px solid
+		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+	border-bottom: 1px solid
+		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+	border-left: 0;
+	border-right: 0;
+
+	text-align: center;
+}
+
+html.mtf-editorial-blog
+.mtf-editorial-article
+.mtf-editorial-pullquote p {
+	margin: 0;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+	font-weight: 400;
+	font-style: italic;
+	line-height: 1.4;
+}
+
+
+/* SERIES FOOTER */
+
+html.mtf-editorial-blog
+.mtf-editorial-article
+.mtf-editorial-series {
+	margin: 52px 0 0;
+	padding: 26px 0 0;
+
+	border-top: 1px solid
+		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+
+	text-align: center;
+}
+
+html.mtf-editorial-blog
+.mtf-editorial-article
+.mtf-editorial-series h2 {
+	margin: 0 0 10px;
+	padding: 0;
+
+	border: 0;
+
+	color: inherit;
+
+	font-family: inherit;
+	font-size: .78rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: .12em;
+
+	text-align: center;
+	text-transform: uppercase;
+}
+
+html.mtf-editorial-blog
+.mtf-editorial-article
+.mtf-editorial-series p {
+	max-width: 520px;
+	margin: 0 auto;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1rem;
+	font-style: italic;
+	line-height: 1.6;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+
+	html.mtf-editorial-blog
+	.mtf-editorial-article > p {
+		font-size: 1.0625rem;
+		line-height: 1.65;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-editorial-article > .mtf-editorial-eyebrow {
+		margin-bottom: 28px;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-editorial-article > h2 {
+		margin-top: 40px;
+		margin-bottom: 18px;
+		padding-top: 24px;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-editorial-article
+	.mtf-editorial-series {
+		margin-top: 42px;
+	}
+
+}
+
+
 /* ==================================================
    SOURCE: css/blog-related.css
    ================================================== */

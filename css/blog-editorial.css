@@ -1,44 +1,124 @@
 
 /* =========================================================
 	 MARK THOMAS FILMS — EDITORIAL BLOG
-	 Applies only to individual /blog/* posts. The page marker
-	 is applied synchronously in Squarespace Header Injection.
+
+	 Individual /blog/ article pages only.
+
+	 The mtf-editorial-blog class is added to <html>
+	 by our early Squarespace header script.
+
+	 ========================================================= */
+
+
+/* =========================================================
+	 VARIABLES
 	 ========================================================= */
 
 html.mtf-editorial-blog {
 	--mtf-blog-paper: #faf8f4;
 	--mtf-blog-ink: #202020;
 	--mtf-blog-rule: rgba(0, 0, 0, .17);
-	--mtf-blog-width: 760px;
+	--mtf-blog-reading-width: 760px;
 }
 
-/* A single 1100px outer container, with one centered reading column.
-	 Do not independently constrain each Squarespace text block. */
+
+/* =========================================================
+	 PAGE BACKGROUND
+
+	 Extend the warm background throughout the actual
+	 Squarespace section, rather than stopping at the
+	 smaller article wrapper.
+	 ========================================================= */
+
 html.mtf-editorial-blog body,
-html.mtf-editorial-blog main,
-html.mtf-editorial-blog #page,
+html.mtf-editorial-blog main#page,
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column,
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column
+> .content-wrapper,
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column
+> .content-wrapper > .content,
 html.mtf-editorial-blog .blog-item-wrapper {
-	background: var(--mtf-blog-paper);
+	background-color: var(--mtf-blog-paper);
 }
+
+
+/* Remove surplus space below the native article section. */
+
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column {
+	padding-bottom: 0;
+	margin-bottom: 0;
+	min-height: 0;
+}
+
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column
+> .content-wrapper {
+	padding-bottom: 0;
+}
+
+
+/* =========================================================
+	 ARTICLE CONTAINERS
+
+	 One outer container and one centered reading column.
+
+	 Squarespace's intermediate article element must not
+	 impose an additional, narrower content width.
+	 ========================================================= */
 
 html.mtf-editorial-blog .blog-item-wrapper {
 	box-sizing: border-box;
 	width: 100%;
 	max-width: 1100px;
 	margin: 0 auto;
-	padding: 0 24px 48px;
+	padding: 0 24px 42px;
 }
 
-html.mtf-editorial-blog .blog-item-inner-wrapper {
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.blog-item-wrapper > article {
 	box-sizing: border-box;
 	width: 100%;
-	max-width: var(--mtf-blog-width);
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}
+
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.blog-item-inner-wrapper {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: var(--mtf-blog-reading-width);
 	margin: 0 auto;
 	padding: 0;
 }
 
-/* Reserve the charcoal bar's space immediately, before its JS runs. */
-html.mtf-editorial-blog .blog-item-wrapper:not(:has(> .mtf-blog-breadcrumbs))::before {
+html.mtf-editorial-blog .blog-item-content-wrapper,
+html.mtf-editorial-blog .blog-item-content {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}
+
+
+/* =========================================================
+	 BREADCRUMB SPACE
+
+	 Display the charcoal bar before JavaScript inserts
+	 the actual breadcrumbs to prevent a layout jump.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-wrapper:not(
+	:has(> .mtf-blog-breadcrumbs)
+)::before {
 	content: '';
 	position: relative;
 	left: 50%;
@@ -46,57 +126,83 @@ html.mtf-editorial-blog .blog-item-wrapper:not(:has(> .mtf-blog-breadcrumbs))::b
 	box-sizing: border-box;
 	width: 100vw;
 	min-height: 36px;
-	margin: 0 0 38px;
-	transform: translateX(-50%);
+	margin: 0 0 32px;
 	background: #373737;
+	transform: translateX(-50%);
 }
+
+
+/* =========================================================
+	 ACTUAL BREADCRUMBS
+	 ========================================================= */
 
 html.mtf-editorial-blog .mtf-blog-breadcrumbs {
 	position: relative;
 	left: 50%;
 	box-sizing: border-box;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
-	column-gap: clamp(12px, 1.8vw, 28px);
-	row-gap: 3px;
+
+	gap: 3px clamp(12px, 1.8vw, 28px);
+
 	width: 100vw;
 	min-height: 36px;
-	margin: 0 0 38px;
+	margin: 0 0 32px;
 	padding: 7px 20px;
-	transform: translateX(-50%);
+
 	background: #373737;
 	color: #f4f4f4;
-	font: inherit;
+
+	transform: translateX(-50%);
+
+	font-family: inherit;
 	font-size: .66rem;
+	font-weight: 400;
 	line-height: 1.5;
 	letter-spacing: .18em;
-	text-transform: uppercase;
+
 	text-align: center;
+	text-transform: uppercase;
 }
 
+
+/* NAVIGATE TO LABEL */
+
+html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__label {
 	color: #dedede;
 	white-space: nowrap;
 }
 
+
+/* BREADCRUMB LIST */
+
+html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__list {
 	display: flex;
 	justify-content: center;
 	align-items: baseline;
 	flex-wrap: wrap;
 	gap: 0;
-	list-style: none;
+
 	margin: 0;
 	padding: 0;
+	list-style: none;
 }
 
+html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__item {
 	display: inline-flex;
 	align-items: baseline;
 }
 
+
+/* SEPARATOR */
+
+html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__separator {
 	margin: 0 14px;
 	color: #c8c8c8;
@@ -104,228 +210,395 @@ html.mtf-editorial-blog .mtf-blog-breadcrumbs {
 	letter-spacing: 0;
 }
 
-html.mtf-editorial-blog .mtf-blog-breadcrumbs a {
+
+/* LINKS */
+
+html.mtf-editorial-blog
+.mtf-blog-breadcrumbs a {
 	color: #ededed;
 	opacity: .85;
 	text-decoration: none;
 	transition: opacity 180ms ease;
 }
 
-html.mtf-editorial-blog .mtf-blog-breadcrumbs a:hover,
-html.mtf-editorial-blog .mtf-blog-breadcrumbs a:focus-visible {
+html.mtf-editorial-blog
+.mtf-blog-breadcrumbs a:hover,
+html.mtf-editorial-blog
+.mtf-blog-breadcrumbs a:focus-visible {
 	color: #fff;
 	opacity: 1;
 	text-decoration: none;
 }
 
-html.mtf-editorial-blog .mtf-blog-breadcrumbs a:focus-visible {
+html.mtf-editorial-blog
+.mtf-blog-breadcrumbs a:focus-visible {
 	outline: 2px solid #fff;
 	outline-offset: 4px;
 }
 
+
+/* CURRENT ARTICLE */
+
+html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__current {
 	color: #fff;
 	font-weight: 700;
 }
 
-/* Native title: styled before JS, no delayed class required. */
-html.mtf-editorial-blog .blog-item-header,
-html.mtf-editorial-blog .blog-item-top-wrapper {
+
+/* =========================================================
+	 ARTICLE HEADER
+
+	 The actual Squarespace template uses
+	 .blog-item-top-wrapper, not .blog-item-header.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.blog-item-top-wrapper {
+	box-sizing: border-box;
+	width: 100%;
+
+	margin: 0 0 30px;
+	padding: 0 0 24px;
+
+	border-bottom: 1px solid var(--mtf-blog-rule);
+
 	text-align: center;
 }
 
-html.mtf-editorial-blog .blog-item-header {
-	margin: 0 0 34px;
-	padding: 0 0 28px;
-	border-bottom: 1px solid var(--mtf-blog-rule);
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.blog-item-title {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
 }
 
-html.mtf-editorial-blog .blog-item-title,
-html.mtf-editorial-blog .blog-item-title h1,
-html.mtf-editorial-blog h1.entry-title {
-	max-width: 850px;
+
+/* =========================================================
+	 ARTICLE H1
+
+	 Target Squarespace's complete native H1 selector.
+	 Maximum desktop size: 3rem / approximately 48px.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.blog-item-top-wrapper
+.blog-item-title > h1.entry-title.entry-title--large {
+	width: 100%;
+	max-width: none;
 	margin: 0 auto;
+
 	color: var(--mtf-blog-ink);
+
 	font-family: Georgia, 'Times New Roman', serif;
-	font-size: clamp(2.2rem, 3.6vw, 3rem);
 	font-weight: 400;
 	line-height: 1.14;
 	letter-spacing: -.025em;
+
 	text-align: center;
 	text-transform: none;
 }
 
+
+/* =========================================================
+	 POST DATE AND AUTHOR
+	 ========================================================= */
+
 html.mtf-editorial-blog .blog-item-meta-wrapper,
 html.mtf-editorial-blog .blog-meta-item {
 	color: #444;
+
 	font-size: .69rem;
 	line-height: 1.5;
 	letter-spacing: .12em;
+
 	text-align: center;
 	text-transform: uppercase;
 }
 
-html.mtf-editorial-blog .blog-item-content {
-	box-sizing: border-box;
-	width: 100%;
-	max-width: var(--mtf-blog-width);
-	margin: 0 auto;
-	padding: 0 0 28px;
-	color: var(--mtf-blog-ink);
-}
 
-/* Remove inner width/padding layers, not the block's real content. */
-html.mtf-editorial-blog .blog-item-content .sqs-block-html,
-html.mtf-editorial-blog .blog-item-content .sqs-block-html .sqs-block-content,
-html.mtf-editorial-blog .blog-item-content .html-block .sqs-block-content {
+/* =========================================================
+	 ARTICLE BODY
+
+	 Eliminate competing width restrictions inside
+	 Squarespace's individual text blocks.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html,
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html .sqs-block-content,
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html .sqs-html-content {
 	box-sizing: border-box;
 	width: 100%;
 	max-width: none;
 	margin-inline: 0;
 }
 
-html.mtf-editorial-blog .blog-item-content .sqs-block {
+html.mtf-editorial-blog
+.blog-item-content .sqs-block {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-html.mtf-editorial-blog .blog-item-content p {
+
+/* =========================================================
+	 PARAGRAPHS
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html p {
 	margin: 0 0 18px;
+
 	color: var(--mtf-blog-ink);
+
 	font-family: Georgia, 'Times New Roman', serif;
 	font-size: 1.125rem;
 	line-height: 1.68;
 	letter-spacing: 0;
 }
 
-html.mtf-editorial-blog .blog-item-content h2 {
-	margin: 48px 0 20px;
-	padding-top: 32px;
-	border-top: 1px solid var(--mtf-blog-rule);
-	color: var(--mtf-blog-ink);
-	font-family: Georgia, 'Times New Roman', serif;
-	font-size: clamp(1.65rem, 2.6vw, 1.9rem);
-	font-weight: 400;
-	line-height: 1.2;
-	text-transform: none;
-}
 
-html.mtf-editorial-blog .blog-item-content h3 {
-	margin: 32px 0 16px;
-	font-family: Georgia, 'Times New Roman', serif;
-	font-size: 1.45rem;
-	font-weight: 400;
-	line-height: 1.3;
-	text-transform: none;
-}
+/* =========================================================
+	 OPENING EDITORIAL EYEBROW
 
-html.mtf-editorial-blog .blog-item-content > h2:first-child {
-	margin: 0 0 26px;
-	padding: 0;
-	border: 0;
+	 The opening label in Mark's existing article is a
+	 Squarespace text paragraph, not a native H2.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content
+.sqs-block-html:first-child
+.sqs-html-content > p.sqsrte-large:first-child {
+	margin: 0;
+
 	font-family: inherit;
 	font-size: .78rem;
 	font-weight: 500;
+	line-height: 1.5;
 	letter-spacing: .16em;
+
 	text-align: center;
 	text-transform: uppercase;
 }
 
-html.mtf-editorial-blog .blog-item-content .sqs-block-quote {
+
+/* =========================================================
+	 ARTICLE HEADINGS
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html h2 {
+	margin: 48px 0 20px;
+	padding-top: 32px;
+
+	border-top: 1px solid var(--mtf-blog-rule);
+
+	color: var(--mtf-blog-ink);
+
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(1.65rem, 2.6vw, 1.9rem);
+	font-weight: 400;
+	line-height: 1.2;
+
+	text-transform: none;
+}
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-html h3 {
+	margin: 32px 0 16px;
+
+	color: var(--mtf-blog-ink);
+
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: 1.45rem;
+	font-weight: 400;
+	line-height: 1.3;
+
+	text-transform: none;
+}
+
+
+/* =========================================================
+	 PULL QUOTES
+
+	 Squarespace's current Quote Blocks contain text
+	 directly inside blockquote rather than necessarily
+	 wrapping the text in paragraph elements.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote {
+	box-sizing: border-box;
 	width: 100%;
-	max-width: var(--mtf-blog-width);
-	margin: 40px auto;
+	max-width: none;
+
+	margin: 38px auto;
+
+	/* Necessary to override Squarespace's individual
+		 block-ID padding rule. */
+	padding: 0 !important;
+}
+
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote figure {
+	margin: 0;
 	padding: 0;
 }
 
-html.mtf-editorial-blog .blog-item-content blockquote {
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote blockquote {
 	box-sizing: border-box;
 	width: 100%;
-	margin: 0 auto;
+	margin: 0;
+
 	padding: 26px 16px;
+
 	border-block: 1px solid var(--mtf-blog-rule);
 	border-inline: 0;
+
+	color: var(--mtf-blog-ink);
+
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(1.3rem, 2.7vw, 1.8rem);
+	font-weight: 400;
+	font-style: italic;
+	line-height: 1.4;
+
 	text-align: center;
 	quotes: none;
 }
 
-html.mtf-editorial-blog .blog-item-content blockquote::before,
-html.mtf-editorial-blog .blog-item-content blockquote::after,
-html.mtf-editorial-blog .blog-item-content blockquote p::before,
-html.mtf-editorial-blog .blog-item-content blockquote p::after {
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote blockquote::before,
+html.mtf-editorial-blog
+.blog-item-content .sqs-block-quote blockquote::after {
 	content: none;
 }
 
-html.mtf-editorial-blog .blog-item-content blockquote p {
-	margin: 0;
-	font-size: clamp(1.3rem, 2.7vw, 1.8rem);
-	font-style: italic;
-	line-height: 1.4;
-	text-align: center;
-}
 
-html.mtf-editorial-blog .blog-item-content a {
+/* =========================================================
+	 ARTICLE LINKS
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-content a {
 	color: inherit;
 	text-decoration-thickness: 1px;
 	text-underline-offset: 4px;
 }
 
-/* The native pagination section itself (including its padding) is hidden. */
+
+/* =========================================================
+	 REMOVE OLD BLOG PAGINATION
+
+	 Our three-card article recommendations replace the
+	 native previous/next pagination.
+	 ========================================================= */
+
 html.mtf-editorial-blog #itemPagination,
 html.mtf-editorial-blog .item-pagination {
 	display: none;
 }
 
+
+/* =========================================================
+	 EMPTY COMMENTS
+
+	 Hide an empty native comments pane.
+	 Do not hide comments when actual content exists.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.blog-item-comments:has(
+	#blogItemCommentsContent:not(:has(*))
+) {
+	display: none;
+}
+
+
+/* =========================================================
+	 MOBILE
+	 ========================================================= */
+
 @media (max-width: 767px) {
 
-	html.mtf-editorial-blog .blog-item-wrapper {
-		padding: 0 18px 32px;
+	html.mtf-editorial-blog
+	.blog-item-wrapper {
+		padding: 0 18px 30px;
 	}
 
-	html.mtf-editorial-blog .blog-item-wrapper:not(:has(> .mtf-blog-breadcrumbs))::before,
-	html.mtf-editorial-blog .mtf-blog-breadcrumbs {
+	/* Breadcrumb bar */
+
+	html.mtf-editorial-blog
+	.blog-item-wrapper:not(
+		:has(> .mtf-blog-breadcrumbs)
+	)::before,
+	html.mtf-editorial-blog
+	.mtf-blog-breadcrumbs {
 		min-height: 36px;
 		margin-bottom: 28px;
 	}
 
-	html.mtf-editorial-blog .mtf-blog-breadcrumbs {
+	html.mtf-editorial-blog
+	.mtf-blog-breadcrumbs {
 		padding: 8px 12px;
+
 		font-size: .58rem;
 		letter-spacing: .08em;
 	}
 
+	html.mtf-editorial-blog
 	.mtf-blog-breadcrumbs__label {
 		display: none;
 	}
 
+	html.mtf-editorial-blog
 	.mtf-blog-breadcrumbs__separator {
 		margin: 0 8px;
 	}
 
-	html.mtf-editorial-blog .blog-item-header {
-		margin-bottom: 28px;
+	/* Header */
+
+	html.mtf-editorial-blog
+	body.collection-type-blog-single-column
+	.blog-item-top-wrapper {
+		margin-bottom: 26px;
 		padding-bottom: 22px;
 	}
 
-	html.mtf-editorial-blog .blog-item-title,
-	html.mtf-editorial-blog .blog-item-title h1,
-	html.mtf-editorial-blog h1.entry-title {
-		font-size: clamp(2rem, 6vw, 2.5rem);
-	}
+	/* Reading typography */
 
-	html.mtf-editorial-blog .blog-item-content p {
+	html.mtf-editorial-blog
+	.blog-item-content .sqs-block-html p {
 		font-size: 1.0625rem;
 		line-height: 1.65;
 	}
 
-	html.mtf-editorial-blog .blog-item-content h2 {
+	html.mtf-editorial-blog
+	.blog-item-content .sqs-block-html h2 {
 		margin-top: 38px;
 		padding-top: 26px;
 	}
+
 }
 
+
+/* =========================================================
+	 REDUCED MOTION
+	 ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-	html.mtf-editorial-blog .mtf-blog-breadcrumbs a {
+
+	html.mtf-editorial-blog
+	.mtf-blog-breadcrumbs a {
 		transition: none;
 	}
+
 }

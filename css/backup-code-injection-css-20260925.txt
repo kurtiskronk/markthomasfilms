@@ -1,0 +1,194 @@
+/* ==========================================================
+	 SQUARESPACE CODE BLOCK EDITOR HEIGHT FIX
+	 ========================================================== */
+
+html.squarespace-damask .sqs-blockStatus,
+html.squarespace-damask .removed-script {
+	display: none !important;
+}
+
+/* ==========================================
+	 MTF FILM PAGE ARROW NAVIGATION
+	 ========================================== */
+
+.sqs-block-video {
+	position: relative;
+	overflow: visible;
+}
+
+.mtf-film-arrow-nav {
+	position: absolute;
+	top: 50%;
+	left: -55px;
+	right: -55px;
+	transform: translateY(-50%);
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: center;
+	z-index: 10;
+	pointer-events: none;
+}
+
+.mtf-film-arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 64px;
+	font-size: 56px;
+	font-weight: 300;
+	line-height: 1;
+	color: #111;
+	text-decoration: none !important;
+	opacity: 0.65;
+	pointer-events: auto;
+	transition: opacity 0.2s ease;
+}
+
+.mtf-film-arrow:hover {
+	opacity: 1;
+}
+
+.mtf-film-arrow-prev {
+	justify-self: start;
+}
+
+.mtf-film-arrow-next {
+	justify-self: end;
+}
+
+
+/* MOBILE */
+@media screen and (max-width: 767px) {
+
+	.mtf-film-arrow-nav {
+		position: relative;
+		top: auto;
+		left: auto;
+		right: auto;
+		transform: none;
+		margin-top: 10px;
+		padding: 0 2px;
+	}
+
+	.mtf-film-arrow {
+		width: 44px;
+		height: 44px;
+		font-size: 46px;
+	}
+
+}
+
+/* MTF FILM NAVIGATION REFINEMENTS */
+
+.mtf-film-arrow-label {
+	display: none;
+}
+
+.item-pagination {
+	position: relative;
+}
+
+.item-pagination-link--prev,
+.item-pagination-link--next {
+	font-size: 56px !important;
+	font-weight: 300 !important;
+	line-height: 1 !important;
+	text-decoration: none !important;
+}
+
+.mtf-bottom-film-label {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 16px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+@media screen and (max-width: 767px) {
+
+	.mtf-film-arrow-nav {
+		grid-template-columns: 44px 1fr 44px;
+		align-items: center;
+	}
+
+	.mtf-film-arrow-label {
+		display: block;
+		text-align: center;
+		font-size: 14px;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.item-pagination-link--prev,
+	.item-pagination-link--next {
+		font-size: 46px !important;
+	}
+
+	.mtf-bottom-film-label {
+		font-size: 13px;
+	}
+}
+/* MTF — Custom bottom Film navigation */
+
+.item-pagination-link--prev,
+.item-pagination-link--next,
+.mtf-bottom-film-label {
+	display: none !important;
+}
+
+.mtf-bottom-nav {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 200px;
+}
+
+.mtf-bottom-nav-arrow {
+	width: 60px;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 56px;
+	font-weight: 300;
+	line-height: 1;
+	color: #111;
+	text-decoration: none !important;
+	cursor: pointer;
+}
+
+.mtf-bottom-nav-label {
+	font-size: 16px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+@media screen and (max-width: 767px) {
+	.mtf-bottom-nav {
+		gap: 45px;
+	}
+
+	.mtf-bottom-nav-arrow {
+		width: 50px;
+		height: 50px;
+		font-size: 46px;
+	}
+
+	.mtf-bottom-nav-label {
+		font-size: 13px;
+	}
+}
+/* MTF — Tighten bottom Film navigation spacing */
+.item-pagination {
+	min-height: 0 !important;
+	margin-top: 0px !important;
+	padding-top: 30px !important;
+	padding-bottom: 30px !important;
+}

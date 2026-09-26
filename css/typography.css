@@ -1,0 +1,49 @@
+
+/* =========================================================
+	 MARK THOMAS FILMS — GLOBAL TYPOGRAPHY
+
+	 One consistent H1 size across the entire website.
+
+	 This file should be loaded after the individual
+	 page stylesheets.
+	 ========================================================= */
+
+
+/* =========================================================
+	 GLOBAL HEADING VARIABLES
+	 ========================================================= */
+
+:root {
+	--mtf-h1-size: 2.6rem;
+	--mtf-h1-mobile-size: clamp(1.875rem, 6vw, 2.25rem);
+}
+
+
+/* =========================================================
+	 ALL H1 HEADINGS
+
+	 The single authoritative size rule for the website.
+
+	 Important is intentional here: Squarespace and our
+	 older stylesheets have competing H1 declarations.
+	 ========================================================= */
+
+html body h1 {
+	font-size: var(--mtf-h1-size) !important;
+	font-weight: 400;
+	line-height: 1.14;
+	letter-spacing: -.025em;
+}
+
+
+/* =========================================================
+	 MOBILE H1 HEADINGS
+	 ========================================================= */
+
+@media (max-width: 767px) {
+
+	html body h1 {
+		font-size: var(--mtf-h1-mobile-size) !important;
+	}
+
+}

@@ -56,7 +56,7 @@
 
 		const blogLink = document.createElement('a');
 		blogLink.href = '/journal';
-		blogLink.textContent = 'Blog';
+		blogLink.textContent = 'Journal';
 
 		blogItem.appendChild(blogLink);
 
@@ -106,7 +106,7 @@
 					{
 						'@type': 'ListItem',
 						position: 1,
-						name: 'Blog',
+						name: 'Journal',
 						item: new URL('/journal', location.origin).href
 					},
 					{

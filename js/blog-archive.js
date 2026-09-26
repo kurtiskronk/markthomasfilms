@@ -235,98 +235,73 @@
 		return group;
 	}
 
+	
 	function applyTaxonomy(
-		card,
-		categories,
-		tags
+			card,
+			categories,
+			tags
 	) {
-		const title =
-			card.querySelector('.blog-title');
-
-		if (!title) return;
-
-		card.querySelector(
-			'.mtf-journal-eyebrow'
-		)?.remove();
-
-		card.querySelector(
-			'.mtf-journal-taxonomy'
-		)?.remove();
-
-		const primary =
-			tags[0] || categories[0];
-
-		// Featured tag above the article title.
-		if (primary) {
-			const eyebrow =
-				document.createElement('div');
-
-			eyebrow.className =
-				'mtf-journal-eyebrow';
-
-			const link =
-				document.createElement('a');
-
-			link.href = primary.href;
-			link.textContent = primary.name;
-
-			eyebrow.appendChild(link);
-
-			title.before(eyebrow);
-		}
-
-		if (
-			!tags.length &&
-			!categories.length
-		) {
-			return;
-		}
-
-		const nav =
-			document.createElement('nav');
-
-		nav.className =
-			'mtf-journal-taxonomy';
-
-		nav.setAttribute(
-			'aria-label',
-			'Article categories and tags'
-		);
-
-		if (categories.length) {
-			nav.appendChild(
-				taxonomyGroup(
-					categories,
-					'categories'
-				)
-			);
-		}
-
-		if (
-			categories.length &&
-			tags.length
-		) {
-			const sep =
-				document.createElement('span');
-
-			sep.textContent = '|';
-
-			sep.setAttribute(
-				'aria-hidden',
-				'true'
-			);
-
-			nav.appendChild(sep);
-		}
-
-		if (tags.length) {
-			nav.appendChild(
-				taxonomyGroup(tags, 'tags')
-			);
-		}
-
-		title.after(nav);
+			const title =
+					card.querySelector('.blog-title');
+	
+			if (!title) return;
+	
+			// Remove previously generated metadata.
+			card.querySelector(
+					'.mtf-journal-eyebrow'
+			)?.remove();
+	
+			card.querySelector(
+					'.mtf-journal-taxonomy'
+			)?.remove();
+	
+	
+			/* TAG ABOVE THE TITLE */
+	
+			if (tags.length) {
+					const eyebrow =
+							document.createElement('div');
+	
+					eyebrow.className =
+							'mtf-journal-eyebrow';
+	
+					const link =
+							document.createElement('a');
+	
+					link.href = tags[0].href;
+					link.textContent = tags[0].name;
+	
+					eyebrow.appendChild(link);
+	
+					title.before(eyebrow);
+			}
+	
+	
+			/* CATEGORIES BELOW THE TITLE */
+	
+			if (categories.length) {
+					const nav =
+							document.createElement('nav');
+	
+					nav.className =
+							'mtf-journal-taxonomy';
+	
+					nav.setAttribute(
+							'aria-label',
+							'Article categories'
+					);
+	
+					nav.appendChild(
+							taxonomyGroup(
+									categories,
+									'categories'
+							)
+					);
+	
+					title.after(nav);
+			}
 	}
+
 
 
 	/* STATIC JOURNAL HERO */

@@ -53,9 +53,9 @@ html.mtf-blog-archive-page .mtf-journal-hero {
 	box-sizing: border-box;
 
 	width: 100vw;
-	min-height: clamp(300px, 22vw, 420px);
+	min-height: clamp(265px, 19vw, 320px);
 
-	margin: 0 0 12px;
+	margin: 0;
 	overflow: hidden;
 
 	transform: translateX(-50%);
@@ -99,7 +99,7 @@ html.mtf-blog-archive-page
 	margin: 0 auto;
 
 	padding:
-		clamp(52px, 5.4vw, 84px)
+		clamp(38px, 3vw, 50px)
 		clamp(25px, 4vw, 62px);
 }
 
@@ -127,7 +127,7 @@ html.mtf-blog-archive-page
 	align-items: center;
 	gap: 14px;
 
-	margin: 0 0 22px;
+	margin: 0 0 14px;
 }
 
 
@@ -135,7 +135,7 @@ html.mtf-blog-archive-page
 .mtf-journal-hero__eyebrow::after {
 	content: '';
 
-	width: 145px;
+	width: 125px;
 	height: 1px;
 
 	background: rgba(255, 255, 255, .7);
@@ -146,16 +146,16 @@ html.mtf-blog-archive-page
 
 html.mtf-blog-archive-page
 .mtf-journal-hero__title {
-	max-width: 850px;
+	max-width: 780px;
 
-	margin: 0 0 22px;
+	margin: 0 0 16px;
 
 	color: #fff;
 
 	font-family: var(--mtf-journal-serif);
-	font-size: clamp(37px, 4vw, 61px);
+	font-size: clamp(30px, 3.1vw, 2.6rem);
 	font-weight: 400;
-	line-height: 1.1;
+	line-height: 1.12;
 
 	letter-spacing: -.025em;
 	text-transform: none;
@@ -178,6 +178,10 @@ html.mtf-blog-archive-page
 
 	width: 100%;
 	max-width: none;
+
+	/* Remove Squarespace's extra space above the first article. */
+	margin-top: 0;
+	padding-top: 0;
 }
 
 
@@ -195,7 +199,7 @@ html.mtf-blog-archive-page
 	padding:
 		0
 		clamp(25px, 4vw, 62px)
-		76px;
+		60px;
 }
 
 
@@ -226,7 +230,7 @@ html.mtf-blog-archive-page
 	margin: 0;
 
 	padding:
-		clamp(49px, 5vw, 76px)
+		clamp(38px, 3vw, 48px)
 		0;
 
 	border-bottom:
@@ -286,9 +290,9 @@ article.blog-single-column--container
 	 6. TWO-COLUMN ARTICLE LAYOUT
 
 	 Left:
-	 - Featured tag, if available
+	 - Category, if available
 	 - Article title
-	 - Tags and categories
+	 - Tag and optional series part
 
 	 Right:
 	 - Excerpt
@@ -325,7 +329,7 @@ article.blog-single-column--container
 
 
 /* =========================================================
-	 7. FEATURED TAG ABOVE ARTICLE TITLE
+	 7. CATEGORY ABOVE ARTICLE TITLE
 	 ========================================================= */
 
 html.mtf-blog-archive-page
@@ -340,7 +344,7 @@ html.mtf-blog-archive-page
 
 	min-width: 0;
 
-	margin: 0 0 12px;
+	margin: 0 0 10px;
 
 	font-family: var(--mtf-journal-sans);
 	font-size: 11px;
@@ -367,7 +371,7 @@ html.mtf-blog-archive-page
 
 
 /* =========================================================
-	 8. ARTICLE TITLES
+	 8. ARTICLE TITLES (MAXIMUM 2.4REM)
 	 ========================================================= */
 
 html.mtf-blog-archive-page
@@ -378,13 +382,13 @@ article.blog-single-column--container
 
 	min-width: 0;
 
-	margin: 0 0 13px;
+	margin: 0 0 10px;
 	padding: 0;
 
 	color: var(--mtf-journal-ink);
 
 	font-family: var(--mtf-journal-serif);
-	font-size: clamp(32px, 3.2vw, 49px);
+	font-size: clamp(29px, 2.5vw, 2.4rem);
 	font-weight: 400;
 	line-height: 1.15;
 
@@ -759,26 +763,26 @@ html.mtf-blog-archive-page
 
 	html.mtf-blog-archive-page
 	.mtf-journal-hero {
-		min-height: 340px;
+		min-height: 265px;
 	}
 
 
 	html.mtf-blog-archive-page
 	.mtf-journal-hero__inner {
-		padding: 50px 27px;
+		padding: 38px 25px;
 	}
 
 
 	html.mtf-blog-archive-page
 	.blog-single-column--wrapper {
-		padding: 0 25px 54px;
+		padding: 0 25px 48px;
 	}
 
 
 	html.mtf-blog-archive-page
 	.blog-single-column--wrapper
 	> article.blog-single-column--container {
-		padding: 44px 0;
+		padding: 32px 0;
 	}
 
 
@@ -812,6 +816,8 @@ html.mtf-blog-archive-page
 	.blog-title {
 		grid-column: 1;
 		grid-row: 2;
+
+		font-size: clamp(1.8rem, 5vw, 2.25rem);
 	}
 
 

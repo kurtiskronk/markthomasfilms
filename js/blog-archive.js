@@ -393,6 +393,7 @@
 		if (!path) return null;
 
 		card.dataset.mtfJournalReady = '1';
+		card.classList.add('is-loaded');
 
 		const categories =
 			nativeTerms(card, 'category');

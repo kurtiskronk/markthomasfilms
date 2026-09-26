@@ -344,23 +344,32 @@
 						);
 
 
+						
 						/* AUTOMATIC PART NUMBER */
-
+						
 						if (part !== null) {
+								const separator =
+										document.createElement('span');
+						
+								separator.textContent = '·';
+						
+								separator.setAttribute(
+										'aria-hidden',
+										'true'
+								);
+						
 								const number =
 										document.createElement('span');
-
+						
 								number.className =
 										'mtf-journal-series-part';
-
+						
 								number.textContent =
-										'· Part ' + part;
-
+										'Part ' + part;
+						
+								nav.appendChild(separator);
 								nav.appendChild(number);
 						}
-
-						title.after(nav);
-				}
 		}
 
 

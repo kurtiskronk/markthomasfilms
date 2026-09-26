@@ -19,7 +19,7 @@
 	 ========================================================= */
 
 html.mtf-editorial-blog {
-	--mtf-blog-paper: #faf8f4;
+	--mtf-blog-paper: #f5f2ec;
 	--mtf-blog-ink: #202020;
 	--mtf-blog-rule: rgba(0, 0, 0, .17);
 	--mtf-blog-reading-width: 760px;
@@ -29,27 +29,52 @@ html.mtf-editorial-blog {
 /* =========================================================
 	 PAGE BACKGROUND
 
-	 Extend the warm background throughout the actual
-	 Squarespace section, rather than stopping at the
-	 smaller article wrapper.
+	 Cover Squarespace's actual section background as
+	 well as the article's internal containers.
 	 ========================================================= */
 
-html.mtf-editorial-blog body,
-html.mtf-editorial-blog main#page,
+html.mtf-editorial-blog
+body.collection-type-blog-single-column,
+
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+main#page,
+
 html.mtf-editorial-blog
 section.page-section.collection-type-blog-single-column,
+
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column
+> .section-border,
+
+html.mtf-editorial-blog
+section.page-section.collection-type-blog-single-column
+> .section-border > .section-background,
+
 html.mtf-editorial-blog
 section.page-section.collection-type-blog-single-column
 > .content-wrapper,
+
 html.mtf-editorial-blog
 section.page-section.collection-type-blog-single-column
 > .content-wrapper > .content,
-html.mtf-editorial-blog .blog-item-wrapper {
+
+html.mtf-editorial-blog
+.blog-item-wrapper,
+
+html.mtf-editorial-blog
+.blog-item-inner-wrapper,
+
+html.mtf-editorial-blog
+.blog-item-content-wrapper,
+
+html.mtf-editorial-blog
+.blog-item-content {
 	background-color: var(--mtf-blog-paper);
 }
 
 
-/* Remove surplus space below the native article section. */
+/* Remove unnecessary space below the article section. */
 
 html.mtf-editorial-blog
 section.page-section.collection-type-blog-single-column {

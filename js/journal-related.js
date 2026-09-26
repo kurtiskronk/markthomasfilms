@@ -2,7 +2,7 @@
 /* =========================================================
 	 MARK THOMAS FILMS — OTHER POSTS YOU MAY BE INTERESTED IN
 
-	 Uses public Squarespace /blog archive HTML. No manual list
+	 Uses public Squarespace /journal archive HTML. No manual list
 	 or invented articles. Shows up to three posts, no carousel.
 	 Future category/tag matching is ready when Mark adds them.
 	 ========================================================= */
@@ -16,9 +16,9 @@
 	const MAX_ARCHIVE_PAGES = 8;
 
 	function isPost() {
-		return /^\/blog\/[^/]+\/?$/i.test(
+		return /^\/journal\/[^/]+\/?$/i.test(
 			location.pathname
-		) && !/^\/blog\/(?:tag|category|page)\//i.test(
+		) && !/^\/journal\/(?:tag|category|page)\//i.test(
 			location.pathname
 		);
 	}
@@ -41,8 +41,8 @@
 	function postPath(value, base) {
 		const path = canonical(value, base);
 
-		return /^\/blog\/[^/]+$/i.test(path) &&
-			!/^\/blog\/(?:tag|category|page)$/i.test(path)
+		return /^\/journal\/[^/]+$/i.test(path) &&
+			!/^\/journal\/(?:tag|category|page)$/i.test(path)
 			? path
 			: '';
 	}
@@ -198,7 +198,7 @@
 
 				if (
 					u.origin === location.origin &&
-					/^\/blog\/?$/i.test(u.pathname)
+					/^\/journal\/?$/i.test(u.pathname)
 				) {
 					return u.href;
 				}
@@ -251,7 +251,7 @@
 		const visited = new Set();
 
 		let next = new URL(
-			'/blog',
+			'/journal',
 			location.origin
 		).href;
 
@@ -517,7 +517,7 @@
 		all.className =
 			'mtf-blog-related__all';
 
-		all.href = '/blog';
+		all.href = '/journal';
 
 		all.textContent =
 			'Explore All Articles';

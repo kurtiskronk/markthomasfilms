@@ -11,9 +11,9 @@
 	window.MTF = window.MTF || {};
 
 	function isPost() {
-		return /^\/blog\/[^/]+\/?$/i.test(
+		return /^\/journal\/[^/]+\/?$/i.test(
 			window.location.pathname
-		) && !/^\/blog\/(?:tag|category|page)\//i.test(
+		) && !/^\/journal\/(?:tag|category|page)\//i.test(
 			window.location.pathname
 		);
 	}
@@ -55,7 +55,7 @@
 		blogItem.className = 'mtf-blog-breadcrumbs__item';
 
 		const blogLink = document.createElement('a');
-		blogLink.href = '/blog';
+		blogLink.href = '/journal';
 		blogLink.textContent = 'Blog';
 
 		blogItem.appendChild(blogLink);
@@ -107,7 +107,7 @@
 						'@type': 'ListItem',
 						position: 1,
 						name: 'Blog',
-						item: new URL('/blog', location.origin).href
+						item: new URL('/journal', location.origin).href
 					},
 					{
 						'@type': 'ListItem',

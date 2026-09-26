@@ -35,13 +35,13 @@
 						location.pathname.replace(/\/+$/, '') || '/';
 
 				const match = path.match(
-						/^\/blog\/(tag|category)\/([^/]+)$/i
+						/^\/journal\/(tag|category)\/([^/]+)$/i
 				);
 
-				const home = path === '/blog';
+				const home = path === '/journal';
 
 				const pagination =
-						/^\/blog\/page\/[^/]+$/i.test(path);
+						/^\/journal\/page\/[^/]+$/i.test(path);
 
 				if (!home && !match && !pagination) {
 						return null;
@@ -103,8 +103,8 @@
 
 						if (
 								url.origin !== location.origin ||
-								!/^\/blog\/[^/]+$/i.test(path) ||
-								/^\/blog\/(?:tag|category|page)$/i.test(path)
+								!/^\/journal\/[^/]+$/i.test(path) ||
+								/^\/journal\/(?:tag|category|page)$/i.test(path)
 						) {
 								return '';
 						}
@@ -119,7 +119,7 @@
 
 		function termURL(type, name) {
 				return (
-						'/blog/' +
+						'/journal/' +
 						type +
 						'/' +
 						encodeURIComponent(name).replace(
@@ -136,7 +136,7 @@
 
 		function nativeTerms(card, type) {
 				const prefix =
-						'/blog/' + type + '/';
+						'/journal/' + type + '/';
 
 				const result = [];
 
@@ -590,9 +590,9 @@
 										item.url ||
 										(
 												item.urlId
-														? '/blog/' +
+														? '/journal/' +
 															String(item.urlId).replace(
-																	/^\/blog\//,
+																	/^\/journal\//,
 																	''
 															)
 														: ''
@@ -639,7 +639,7 @@
 		async function seriesPosts(tagName) {
 				try {
 						const url = new URL(
-								'/blog/',
+								'/journal/',
 								location.origin
 						);
 

@@ -54,7 +54,7 @@
 				);
 
 			/*
-			 * Only normalize Squarespace film/blog
+			 * Only normalize Squarespace film/journal
 			 * tag and category archive URLs.
 			 *
 			 * All other links remain untouched.
@@ -301,7 +301,7 @@
 				postDocument,
 				'.blog-item-tag, ' +
 				'a[href*="/films/tag/"], ' +
-				'a[href*="/blog/tag/"]'
+				'a[href*="/journal/tag/"]'
 			);
 
 		}
@@ -406,7 +406,7 @@
 				metaSection,
 				'.blog-categories, ' +
 				'a[href*="/films/category/"], ' +
-				'a[href*="/blog/category/"]'
+				'a[href*="/journal/category/"]'
 			);
 
 		const existingTags =
@@ -414,7 +414,7 @@
 				post,
 				'.blog-item-tag, ' +
 				'a[href*="/films/tag/"], ' +
-				'a[href*="/blog/tag/"]'
+				'a[href*="/journal/tag/"]'
 			);
 
 		if (metaSection) {

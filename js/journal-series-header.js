@@ -316,7 +316,7 @@
 
     function updateEyebrow(hero) {
       const eyebrowNode = hero.querySelector(
-        '.mtf-journal-series-hero__eyebrow'
+        '.mtf-journal-hero__eyebrow'
       );
 
       if (!eyebrowNode) return;
@@ -338,12 +338,12 @@
     }
 
     const existing = wrapper.querySelector(
-      ':scope > .mtf-journal-series-hero'
+      ':scope > .mtf-journal-hero'
     );
 
     if (existing) {
       const title = existing.querySelector(
-        '.mtf-journal-series-hero__title'
+        '.mtf-journal-hero__title'
       );
 
       if (title) title.textContent = heroTitle || 'Journal';
@@ -358,23 +358,23 @@
     }
 
     const hero = document.createElement('section');
-    hero.className = 'mtf-journal-series-hero';
+    hero.className = 'mtf-journal-hero mtf-journal-series-hero';
     hero.setAttribute(
       'aria-label',
       ariaLabel || heroTitle || 'Journal'
     );
 
     hero.innerHTML = `
-      <div class="mtf-journal-series-hero__inner">
-        <p class="mtf-journal-series-hero__eyebrow"></p>
-        <h2 class="mtf-journal-series-hero__title"></h2>
+      <div class="mtf-journal-hero__inner mtf-journal-series-hero__inner">
+        <p class="mtf-journal-hero__eyebrow mtf-journal-series-hero__eyebrow"></p>
+        <h2 class="mtf-journal-hero__title mtf-journal-series-hero__title"></h2>
       </div>
     `;
 
     updateEyebrow(hero);
 
     hero.querySelector(
-      '.mtf-journal-series-hero__title'
+      '.mtf-journal-hero__title'
     ).textContent = heroTitle || 'Journal';
 
     wrapper.prepend(hero);

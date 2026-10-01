@@ -16,17 +16,6 @@
 
   window.MTF = window.MTF || {};
 
-  window.MTF.journalSeriesCopy = Object.assign(
-    {
-      'why i still film weddings': {
-        subtitle:
-          'A personal series on what keeps me behind the camera, the people who inspire me and the stories worth telling.',
-        intro:
-          'A collection of articles about creativity, connection and the deeper reasons I still film weddings after all these years.'
-      }
-    },
-    window.MTF.journalSeriesCopy || {}
-  );
 
   const MAX_SERIES_POSTS = 10;
 
@@ -292,16 +281,6 @@
     return Math.max(1, Math.ceil(words / 225));
   }
 
-  function seriesCopy(name) {
-    return window.MTF.journalSeriesCopy[
-      String(name || '').trim().toLowerCase()
-    ] || {
-      subtitle:
-        'A continuing Journal series exploring the stories, people and ideas behind the work.',
-      intro:
-        'A collection of related Journal articles exploring this subject in greater depth.'
-    };
-  }
 
   function insertHero(wrapper, series, category) {
     if (wrapper.querySelector(':scope > .mtf-journal-series-hero')) {
@@ -325,7 +304,6 @@
           ${eyebrow}
         </p>
         <h2 class="mtf-journal-series-hero__title"></h2>
-        <p class="mtf-journal-series-hero__subtitle"></p>
       </div>
     `;
 
@@ -333,9 +311,6 @@
       '.mtf-journal-series-hero__title'
     ).textContent = series.name;
 
-    hero.querySelector(
-      '.mtf-journal-series-hero__subtitle'
-    ).textContent = seriesCopy(series.name).subtitle;
 
     wrapper.prepend(hero);
   }

@@ -634,47 +634,490 @@ html.mtf-editorial-blog
 
 /* =========================================================
 	 MARK THOMAS FILMS
-	 REUSABLE EDITORIAL ARTICLE TEMPLATE
+	 SEMANTIC EDITORIAL ARTICLE SYSTEM
 
-	 Applies only to our custom HTML article content.
-	 Page background, native H1, breadcrumbs and related
-	 posts are managed by their existing stylesheets.
+	 Authored Journal HTML needs only one class:
+	 <article class="mtf-editorial-article">.
+
+	 Everything inside is styled by semantic HTML element so
+	 Mark / an AI authoring agent never has to know presentation
+	 classes. These selectors intentionally do NOT depend on the
+	 html.mtf-editorial-blog page class, which allows the same
+	 presentation to appear inside the Squarespace editor preview.
 	 ========================================================= */
 
 
-/* ARTICLE CONTAINER */
+/* =========================================================
+	 CODE BLOCK + ARTICLE FOUNDATION
+	 ========================================================= */
 
-html.mtf-editorial-blog .mtf-editorial-article {
+.sqs-block-code:has(.mtf-editorial-article) {
 	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
 
+.sqs-block-code:has(.mtf-editorial-article)
+> .sqs-block-content,
+.sqs-block-code:has(.mtf-editorial-article)
+.sqs-code-container {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: 0;
+}
+
+.mtf-editorial-article {
+	--mtf-editorial-paper: var(--mtf-blog-paper, #f5f2ec);
+	--mtf-editorial-ink: var(--mtf-blog-ink, #202020);
+	--mtf-editorial-rule: var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+	--mtf-editorial-muted: rgba(32, 32, 32, .62);
+	--mtf-editorial-highlight: rgba(176, 157, 125, .20);
+	--mtf-editorial-underline: rgba(32, 32, 32, .32);
+
+	box-sizing: border-box;
 	width: 100%;
 	max-width: 760px;
 	margin: 0 auto;
 	padding: 0;
 
-	color: var(--mtf-blog-ink, #202020);
+	color: var(--mtf-editorial-ink);
 }
 
 
-/* BODY PARAGRAPHS */
+/* =========================================================
+	 BODY COPY
+	 ========================================================= */
 
-html.mtf-editorial-blog
 .mtf-editorial-article > p {
-	margin: 0 0 1.4em;
+	margin: 0 0 18px;
+	padding: 0;
 
 	color: inherit;
-
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1.125rem;
 	font-weight: 400;
-	line-height: 1.7;
+	font-style: normal;
+	line-height: 1.68;
 	letter-spacing: 0;
+	text-align: left;
 }
 
 
-/* SERIES EYEBROW */
+/* =========================================================
+	 H2 — MAJOR ARTICLE DIVISION
+	 ========================================================= */
 
-html.mtf-editorial-blog
+.mtf-editorial-article h2 {
+	clear: both;
+	margin: 56px 0 22px;
+	padding: 30px 0 0;
+
+	border-top: 1px solid var(--mtf-editorial-rule);
+
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.7rem, 3vw, 2rem);
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.2;
+	letter-spacing: -.018em;
+	text-align: left;
+	text-transform: none;
+}
+
+
+/* =========================================================
+	 H3 — STANDARD SECTION HEADING
+	 ========================================================= */
+
+.mtf-editorial-article h3 {
+	clear: both;
+	display: flex;
+	align-items: center;
+	gap: 18px;
+
+	margin: 36px 0 17px;
+	padding: 0;
+	border: 0;
+
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.42rem;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.3;
+	letter-spacing: -.008em;
+	text-align: left;
+	text-transform: none;
+}
+
+.mtf-editorial-article h3::after {
+	content: "";
+	display: block;
+	flex: 1 1 auto;
+	min-width: 32px;
+	height: 1px;
+	background: currentColor;
+	opacity: .17;
+}
+
+
+/* =========================================================
+	 H4 — SMALL SUPPORTING SUBSECTION
+	 ========================================================= */
+
+.mtf-editorial-article h4 {
+	clear: both;
+	margin: 30px 0 12px;
+	padding: 0;
+
+	color: inherit;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .72rem;
+	font-weight: 600;
+	font-style: normal;
+	line-height: 1.4;
+	letter-spacing: .17em;
+	text-align: left;
+	text-transform: uppercase;
+}
+
+
+/* =========================================================
+	 BLOCKQUOTE — FULL-WIDTH FEATURE QUOTATION
+	 ========================================================= */
+
+.mtf-editorial-article blockquote {
+	clear: both;
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: none;
+
+	margin: 42px auto;
+	padding: 38px 64px 34px;
+
+	border-top: 1px solid var(--mtf-editorial-rule);
+	border-bottom: 1px solid var(--mtf-editorial-rule);
+	border-left: 0;
+	border-right: 0;
+
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.35rem, 2.7vw, 1.8rem);
+	font-weight: 400;
+	font-style: italic;
+	line-height: 1.42;
+	letter-spacing: 0;
+	text-align: center;
+	quotes: none;
+}
+
+.mtf-editorial-article blockquote::before,
+.mtf-editorial-article blockquote::after {
+	position: absolute;
+
+	color: currentColor;
+	opacity: .17;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 4.6rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+
+	pointer-events: none;
+}
+
+.mtf-editorial-article blockquote::before {
+	content: "“";
+	top: 18px;
+	left: 18px;
+}
+
+.mtf-editorial-article blockquote::after {
+	content: "”";
+	right: 18px;
+	bottom: -2px;
+}
+
+.mtf-editorial-article blockquote > p {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+	text-align: inherit;
+}
+
+
+/* =========================================================
+	 ASIDE — RIGHT-SIDE EDITORIAL PULL QUOTE
+	 ========================================================= */
+
+.mtf-editorial-article aside {
+	position: relative;
+	box-sizing: border-box;
+	float: right;
+	width: 47%;
+
+	margin: .35em 0 1.35em 2.1em;
+	padding: 24px 0 4px 26px;
+
+	color: var(--mtf-editorial-muted);
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+	font-weight: 400;
+	font-style: italic;
+	line-height: 1.42;
+	letter-spacing: 0;
+	text-align: right;
+}
+
+.mtf-editorial-article aside::before {
+	content: "“";
+	position: absolute;
+	top: -10px;
+	left: 3px;
+
+	color: currentColor;
+	opacity: .16;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 5.4rem;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 1;
+	pointer-events: none;
+}
+
+.mtf-editorial-article aside > p {
+	margin: 0;
+	padding: 0;
+	color: inherit;
+	font: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+	text-align: inherit;
+}
+
+
+/* =========================================================
+	 LISTS — INCLUDING THREE-LEVEL NESTING
+	 ========================================================= */
+
+.mtf-editorial-article ul,
+.mtf-editorial-article ol {
+	clear: both;
+	margin: 10px 0 28px;
+	padding-left: 1.55em;
+
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	line-height: 1.68;
+}
+
+.mtf-editorial-article li {
+	margin: 0 0 8px;
+	padding-left: .28em;
+}
+
+.mtf-editorial-article li > ul,
+.mtf-editorial-article li > ol {
+	clear: none;
+	margin-top: 8px;
+	margin-bottom: 10px;
+	padding-left: 1.55em;
+	font-size: 1em;
+}
+
+.mtf-editorial-article ul {
+	list-style-type: disc;
+}
+
+.mtf-editorial-article ul ul {
+	list-style-type: circle;
+}
+
+.mtf-editorial-article ul ul ul {
+	list-style-type: square;
+}
+
+.mtf-editorial-article ol {
+	list-style-type: decimal;
+}
+
+.mtf-editorial-article ol ol {
+	list-style-type: lower-alpha;
+}
+
+.mtf-editorial-article ol ol ol {
+	list-style-type: lower-roman;
+}
+
+.mtf-editorial-article li::marker {
+	color: rgba(32, 32, 32, .52);
+}
+
+.mtf-editorial-article li li::marker {
+	color: rgba(32, 32, 32, .40);
+}
+
+.mtf-editorial-article li li li::marker {
+	color: rgba(32, 32, 32, .30);
+}
+
+.mtf-editorial-article li li {
+	margin-bottom: 6px;
+}
+
+.mtf-editorial-article li li li {
+	margin-bottom: 5px;
+}
+
+
+/* =========================================================
+	 INLINE EMPHASIS
+	 ========================================================= */
+
+.mtf-editorial-article strong {
+	font-weight: 600;
+}
+
+.mtf-editorial-article em {
+	font-style: italic;
+}
+
+/* Warm, restrained highlighter stripe rather than browser yellow. */
+.mtf-editorial-article mark {
+	padding: .03em .14em;
+	color: inherit;
+	background-color: transparent;
+	background-image: linear-gradient(
+		to bottom,
+		transparent 38%,
+		var(--mtf-editorial-highlight) 38%,
+		var(--mtf-editorial-highlight) 88%,
+		transparent 88%
+	);
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+/* Native underline with muted gray ink and descender gaps. */
+.mtf-editorial-article u {
+	padding: 0;
+	color: inherit;
+	background: none;
+	text-decoration-line: underline;
+	text-decoration-style: solid;
+	text-decoration-color: var(--mtf-editorial-underline);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 3px;
+	text-decoration-skip-ink: auto;
+	-webkit-text-decoration-skip: ink;
+	text-shadow: none;
+}
+
+.mtf-editorial-article q {
+	font-style: italic;
+}
+
+
+/* =========================================================
+	 LINKS
+	 ========================================================= */
+
+.mtf-editorial-article a {
+	color: inherit;
+	text-decoration-line: underline;
+	text-decoration-thickness: 1px;
+	text-decoration-color: rgba(32, 32, 32, .38);
+	text-underline-offset: 4px;
+	transition: text-decoration-color 160ms ease, opacity 160ms ease;
+}
+
+.mtf-editorial-article a:hover {
+	text-decoration-color: currentColor;
+}
+
+.mtf-editorial-article a:focus-visible {
+	outline: 1px solid currentColor;
+	outline-offset: 4px;
+}
+
+
+/* =========================================================
+	 SMALL / NOTE TEXT
+	 ========================================================= */
+
+.mtf-editorial-article small {
+	color: var(--mtf-editorial-muted);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .78rem;
+	line-height: 1.55;
+	letter-spacing: .01em;
+}
+
+
+/* =========================================================
+	 EDITORIAL PAUSE
+	 ========================================================= */
+
+.mtf-editorial-article hr {
+	clear: both;
+	width: 72px;
+	height: 1px;
+	margin: 48px auto;
+	border: 0;
+	background: currentColor;
+	opacity: .22;
+}
+
+
+/* =========================================================
+	 FIGURES / CAPTIONS
+	 ========================================================= */
+
+.mtf-editorial-article figure {
+	clear: both;
+	margin: 38px 0;
+}
+
+.mtf-editorial-article figure img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.mtf-editorial-article figcaption {
+	max-width: 90%;
+	margin: 10px auto 0;
+
+	color: var(--mtf-editorial-muted);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .72rem;
+	line-height: 1.5;
+	letter-spacing: .04em;
+	text-align: center;
+}
+
+
+/* =========================================================
+	 LEGACY CUSTOM-HTML COMPATIBILITY
+
+	 Older Journal HTML may still contain these classes. Keep
+	 them working while new authored articles remain class-free
+	 inside .mtf-editorial-article.
+	 ========================================================= */
+
 .mtf-editorial-article > .mtf-editorial-eyebrow {
 	margin: 0 0 34px;
 
@@ -683,119 +1126,57 @@ html.mtf-editorial-blog
 	font-weight: 600;
 	line-height: 1.5;
 	letter-spacing: .16em;
-
 	text-align: center;
 	text-transform: uppercase;
 }
 
-
-/* SECTION HEADINGS */
-
-html.mtf-editorial-blog
-.mtf-editorial-article > h2 {
-	margin: 52px 0 22px;
-	padding: 28px 0 0;
-
-	border-top: 1px solid
-		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
-
-	color: inherit;
-
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: clamp(1.6rem, 2.5vw, 1.9rem);
-	font-weight: 400;
-	line-height: 1.25;
-	letter-spacing: -.015em;
-
-	text-align: left;
-	text-transform: none;
-}
-
-
-/* LINKS WITHIN ARTICLES */
-
-html.mtf-editorial-blog
-.mtf-editorial-article a {
-	color: inherit;
-
-	text-decoration: underline;
-	text-decoration-thickness: 1px;
-	text-underline-offset: 4px;
-}
-
-
-/* OPTIONAL PULL QUOTES FOR FUTURE ARTICLES */
-
-html.mtf-editorial-blog
 .mtf-editorial-article > .mtf-editorial-pullquote {
+	clear: both;
 	box-sizing: border-box;
-
-	margin: 44px auto;
-	padding: 30px 20px;
-
-	border-top: 1px solid
-		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
-	border-bottom: 1px solid
-		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
-	border-left: 0;
-	border-right: 0;
-
+	margin: 42px auto;
+	padding: 38px 64px 34px;
+	border-top: 1px solid var(--mtf-editorial-rule);
+	border-bottom: 1px solid var(--mtf-editorial-rule);
 	text-align: center;
 }
 
-html.mtf-editorial-blog
 .mtf-editorial-article
 .mtf-editorial-pullquote p {
 	margin: 0;
-
 	font-family: Georgia, "Times New Roman", serif;
-	font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+	font-size: clamp(1.35rem, 2.7vw, 1.8rem);
 	font-weight: 400;
 	font-style: italic;
-	line-height: 1.4;
+	line-height: 1.42;
 }
 
-
-/* SERIES FOOTER */
-
-html.mtf-editorial-blog
 .mtf-editorial-article
 .mtf-editorial-series {
+	clear: both;
 	margin: 52px 0 0;
 	padding: 26px 0 0;
-
-	border-top: 1px solid
-		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
-
+	border-top: 1px solid var(--mtf-editorial-rule);
 	text-align: center;
 }
 
-html.mtf-editorial-blog
 .mtf-editorial-article
 .mtf-editorial-series h2 {
 	margin: 0 0 10px;
 	padding: 0;
-
 	border: 0;
-
-	color: inherit;
-
 	font-family: inherit;
 	font-size: .78rem;
 	font-weight: 600;
 	line-height: 1.4;
 	letter-spacing: .12em;
-
 	text-align: center;
 	text-transform: uppercase;
 }
 
-html.mtf-editorial-blog
 .mtf-editorial-article
 .mtf-editorial-series p {
 	max-width: 520px;
 	margin: 0 auto;
-
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1rem;
 	font-style: italic;
@@ -803,35 +1184,79 @@ html.mtf-editorial-blog
 }
 
 
-/* MOBILE */
+/* =========================================================
+	 MOBILE
+	 ========================================================= */
 
 @media (max-width: 767px) {
 
-	html.mtf-editorial-blog
-	.mtf-editorial-article > p {
+	.mtf-editorial-article > p,
+	.mtf-editorial-article ul,
+	.mtf-editorial-article ol {
 		font-size: 1.0625rem;
 		line-height: 1.65;
 	}
 
-	html.mtf-editorial-blog
+	.mtf-editorial-article h2 {
+		margin-top: 46px;
+		margin-bottom: 20px;
+		padding-top: 25px;
+	}
+
+	.mtf-editorial-article h3 {
+		gap: 12px;
+		margin-top: 30px;
+		margin-bottom: 14px;
+		font-size: 1.32rem;
+	}
+
+	.mtf-editorial-article h4 {
+		margin-top: 26px;
+	}
+
+	.mtf-editorial-article blockquote {
+		margin: 34px auto;
+		padding: 34px 35px 30px;
+		font-size: 1.35rem;
+	}
+
+	.mtf-editorial-article blockquote::before {
+		left: 5px;
+	}
+
+	.mtf-editorial-article blockquote::after {
+		right: 5px;
+	}
+
+	.mtf-editorial-article aside {
+		float: none;
+		width: 88%;
+		margin: 30px 0 32px auto;
+		padding-left: 24px;
+		font-size: 1.3rem;
+	}
+
+	.mtf-editorial-article ul,
+	.mtf-editorial-article ol {
+		padding-left: 1.3em;
+	}
+
+	.mtf-editorial-article li > ul,
+	.mtf-editorial-article li > ol {
+		padding-left: 1.25em;
+	}
+
 	.mtf-editorial-article > .mtf-editorial-eyebrow {
 		margin-bottom: 28px;
 	}
 
-	html.mtf-editorial-blog
-	.mtf-editorial-article > h2 {
-		margin-top: 40px;
-		margin-bottom: 18px;
-		padding-top: 24px;
-	}
-
-	html.mtf-editorial-blog
 	.mtf-editorial-article
 	.mtf-editorial-series {
 		margin-top: 42px;
 	}
 
 }
+
 
 /* =========================================================
 	 JOURNAL COMMENTS — EDITORIAL TREATMENT

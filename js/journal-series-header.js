@@ -402,13 +402,15 @@
       node.remove();
     });
 
-    const seriesLabel = wrapper.querySelector(
+    /* Series labels are generated dynamically from the detected
+       tag and current part number. Article bodies no longer need
+       to contain a static "WHY I STILL FILM WEDDINGS — PART TWO"
+       style label. */
+    wrapper.querySelectorAll(
       '.mtf-editorial-article > .mtf-editorial-eyebrow'
-    );
-
-    if (seriesLabel) {
-      seriesLabel.classList.add('mtf-multi-part-series');
-    }
+    ).forEach(function (node) {
+      node.remove();
+    });
 
     const toolbar = document.createElement('div');
     toolbar.className = 'mtf-series-article-toolbar';
@@ -450,23 +452,48 @@
     }
 
     /* Option B hierarchy:
-       toolbar → read time/category → title → series label → excerpt. */
+       toolbar → read time/category → title → series label → excerpt.
+       Explicit flex orders are also set in CSS because Squarespace
+       assigns its own order value to .blog-item-title. */
     titleBox.before(meta);
 
-    if (seriesLabel) {
-      titleBox.after(seriesLabel);
-    }
+    const partWords = {
+      1: 'ONE',
+      2: 'TWO',
+      3: 'THREE',
+      4: 'FOUR',
+      5: 'FIVE',
+      6: 'SIX',
+      7: 'SEVEN',
+      8: 'EIGHT',
+      9: 'NINE',
+      10: 'TEN',
+      11: 'ELEVEN',
+      12: 'TWELVE',
+      13: 'THIRTEEN',
+      14: 'FOURTEEN',
+      15: 'FIFTEEN',
+      16: 'SIXTEEN',
+      17: 'SEVENTEEN',
+      18: 'EIGHTEEN',
+      19: 'NINETEEN',
+      20: 'TWENTY'
+    };
+
+    const seriesLabel = document.createElement('div');
+    seriesLabel.className = 'mtf-multi-part-series';
+    seriesLabel.textContent =
+      series.name.toUpperCase() +
+      ' — PART ' +
+      (partWords[part] || String(part));
+
+    titleBox.after(seriesLabel);
 
     if (excerpt) {
       const deck = document.createElement('p');
       deck.className = 'mtf-series-article-deck';
       deck.textContent = excerpt;
-
-      if (seriesLabel) {
-        seriesLabel.after(deck);
-      } else {
-        titleBox.after(deck);
-      }
+      seriesLabel.after(deck);
     }
   }
 

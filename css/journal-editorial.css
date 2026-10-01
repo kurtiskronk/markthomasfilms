@@ -832,3 +832,366 @@ html.mtf-editorial-blog
 	}
 
 }
+
+/* =========================================================
+	 JOURNAL COMMENTS — EDITORIAL TREATMENT
+
+	 Keeps Squarespace's actual comment system and controls,
+	 but replaces the oversized native composer presentation
+	 with a compact editorial invitation. No independent panel
+	 background is introduced; the section inherits the page.
+	 ========================================================= */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial {
+	background: none !important;
+}
+
+
+/* HIDE THE OVERSIZED NATIVE HEADER */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .header-controls {
+	display: none !important;
+}
+
+
+/* EDITORIAL INTRO */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__intro {
+	box-sizing: border-box;
+	width: min(1120px, calc(100% - 48px));
+	margin: 0 auto;
+	padding: 28px 0 32px;
+
+	color: inherit;
+	text-align: center;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__title {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	gap: 28px;
+
+	margin: 0 0 27px;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__title > span {
+	display: block;
+	height: 1px;
+	background: currentColor;
+	opacity: .16;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__title h2 {
+	margin: 0 !important;
+
+	color: inherit;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(2rem, 3vw, 2.75rem);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -.02em;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__bubble {
+	width: 34px;
+	height: 34px;
+	margin: 0 auto 8px;
+
+	color: inherit;
+	opacity: .52;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__bubble svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__prompt {
+	color: inherit;
+
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.375rem, 2vw, 1.75rem);
+	font-weight: 400;
+	line-height: 1.25;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__sub {
+	margin: 6px 0 0;
+
+	color: inherit;
+	opacity: .55;
+
+	font-family: inherit;
+	font-size: .875rem;
+	font-weight: 400;
+	line-height: 1.55;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__write {
+	appearance: none;
+
+	margin: 18px 0 0;
+	padding: 12px 27px;
+
+	border: 1px solid currentColor;
+	border-radius: 999px;
+
+	background: none;
+	color: inherit;
+	opacity: .76;
+
+	font-family: inherit;
+	font-size: .6875rem;
+	font-weight: 600;
+	line-height: 1;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+
+	cursor: pointer;
+	transition: opacity 180ms ease;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__write:hover,
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__write:focus-visible {
+	opacity: 1;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__write:focus-visible {
+	outline: 1px solid currentColor;
+	outline-offset: 4px;
+}
+
+
+/* COLLAPSED NATIVE COMPOSER */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .new-comment-area.top-level-comment-area {
+	display: none !important;
+	padding: 0 !important;
+	border: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .new-comment-area.top-level-comment-area
+> .input {
+	background: none !important;
+	box-shadow: none !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .new-comment-area.top-level-comment-area
+.comment-btn-wrapper {
+	display: none !important;
+}
+
+
+/* OPEN NATIVE COMPOSER */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial.mtf-comments-editorial--open
+> .new-comment-area.top-level-comment-area {
+	display: block !important;
+	box-sizing: border-box;
+
+	width: min(1120px, calc(100% - 48px));
+	margin: 0 auto 32px !important;
+
+	background: none !important;
+	box-shadow: none !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial.mtf-comments-editorial--open
+> .new-comment-area.top-level-comment-area
+.comment-form {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial.mtf-comments-editorial--open
+> .new-comment-area.top-level-comment-area
+textarea.comment-input {
+	box-sizing: border-box !important;
+	width: 100% !important;
+	height: 118px !important;
+	min-height: 118px !important;
+	margin: 0 !important;
+	padding: 16px 18px !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial.mtf-comments-editorial--open
+> .new-comment-area.top-level-comment-area
+.comment-btn-wrapper {
+	display: flex !important;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 18px;
+
+	margin-top: 12px;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial.mtf-comments-editorial--open
+.mtf-comments-editorial__write {
+	display: none;
+}
+
+
+/* COMMENT COUNT + NATIVE SORT CONTROL */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__list-meta {
+	box-sizing: border-box;
+	width: min(1120px, calc(100% - 48px));
+	margin: 0 auto;
+	padding: 18px 0 15px;
+
+	border-top: 1px solid
+		var(--mtf-blog-rule, rgba(0, 0, 0, .17));
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+
+	color: inherit;
+	opacity: .68;
+
+	font-family: inherit;
+	font-size: .625rem;
+	font-weight: 500;
+	line-height: 1;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial__list-meta
+.comment-sort {
+	position: relative;
+	display: inline-flex !important;
+	align-items: center;
+
+	font-family: inherit !important;
+	font-size: inherit !important;
+	font-weight: inherit !important;
+	line-height: inherit !important;
+	letter-spacing: inherit !important;
+	text-transform: uppercase;
+}
+
+
+/* EXISTING COMMENTS */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .comment-list {
+	box-sizing: border-box;
+	width: min(1120px, calc(100% - 48px));
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+html.mtf-editorial-blog
+.mtf-comments-editorial
+> .comment-list > .comment {
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+
+
+/* ZERO-COMMENT STATE */
+
+html.mtf-editorial-blog
+.mtf-comments-editorial[data-mtf-comment-count="0"]
+.mtf-comments-editorial__intro {
+	padding-bottom: 24px;
+}
+
+
+/* COMMENTS MOBILE */
+
+@media (max-width: 700px) {
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__intro,
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__list-meta,
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial
+	> .comment-list,
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial.mtf-comments-editorial--open
+	> .new-comment-area.top-level-comment-area {
+		width: min(100% - 32px, 1120px);
+	}
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__intro {
+		padding-top: 22px;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__title {
+		gap: 16px;
+		margin-bottom: 22px;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__title h2 {
+		font-size: 1.875rem;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__prompt {
+		font-size: 1.3125rem;
+	}
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__sub {
+		font-size: .8125rem;
+	}
+
+}
+
+
+/* COMMENTS REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+
+	html.mtf-editorial-blog
+	.mtf-comments-editorial__write {
+		transition: none;
+	}
+
+}
+

@@ -386,6 +386,16 @@
 
     header.classList.add('mtf-series-article-header');
 
+    /* Squarespace may render the post excerpt natively inside the
+       header, before the title. We build our own deck in the exact
+       editorial position below the series label, so suppress the
+       native copy to avoid the excerpt appearing above the H1. */
+    header.querySelectorAll(
+      '.blog-item-excerpt, .blog-excerpt, .entry-excerpt, [data-content-field="excerpt"]'
+    ).forEach(function (node) {
+      node.classList.add('mtf-series-native-excerpt');
+    });
+
     header.querySelectorAll(
       '.mtf-series-article-toolbar, .mtf-series-article-deck, .mtf-series-article-meta'
     ).forEach(function (node) {

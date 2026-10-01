@@ -4840,6 +4840,28 @@ html.mtf-editorial-blog
    ARTICLE HEADER
    ========================================================= */
 
+
+/* Hide Squarespace's native header excerpt. The series script renders
+   the same excerpt as .mtf-series-article-deck in the intended position
+   beneath the series label. */
+html.mtf-editorial-blog
+.mtf-journal-series-article
+.mtf-series-native-excerpt {
+  display: none !important;
+}
+
+/* The normal Journal stylesheet gives .blog-item-top-wrapper its own
+   bottom rule. Series articles already place the single divider on the
+   H1, so explicitly remove the native header rule to prevent a second
+   horizontal line. */
+html.mtf-editorial-blog
+body.collection-type-blog-single-column
+.mtf-journal-series-article
+.blog-item-top-wrapper.mtf-series-article-header {
+  border-bottom: 0 !important;
+}
+
+
 html.mtf-editorial-blog
 .mtf-journal-series-article
 .blog-item-inner-wrapper {

@@ -392,6 +392,14 @@
       node.remove();
     });
 
+    const seriesLabel = wrapper.querySelector(
+      '.mtf-editorial-article > .mtf-editorial-eyebrow'
+    );
+
+    if (seriesLabel) {
+      seriesLabel.classList.add('mtf-multi-part-series');
+    }
+
     const toolbar = document.createElement('div');
     toolbar.className = 'mtf-series-article-toolbar';
 
@@ -431,14 +439,24 @@
       meta.append(divider, categoryLink);
     }
 
-    /* Read time and category sit directly above the title. */
+    /* Option B hierarchy:
+       toolbar → read time/category → title → series label → excerpt. */
     titleBox.before(meta);
+
+    if (seriesLabel) {
+      titleBox.after(seriesLabel);
+    }
 
     if (excerpt) {
       const deck = document.createElement('p');
       deck.className = 'mtf-series-article-deck';
       deck.textContent = excerpt;
-      titleBox.after(deck);
+
+      if (seriesLabel) {
+        seriesLabel.after(deck);
+      } else {
+        titleBox.after(deck);
+      }
     }
   }
 

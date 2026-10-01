@@ -1,14 +1,24 @@
 /* =========================================================
-   MARK THOMAS FILMS — JOURNAL SERIES EXPERIENCE
+   MARK THOMAS FILMS — JOURNAL ARTICLE / SERIES EXPERIENCE
 
-   On individual Journal articles, detects whether the post
-   belongs to a multi-part tag series and, when it does:
-   - builds the photographic series hero
-   - expands breadcrumbs to Journal / Category / Series / Post
-   - adds Part X of Y, deck, read time and category
-   - adds the "In This Series" index and previous/next links
+   Every normal individual Journal article shares one base
+   editorial template:
+   - photographic Journal hero
+   - Journal / Category / Article breadcrumbs
+   - read time + dynamic category
+   - centered H1 + divider
+   - excerpt/deck
+   - common body, related posts and comments styling
 
-   Articles without a multi-part tag remain unchanged.
+   Tagged series articles layer on only the pieces that are
+   actually series-specific:
+   - series title in the hero
+   - series crumb in breadcrumbs
+   - Part X of Y / View Entire Series toolbar
+   - SERIES NAME — PART X label
+   - In This Series + previous/next series navigation
+
+   INTERNAL utility posts remain excluded.
    ========================================================= */
 
 (function () {
@@ -86,6 +96,24 @@
         href: termURL(type, name)
       };
     }).filter(Boolean);
+  }
+
+  function termsFromDOM(root, selector, type) {
+    const names = Array.from(
+      (root || document).querySelectorAll(selector)
+    ).map(function (link) {
+      return cleanText(link.textContent || '');
+    }).filter(Boolean);
+
+    return normalizeTerms(names, type);
+  }
+
+  function nativeExcerpt(wrapper) {
+    const node = wrapper.querySelector(
+      '.blog-item-excerpt, .blog-excerpt, .entry-excerpt, [data-content-field="excerpt"]'
+    );
+
+    return cleanText(node?.textContent || '');
   }
 
   function itemFromJSON(data) {
@@ -282,37 +310,100 @@
   }
 
 
-  function insertHero(wrapper, series, category) {
-    if (wrapper.querySelector(':scope > .mtf-journal-series-hero')) {
-      return;
+  function insertHero(wrapper, heroTitle, category, ariaLabel) {
+    const eyebrowParts = ['Journal'];
+    if (category?.name) eyebrowParts.push(category.name);
+
+    function updateEyebrow(hero) {
+      const eyebrowNode = hero.querySelector(
+        '.mtf-journal-series-hero__eyebrow'
+      );
+
+      if (!eyebrowNode) return;
+
+      eyebrowNode.replaceChildren();
+
+      eyebrowParts.forEach(function (part, index) {
+        if (index) {
+          const slash = document.createElement('span');
+          slash.setAttribute('aria-hidden', 'true');
+          slash.textContent = '/';
+          eyebrowNode.appendChild(slash);
+        }
+
+        const text = document.createElement('span');
+        text.textContent = part;
+        eyebrowNode.appendChild(text);
+      });
+    }
+
+    const existing = wrapper.querySelector(
+      ':scope > .mtf-journal-series-hero'
+    );
+
+    if (existing) {
+      const title = existing.querySelector(
+        '.mtf-journal-series-hero__title'
+      );
+
+      if (title) title.textContent = heroTitle || 'Journal';
+      updateEyebrow(existing);
+
+      existing.setAttribute(
+        'aria-label',
+        ariaLabel || heroTitle || 'Journal'
+      );
+
+      return existing;
     }
 
     const hero = document.createElement('section');
     hero.className = 'mtf-journal-series-hero';
-    hero.setAttribute('aria-label', series.name + ' series');
-
-    const eyebrowParts = ['Journal'];
-    if (category?.name) eyebrowParts.push(category.name);
-
-    const eyebrow = eyebrowParts.map(function (part) {
-      return '<span>' + part + '</span>';
-    }).join('<span aria-hidden="true">/</span>');
+    hero.setAttribute(
+      'aria-label',
+      ariaLabel || heroTitle || 'Journal'
+    );
 
     hero.innerHTML = `
       <div class="mtf-journal-series-hero__inner">
-        <p class="mtf-journal-series-hero__eyebrow">
-          ${eyebrow}
-        </p>
+        <p class="mtf-journal-series-hero__eyebrow"></p>
         <h2 class="mtf-journal-series-hero__title"></h2>
       </div>
     `;
 
+    updateEyebrow(hero);
+
     hero.querySelector(
       '.mtf-journal-series-hero__title'
-    ).textContent = series.name;
-
+    ).textContent = heroTitle || 'Journal';
 
     wrapper.prepend(hero);
+    return hero;
+  }
+
+  function updateStandaloneBreadcrumbs(category, title) {
+    const crumbs = [
+      { label: 'Journal', href: '/journal' }
+    ];
+
+    if (category?.name) {
+      crumbs.push({
+        label: category.name,
+        href: category.href
+      });
+    }
+
+    crumbs.push({
+      label: title,
+      current: true
+    });
+
+    if (
+      window.MTF.journalBreadcrumbs &&
+      typeof window.MTF.journalBreadcrumbs.render === 'function'
+    ) {
+      window.MTF.journalBreadcrumbs.render(crumbs);
+    }
   }
 
   function updateBreadcrumbs(series, category, title) {
@@ -345,69 +436,85 @@
     }
   }
 
-  function enhanceArticleHeader(
-    wrapper,
-    series,
-    category,
-    part,
-    total,
-    excerpt,
-    minutes
-  ) {
+  function enhanceArticleHeader(wrapper, options) {
+    const config = options || {};
+    const series = config.series || null;
+    const category = config.category || null;
+    const part = config.part || null;
+    const total = config.total || null;
+    const excerpt = cleanText(config.excerpt || '');
+    const minutes = config.minutes || 1;
+
     const header = wrapper.querySelector('.blog-item-top-wrapper');
     const titleBox = header?.querySelector('.blog-item-title');
 
     if (!header || !titleBox) return;
 
-    header.classList.add('mtf-series-article-header');
+    wrapper.classList.add('mtf-journal-article');
+    header.classList.add('mtf-journal-article-header');
+    header.classList.toggle(
+      'mtf-series-article-header',
+      Boolean(series)
+    );
 
-    /* Squarespace may render the post excerpt natively inside the
-       header, before the title. We build our own deck in the exact
-       editorial position below the series label, so suppress the
-       native copy to avoid the excerpt appearing above the H1. */
+    /* Squarespace may render the native excerpt before the H1.
+       The shared Journal template always places our deck after the
+       title (and after the series label when one exists). */
     header.querySelectorAll(
       '.blog-item-excerpt, .blog-excerpt, .entry-excerpt, [data-content-field="excerpt"]'
     ).forEach(function (node) {
-      node.classList.add('mtf-series-native-excerpt');
+      node.classList.add('mtf-journal-native-excerpt');
     });
 
     header.querySelectorAll(
-      '.mtf-series-article-toolbar, .mtf-series-article-deck, .mtf-series-article-meta'
+      [
+        '.mtf-series-article-toolbar',
+        '.mtf-journal-article-meta',
+        '.mtf-series-article-meta',
+        '.mtf-multi-part-series',
+        '.mtf-journal-article-deck',
+        '.mtf-series-article-deck'
+      ].join(', ')
     ).forEach(function (node) {
       node.remove();
     });
 
-    /* Series labels are generated dynamically from the detected
-       tag and current part number. Article bodies no longer need
-       to contain a static "WHY I STILL FILM WEDDINGS — PART TWO"
-       style label. */
-    wrapper.querySelectorAll(
-      '.mtf-editorial-article > .mtf-editorial-eyebrow'
-    ).forEach(function (node) {
-      node.remove();
-    });
+    /* Remove legacy manually-authored series labels only when this
+       article is actually in a series. New article bodies use only
+       semantic HTML inside .mtf-editorial-article. */
+    if (series) {
+      wrapper.querySelectorAll(
+        '.mtf-editorial-article > .mtf-editorial-eyebrow'
+      ).forEach(function (node) {
+        node.remove();
+      });
+    }
 
-    const toolbar = document.createElement('div');
-    toolbar.className = 'mtf-series-article-toolbar';
+    if (series) {
+      const toolbar = document.createElement('div');
+      toolbar.className = 'mtf-series-article-toolbar';
 
-    const partText = document.createElement('span');
-    partText.className = 'mtf-series-article-toolbar__part';
-    partText.textContent = 'Part ' + part + ' of ' + total;
+      const partText = document.createElement('span');
+      partText.className = 'mtf-series-article-toolbar__part';
+      partText.textContent = total > 1
+        ? 'Part ' + part + ' of ' + total
+        : 'Part ' + part;
 
-    const rule = document.createElement('span');
-    rule.className = 'mtf-series-article-toolbar__rule';
-    rule.setAttribute('aria-hidden', 'true');
+      const rule = document.createElement('span');
+      rule.className = 'mtf-series-article-toolbar__rule';
+      rule.setAttribute('aria-hidden', 'true');
 
-    const all = document.createElement('a');
-    all.className = 'mtf-series-article-toolbar__all';
-    all.href = series.href;
-    all.innerHTML = '<span aria-hidden="true">☷</span> View Entire Series';
+      const all = document.createElement('a');
+      all.className = 'mtf-series-article-toolbar__all';
+      all.href = series.href;
+      all.innerHTML = '<span aria-hidden="true">☷</span> View Entire Series';
 
-    toolbar.append(partText, rule, all);
-    header.insertBefore(toolbar, titleBox);
+      toolbar.append(partText, rule, all);
+      header.insertBefore(toolbar, titleBox);
+    }
 
     const meta = document.createElement('div');
-    meta.className = 'mtf-series-article-meta';
+    meta.className = 'mtf-journal-article-meta';
 
     const time = document.createElement('span');
     time.textContent = minutes + ' min read';
@@ -415,7 +522,7 @@
 
     if (category?.name) {
       const divider = document.createElement('span');
-      divider.className = 'mtf-series-article-meta__divider';
+      divider.className = 'mtf-journal-article-meta__divider';
       divider.setAttribute('aria-hidden', 'true');
       divider.textContent = '|';
 
@@ -426,39 +533,40 @@
       meta.append(divider, categoryLink);
     }
 
-    /* Option B hierarchy:
-       toolbar → read time/category → title → series label → excerpt.
-       Explicit flex orders are also set in CSS because Squarespace
-       assigns its own order value to .blog-item-title. */
     titleBox.before(meta);
 
-    const partWords = {
-      1: 'ONE',
-      2: 'TWO',
-      3: 'THREE',
-      4: 'FOUR',
-      5: 'FIVE',
-      6: 'SIX',
-      7: 'SEVEN',
-      8: 'EIGHT',
-      9: 'NINE',
-      10: 'TEN'
-    };
+    let deckAnchor = titleBox;
 
-    const seriesLabel = document.createElement('div');
-    seriesLabel.className = 'mtf-multi-part-series';
-    seriesLabel.textContent =
-      series.name.toUpperCase() +
-      ' — PART ' +
-      (partWords[part] || String(part));
+    if (series) {
+      const partWords = {
+        1: 'ONE',
+        2: 'TWO',
+        3: 'THREE',
+        4: 'FOUR',
+        5: 'FIVE',
+        6: 'SIX',
+        7: 'SEVEN',
+        8: 'EIGHT',
+        9: 'NINE',
+        10: 'TEN'
+      };
 
-    titleBox.after(seriesLabel);
+      const seriesLabel = document.createElement('div');
+      seriesLabel.className = 'mtf-multi-part-series';
+      seriesLabel.textContent =
+        series.name.toUpperCase() +
+        ' — PART ' +
+        (partWords[part] || String(part));
+
+      titleBox.after(seriesLabel);
+      deckAnchor = seriesLabel;
+    }
 
     if (excerpt) {
       const deck = document.createElement('p');
-      deck.className = 'mtf-series-article-deck';
+      deck.className = 'mtf-journal-article-deck';
       deck.textContent = excerpt;
-      seriesLabel.after(deck);
+      deckAnchor.after(deck);
     }
   }
 
@@ -576,6 +684,12 @@
       node.remove();
     });
 
+    /* A series can begin with a single published/scheduled entry.
+       The hero and article header still identify the series, but
+       the footer index/navigation becomes useful only once another
+       entry is available. */
+    if (posts.length < 2) return;
+
     content.append(
       seriesIndex(posts, currentPath),
       seriesNavigation(posts, currentIndex, seriesHref)
@@ -599,13 +713,30 @@
     if (!wrapper || !h1) return;
 
     const item = await currentMetadata();
-    if (!item) return;
 
-    const tags = normalizeTerms(item.tags, 'tag');
-    const categories = normalizeTerms(
-      item.categories || item.category,
+    const metadataTags = normalizeTerms(
+      item?.tags,
+      'tag'
+    );
+    const tags = metadataTags.length
+      ? metadataTags
+      : termsFromDOM(
+          wrapper,
+          '.blog-meta-item--tags a, .blog-item-tag-wrapper a',
+          'tag'
+        );
+
+    const metadataCategories = normalizeTerms(
+      item?.categories || item?.category,
       'category'
     );
+    const categories = metadataCategories.length
+      ? metadataCategories
+      : termsFromDOM(
+          wrapper,
+          '.blog-meta-item--categories a, .blog-item-category-wrapper a',
+          'category'
+        );
 
     if (
       categories.some(function (category) {
@@ -616,16 +747,100 @@
       return;
     }
 
+    const category = categories[0] || null;
+    const articleTitle = cleanText(h1.textContent);
+    const excerpt = cleanText(
+      item?.excerpt ||
+      item?.bodyExcerpt ||
+      item?.description ||
+      nativeExcerpt(wrapper) ||
+      ''
+    );
+    const minutes = readTime();
+
+    /* Base Journal template: every normal article gets exactly the
+       same hero, breadcrumbs, article meta, H1 treatment and deck. */
+    wrapper.classList.add(
+      'mtf-journal-article',
+      'mtf-journal-hero-article'
+    );
+    document.documentElement.classList.add(
+      'mtf-journal-article-page',
+      'mtf-journal-hero-article-page'
+    );
+
+    insertHero(
+      wrapper,
+      'Journal',
+      category,
+      category?.name
+        ? 'Journal / ' + category.name
+        : 'Journal'
+    );
+
+    updateStandaloneBreadcrumbs(
+      category,
+      articleTitle
+    );
+
+    enhanceArticleHeader(wrapper, {
+      category: category,
+      excerpt: excerpt,
+      minutes: minutes
+    });
+
+    /* No tag means this is a standalone article. The shared Journal
+       template is already complete, so there is nothing else to add. */
     if (!tags.length) return;
 
     const currentPath = canonical(location.pathname);
     let detected = null;
 
     for (const tag of tags) {
-      const posts = await seriesPosts(tag.name);
+      let posts = await seriesPosts(tag.name);
+      const currentIsInFeed = posts.some(function (post) {
+        return post.path === currentPath;
+      });
+
+      /* RSS/tag feeds do not reliably include a future-scheduled
+         article while Mark is previewing it. When the current post
+         has a single tag, treat that tag as its series identifier
+         and seed the feed with the current article if necessary.
+
+         Journal convention: tags are reserved for series; standalone
+         articles should normally have no tag. */
+      if (!currentIsInFeed && tags.length === 1) {
+        const rawDate =
+          item?.publishOn ||
+          item?.publishedOn ||
+          item?.publishDate ||
+          item?.addedOn ||
+          item?.updatedOn ||
+          '';
+        const parsedDate = Date.parse(rawDate);
+
+        posts = posts.concat({
+          path: currentPath,
+          title: cleanText(item?.title || h1.textContent || ''),
+          excerpt: excerpt,
+          date: Number.isFinite(parsedDate)
+            ? parsedDate
+            : Date.now(),
+          rssIndex: -1,
+          categories: categories
+        });
+
+        posts.sort(function (a, b) {
+          if (a.date !== null && b.date !== null) {
+            return a.date - b.date || b.rssIndex - a.rssIndex;
+          }
+
+          return b.rssIndex - a.rssIndex;
+        });
+      }
 
       if (
-        posts.length >= 2 &&
+        posts.length >= 1 &&
         posts.length <= MAX_SERIES_POSTS &&
         posts.some(function (post) {
           return post.path === currentPath;
@@ -640,6 +855,8 @@
       }
     }
 
+    /* If a tag cannot be resolved as a valid series, keep the fully
+       rendered standalone Journal template rather than degrading. */
     if (!detected) return;
 
     const details = await filteredMetadata(detected.name);
@@ -662,12 +879,14 @@
     if (currentIndex === -1) return;
 
     const current = detected.posts[currentIndex];
-    const category = categories[0] || current.categories?.[0] || null;
-    const excerpt = cleanText(
-      item.excerpt ||
-      item.bodyExcerpt ||
-      item.description ||
+    const seriesCategory =
+      category || current.categories?.[0] || null;
+    const seriesExcerpt = cleanText(
+      item?.excerpt ||
+      item?.bodyExcerpt ||
+      item?.description ||
       current.excerpt ||
+      excerpt ||
       ''
     );
 
@@ -676,23 +895,27 @@
       'mtf-journal-series-article-page'
     );
 
-    insertHero(wrapper, detected, category);
+    insertHero(
+      wrapper,
+      detected.name,
+      seriesCategory,
+      detected.name + ' series'
+    );
+
     updateBreadcrumbs(
       detected,
-      category,
-      cleanText(h1.textContent)
+      seriesCategory,
+      articleTitle
     );
 
-    enhanceArticleHeader(
-      wrapper,
-      detected,
-      category,
-      currentIndex + 1,
-      detected.posts.length,
-      excerpt,
-      readTime()
-    );
-
+    enhanceArticleHeader(wrapper, {
+      series: detected,
+      category: seriesCategory,
+      part: currentIndex + 1,
+      total: detected.posts.length,
+      excerpt: seriesExcerpt,
+      minutes: minutes
+    });
 
     appendSeriesFooter(
       wrapper,

@@ -508,6 +508,20 @@ html.mtf-editorial-blog
 
 
 /* =========================================================
+	 NATIVE POST TAGS
+
+	 Series identity already appears in the hero, breadcrumbs,
+	 article header and related content. The native Squarespace
+	 tag row at the bottom of individual Journal entries adds no
+	 useful information, so keep it out of the reading experience.
+	 ========================================================= */
+
+html.mtf-editorial-blog .blog-meta-item--tags {
+	display: none;
+}
+
+
+/* =========================================================
 	 ARTICLE LINKS
 	 ========================================================= */
 

@@ -1,8 +1,8 @@
 /* =========================================================
-   MARK THOMAS FILMS — JOURNAL SERIES EXPERIENCE
+   MARK THOMAS FILMS — JOURNAL ARTICLE / SERIES EXPERIENCE
    ========================================================= */
 
-html.mtf-journal-series-article-page {
+html.mtf-editorial-blog {
   --mtf-series-accent: #9a5b18;
   --mtf-series-line: rgba(32, 32, 32, .23);
   --mtf-series-serif: Georgia, "Times New Roman", serif;
@@ -11,7 +11,11 @@ html.mtf-journal-series-article-page {
 
 
 /* =========================================================
-   PHOTOGRAPHIC SERIES HERO
+   PHOTOGRAPHIC JOURNAL ARTICLE HERO
+
+   Every normal Journal article gets this hero. A standalone
+   article uses "Journal" as its title. A series article swaps
+   in the exact series tag while keeping the same structure.
    ========================================================= */
 
 html.mtf-editorial-blog
@@ -80,12 +84,9 @@ html.mtf-editorial-blog
   text-transform: none;
 }
 
-
-
 /* Hero should touch the breadcrumb bar. */
-
 html.mtf-editorial-blog
-.mtf-journal-series-article
+.blog-item-wrapper
 > .mtf-journal-series-hero
 + .mtf-blog-breadcrumbs {
   margin-top: 0;
@@ -93,98 +94,102 @@ html.mtf-editorial-blog
 
 
 /* =========================================================
-   ARTICLE HEADER
+   SHARED JOURNAL ARTICLE HEADER
+
+   Standalone and series articles use exactly the same base
+   hierarchy:
+   read time/category → H1 → excerpt/deck.
+
+   A series layers in only:
+   toolbar → shared meta → H1 → series label → shared deck.
    ========================================================= */
 
-
-/* Hide Squarespace's native header excerpt. The series script renders
-   the same excerpt as .mtf-series-article-deck in the intended position
-   beneath the series label. */
 html.mtf-editorial-blog
-.mtf-journal-series-article
-.mtf-series-native-excerpt {
-  display: none !important;
+.mtf-journal-article
+.mtf-journal-native-excerpt {
+  display: none;
 }
 
-/* The normal Journal stylesheet gives .blog-item-top-wrapper its own
-   bottom rule. Series articles already place the single divider on the
-   H1, so explicitly remove the native header rule to prevent a second
-   horizontal line. */
 html.mtf-editorial-blog
 body.collection-type-blog-single-column
-.mtf-journal-series-article
-.blog-item-top-wrapper.mtf-series-article-header {
-  border-bottom: 0 !important;
-}
-
-
-html.mtf-editorial-blog
-.mtf-journal-series-article
-.blog-item-inner-wrapper {
-  max-width: 850px;
-}
-
-html.mtf-editorial-blog
-.mtf-journal-series-article
-.mtf-series-article-header {
+.mtf-journal-article
+.blog-item-top-wrapper.mtf-journal-article-header {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
   margin: 0 0 18px;
   padding: 0 0 21px;
   border-bottom: 0;
   text-align: center;
 }
 
-/* Squarespace applies native flex ordering to parts of the blog header.
-   Lock our editorial hierarchy so the deck can never jump above the H1. */
 html.mtf-editorial-blog
-.mtf-series-article-header
+.mtf-journal-article
+.blog-item-inner-wrapper {
+  max-width: 850px;
+}
+
+/* Explicit ordering keeps Squarespace's native header flex rules from
+   changing the editorial hierarchy. Higher-specificity selectors handle this without override flags. */
+html.mtf-editorial-blog
+.mtf-journal-article
+.mtf-journal-article-header
 > .mtf-series-article-toolbar {
-  order: 0 !important;
+  order: 0;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
-> .mtf-series-article-meta {
-  order: 1 !important;
+.mtf-journal-article
+.mtf-journal-article-header
+> .mtf-journal-article-meta {
+  order: 1;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
+.mtf-journal-article
+.mtf-journal-article-header
 > .blog-item-title {
-  order: 2 !important;
+  order: 2;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
+.mtf-journal-article
+.mtf-journal-article-header
 > .mtf-multi-part-series {
-  order: 3 !important;
+  order: 3;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
-> .mtf-series-article-deck {
-  order: 4 !important;
+.mtf-journal-article
+.mtf-journal-article-header
+> .mtf-journal-article-deck {
+  order: 4;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
+.mtf-journal-article
+.mtf-journal-article-header
 > .blog-item-meta-wrapper {
-  order: 5 !important;
+  order: 5;
 }
 
 html.mtf-editorial-blog
-.mtf-journal-series-article
-.mtf-series-article-header
+.mtf-journal-article
+.mtf-journal-article-header
 .blog-item-title {
   text-align: center;
 }
 
 html.mtf-editorial-blog
-.mtf-journal-series-article
-.mtf-series-article-header
+body.collection-type-blog-single-column
+.mtf-journal-article
+.mtf-journal-article-header
 .blog-item-title > h1.entry-title.entry-title--large {
   box-sizing: border-box;
-  margin: 0 auto;
+  width: 100%;
   max-width: 790px;
+  margin: 0 auto;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--mtf-series-line);
 
@@ -194,17 +199,24 @@ html.mtf-editorial-blog
   text-align: center;
 }
 
+/* Native Squarespace date/author/category/tag rows and author profile
+   are replaced by the shared read-time/category line and site chrome. */
 html.mtf-editorial-blog
-.mtf-journal-series-article
+.mtf-journal-article
 .blog-item-meta-wrapper,
 html.mtf-editorial-blog
-.mtf-journal-series-article
-.blog-meta-item {
+.mtf-journal-article
+.blog-meta-item,
+html.mtf-editorial-blog
+.mtf-journal-article
+.blog-item-author-profile-wrapper {
   display: none;
 }
 
 
-/* PART X OF Y / VIEW ENTIRE SERIES */
+/* =========================================================
+   SERIES-ONLY TOOLBAR
+   ========================================================= */
 
 html.mtf-editorial-blog
 .mtf-series-article-toolbar {
@@ -253,10 +265,12 @@ html.mtf-editorial-blog
 }
 
 
-/* DECK + ARTICLE META */
+/* =========================================================
+   SHARED ARTICLE META + DECK
+   ========================================================= */
 
 html.mtf-editorial-blog
-.mtf-series-article-deck {
+.mtf-journal-article-deck {
   max-width: 760px;
   margin: 24px auto 0;
 
@@ -268,7 +282,7 @@ html.mtf-editorial-blog
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-header
+.mtf-journal-article-header
 > .mtf-multi-part-series {
   display: block;
   width: 100%;
@@ -286,7 +300,7 @@ html.mtf-editorial-blog
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-meta {
+.mtf-journal-article-meta {
   display: flex;
   justify-content: center;
   align-items: baseline;
@@ -305,13 +319,13 @@ html.mtf-editorial-blog
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-meta a {
+.mtf-journal-article-meta a {
   color: var(--mtf-series-accent);
   text-decoration: none;
 }
 
 html.mtf-editorial-blog
-.mtf-series-article-meta__divider {
+.mtf-journal-article-meta__divider {
   color: #727272;
 }
 
@@ -443,13 +457,15 @@ html.mtf-editorial-blog
 }
 
 html.mtf-editorial-blog
-.mtf-series-pagination__article--previous {
-  padding-left: 0 !important;
+.mtf-series-pagination
+> .mtf-series-pagination__article--previous {
+  padding-left: 0;
 }
 
 html.mtf-editorial-blog
-.mtf-series-pagination__article--next {
-  padding-right: 0 !important;
+.mtf-series-pagination
+> .mtf-series-pagination__article--next {
+  padding-right: 0;
   text-align: right;
 }
 
@@ -533,14 +549,14 @@ html.mtf-editorial-blog
   }
 
   html.mtf-editorial-blog
-  .mtf-journal-series-article
-  .mtf-series-article-header
+  .mtf-journal-article
+  .mtf-journal-article-header
   .blog-item-title > h1.entry-title.entry-title--large {
     font-size: clamp(2rem, 10vw, 2.7rem);
   }
 
   html.mtf-editorial-blog
-  .mtf-series-article-deck {
+  .mtf-journal-article-deck {
     font-size: 1.13rem;
   }
 
@@ -564,13 +580,14 @@ html.mtf-editorial-blog
   }
 
   html.mtf-editorial-blog
-  .mtf-series-pagination__all {
+  .mtf-series-pagination
+  > .mtf-series-pagination__all {
     grid-column: 1 / -1;
     grid-row: 2;
-    border-left: 0 !important;
+    border-left: 0;
     border-top: 1px solid var(--mtf-series-line);
     margin-top: 18px;
-    padding-top: 18px !important;
+    padding-top: 18px;
   }
 
   html.mtf-editorial-blog

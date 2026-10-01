@@ -13,6 +13,8 @@
 
   window.MTF = window.MTF || {};
 
+  const INTERNAL_CATEGORY = 'INTERNAL';
+
   function isPost() {
     return /^\/journal\/[^/]+\/?$/i.test(
       window.location.pathname
@@ -20,6 +22,56 @@
       window.location.pathname
     );
   }
+
+  function categoryNames(root) {
+    return Array.from(
+      (root || document).querySelectorAll(
+        '.blog-meta-item--categories a, .blog-item-category-wrapper a'
+      )
+    ).map(function (link) {
+      return String(link.textContent || '').trim();
+    }).filter(Boolean);
+  }
+
+  function isInternalPost() {
+    if (!isPost()) return false;
+
+    return categoryNames(document).some(function (name) {
+      return name.toUpperCase() === INTERNAL_CATEGORY;
+    });
+  }
+
+  function ensureInternalNoIndex() {
+    let meta = document.querySelector(
+      'meta[data-mtf-journal-internal-robots]'
+    );
+
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.dataset.mtfJournalInternalRobots = '';
+      document.head.appendChild(meta);
+    }
+
+    meta.content = 'noindex, follow';
+  }
+
+  function markInternalPost() {
+    if (!isInternalPost()) return false;
+
+    document.documentElement.classList.add(
+      'mtf-journal-internal'
+    );
+
+    ensureInternalNoIndex();
+    return true;
+  }
+
+  window.MTF.journalInternal = {
+    category: INTERNAL_CATEGORY,
+    isCurrent: isInternalPost,
+    ensure: markInternalPost
+  };
 
   function makeItem(content, href, current) {
     const item = document.createElement('li');
@@ -124,6 +176,8 @@
 
   function init() {
     if (!isPost()) return;
+
+    markInternalPost();
 
     const wrapper = document.querySelector(
       '.blog-item-wrapper'
@@ -348,6 +402,12 @@
 
   function enhance() {
     if (!isPost()) return false;
+
+    if (
+      window.MTF?.journalInternal?.isCurrent?.()
+    ) {
+      return false;
+    }
 
     const component = document.querySelector(
       '.squarespace-comments'

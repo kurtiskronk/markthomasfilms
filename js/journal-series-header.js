@@ -585,6 +585,12 @@
   async function init() {
     if (!isPost()) return;
 
+    if (
+      window.MTF?.journalInternal?.isCurrent?.()
+    ) {
+      return;
+    }
+
     const wrapper = document.querySelector('.blog-item-wrapper');
     const h1 = wrapper?.querySelector(
       'h1.entry-title, .blog-item-title h1, h1'
@@ -600,6 +606,15 @@
       item.categories || item.category,
       'category'
     );
+
+    if (
+      categories.some(function (category) {
+        return category.name.trim().toUpperCase() === 'INTERNAL';
+      })
+    ) {
+      window.MTF?.journalInternal?.ensure?.();
+      return;
+    }
 
     if (!tags.length) return;
 

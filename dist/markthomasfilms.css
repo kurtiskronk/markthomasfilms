@@ -4362,8 +4362,9 @@ html.mtf-editorial-blog
 	--mtf-editorial-ink: var(--mtf-blog-ink, #202020);
 	--mtf-editorial-rule: var(--mtf-blog-rule, rgba(0, 0, 0, .17));
 	--mtf-editorial-muted: rgba(32, 32, 32, .62);
-	--mtf-editorial-highlight: rgba(176, 157, 125, .20);
-	--mtf-editorial-underline: rgba(32, 32, 32, .32);
+	--mtf-editorial-highlight: rgba(194, 183, 158, .34);
+	--mtf-editorial-underline: rgba(32, 32, 32, .20);
+	--mtf-editorial-link-underline: rgba(32, 32, 32, .38);
 
 	box-sizing: border-box;
 	width: 100%;
@@ -4682,23 +4683,23 @@ html.mtf-editorial-blog
 	font-style: italic;
 }
 
-/* Warm, restrained highlighter stripe rather than browser yellow. */
+/* Thin, restrained highlighter swipe (reference option A). */
 .mtf-editorial-article mark {
-	padding: .03em .14em;
+	padding: 0 .08em;
 	color: inherit;
 	background-color: transparent;
 	background-image: linear-gradient(
-		to bottom,
-		transparent 38%,
-		var(--mtf-editorial-highlight) 38%,
-		var(--mtf-editorial-highlight) 88%,
-		transparent 88%
+		var(--mtf-editorial-highlight),
+		var(--mtf-editorial-highlight)
 	);
+	background-repeat: no-repeat;
+	background-position: 0 88%;
+	background-size: 100% 34%;
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
 }
 
-/* Native underline with muted gray ink and descender gaps. */
+/* Quiet editorial underline: lighter than links, with descender gaps. */
 .mtf-editorial-article u {
 	padding: 0;
 	color: inherit;
@@ -4706,7 +4707,7 @@ html.mtf-editorial-blog
 	text-decoration-line: underline;
 	text-decoration-style: solid;
 	text-decoration-color: var(--mtf-editorial-underline);
-	text-decoration-thickness: 2px;
+	text-decoration-thickness: 1px;
 	text-underline-offset: 3px;
 	text-decoration-skip-ink: auto;
 	-webkit-text-decoration-skip: ink;
@@ -4726,7 +4727,7 @@ html.mtf-editorial-blog
 	color: inherit;
 	text-decoration-line: underline;
 	text-decoration-thickness: 1px;
-	text-decoration-color: rgba(32, 32, 32, .38);
+	text-decoration-color: var(--mtf-editorial-link-underline);
 	text-underline-offset: 4px;
 	transition: text-decoration-color 160ms ease, opacity 160ms ease;
 }
@@ -4794,6 +4795,176 @@ html.mtf-editorial-blog
 	line-height: 1.5;
 	letter-spacing: .04em;
 	text-align: center;
+}
+
+
+/* =========================================================
+	 JOURNAL TEMPLATE — VISUAL REFERENCE SCAFFOLDING
+
+	 These attributes exist only on the INTERNAL formatting
+	 reference page. They make examples easy to scan in both
+	 the Squarespace editor and the published direct URL.
+	 They are documentation UI, not article-authoring markup.
+	 ========================================================= */
+
+.mtf-editorial-article[data-mtf-template="true"] {
+	max-width: 760px;
+}
+
+.mtf-editorial-article [data-mtf-template-intro] {
+	box-sizing: border-box;
+	margin: 0 0 54px;
+	padding: 26px 28px 28px;
+	border: 1px solid rgba(32, 32, 32, .12);
+	background: rgba(32, 32, 32, .025);
+}
+
+.mtf-editorial-article [data-mtf-template-kicker] {
+	margin: 0 0 8px;
+	color: rgba(32, 32, 32, .52);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .64rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: .17em;
+	text-transform: uppercase;
+}
+
+.mtf-editorial-article [data-mtf-template-intro] h1 {
+	margin: 0 0 10px;
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.8rem, 3.4vw, 2.35rem);
+	font-weight: 400;
+	line-height: 1.15;
+	letter-spacing: -.02em;
+}
+
+.mtf-editorial-article [data-mtf-template-intro] p:not([data-mtf-template-kicker]) {
+	margin: 0;
+	color: rgba(32, 32, 32, .68);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .84rem;
+	line-height: 1.6;
+}
+
+.mtf-editorial-article section[data-mtf-example] {
+	clear: both;
+	position: relative;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 38px 0 44px;
+	border-top: 1px solid rgba(32, 32, 32, .12);
+}
+
+.mtf-editorial-article section[data-mtf-example]::before {
+	content: attr(data-mtf-example);
+	display: inline-block;
+	margin: 0 0 24px;
+	padding: 0;
+	color: rgba(32, 32, 32, .52);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .62rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: .17em;
+	text-transform: uppercase;
+}
+
+.mtf-editorial-article [data-mtf-demo] {
+	clear: both;
+	margin: 0;
+}
+
+.mtf-editorial-article [data-mtf-demo]::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/* Paragraph demos are nested inside documentation sections, so repeat
+	 the article paragraph treatment here without changing real article DOM. */
+.mtf-editorial-article [data-mtf-demo] > p {
+	margin: 0 0 18px;
+	padding: 0;
+	color: inherit;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.125rem;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.68;
+	letter-spacing: 0;
+	text-align: left;
+}
+
+.mtf-editorial-article [data-mtf-explanation] {
+	clear: both;
+	box-sizing: border-box;
+	margin: 24px 0 0;
+	padding: 15px 17px 16px 19px;
+	border-left: 2px solid rgba(32, 32, 32, .18);
+	background: rgba(32, 32, 32, .035);
+}
+
+.mtf-editorial-article [data-mtf-explanation]::before {
+	content: "EXPLANATION";
+	display: block;
+	margin: 0 0 7px;
+	color: rgba(32, 32, 32, .44);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .58rem;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: .15em;
+	text-transform: uppercase;
+}
+
+.mtf-editorial-article [data-mtf-explanation] p {
+	margin: 0 0 7px;
+	color: rgba(32, 32, 32, .68);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .78rem;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.55;
+	letter-spacing: 0;
+}
+
+.mtf-editorial-article [data-mtf-explanation] p:last-child {
+	margin-bottom: 0;
+}
+
+.mtf-editorial-article [data-mtf-explanation] strong {
+	font-weight: 700;
+}
+
+.mtf-editorial-article [data-mtf-explanation] code {
+	padding: .08em .28em;
+	border-radius: 2px;
+	background: rgba(32, 32, 32, .06);
+	color: rgba(32, 32, 32, .78);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+	font-size: .92em;
+}
+
+.mtf-editorial-article [data-mtf-template-media] {
+	display: grid;
+	place-items: center;
+	min-height: 220px;
+	background: rgba(32, 32, 32, .055);
+	color: rgba(32, 32, 32, .42);
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .64rem;
+	font-weight: 600;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+}
+
+/* INTERNAL utility posts should not expose their reserved category
+	 or native comments UI when viewed directly. */
+html.mtf-journal-internal .blog-meta-item--categories,
+html.mtf-journal-internal .blog-item-comments {
+	display: none;
 }
 
 
@@ -4931,6 +5102,29 @@ html.mtf-editorial-blog
 	.mtf-editorial-article li > ul,
 	.mtf-editorial-article li > ol {
 		padding-left: 1.25em;
+	}
+
+	.mtf-editorial-article[data-mtf-template="true"]
+	[data-mtf-template-intro] {
+		margin-bottom: 42px;
+		padding: 22px 20px 23px;
+	}
+
+	.mtf-editorial-article[data-mtf-template="true"]
+	section[data-mtf-example] {
+		padding: 32px 0 38px;
+	}
+
+	.mtf-editorial-article[data-mtf-template="true"]
+	[data-mtf-demo] > p {
+		font-size: 1.0625rem;
+		line-height: 1.65;
+	}
+
+	.mtf-editorial-article[data-mtf-template="true"]
+	[data-mtf-explanation] {
+		margin-top: 20px;
+		padding: 14px 15px 15px 17px;
 	}
 
 	.mtf-editorial-article > .mtf-editorial-eyebrow {

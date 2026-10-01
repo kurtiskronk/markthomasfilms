@@ -16,6 +16,7 @@
   const MAX_ARCHIVE_PAGES = 8;
   const WORDS_PER_MINUTE = 225;
   const MAX_SERIES_POSTS = 10;
+  const INTERNAL_CATEGORY = 'internal';
 
   function isPost() {
     return /^\/journal\/[^/]+\/?$/i.test(
@@ -200,7 +201,9 @@
 
     return containers.map(function (container) {
       return articleData(container, base);
-    }).filter(Boolean);
+    }).filter(function (post) {
+      return post && !post.categories.includes(INTERNAL_CATEGORY);
+    });
   }
 
   function nextPage(doc, base) {
@@ -609,11 +612,20 @@
   }
 
   async function enrichRecommendations(posts) {
-    return Promise.all(
+    const enriched = await Promise.all(
       posts.map(function (post) {
         return enrichPost(post);
       })
     );
+
+    return enriched.filter(function (post) {
+      const fetchedCategory = String(
+        post.category?.name || ''
+      ).trim().toLowerCase();
+
+      return fetchedCategory !== INTERNAL_CATEGORY &&
+        !post.categories.includes(INTERNAL_CATEGORY);
+    });
   }
 
   function card(post) {
@@ -783,6 +795,7 @@
   function init() {
     if (
       !isPost() ||
+      window.MTF?.journalInternal?.isCurrent?.() ||
       document.querySelector('.mtf-blog-related')
     ) {
       return;

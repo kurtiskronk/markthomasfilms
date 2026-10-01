@@ -26,6 +26,35 @@
 				'article.blog-single-column--container';
 
 		const MAX_SERIES_POSTS = 10;
+		const INTERNAL_CATEGORY = 'INTERNAL';
+
+
+		function isInternalName(value) {
+				return cleanText(value).toUpperCase() === INTERNAL_CATEGORY;
+		}
+
+
+		function hasInternalCategory(categories) {
+				return (categories || []).some(term =>
+					isInternalName(term?.name)
+				);
+		}
+
+
+		function ensureNoIndex() {
+				let meta = document.querySelector(
+						'meta[data-mtf-journal-internal-robots]'
+				);
+
+				if (!meta) {
+						meta = document.createElement('meta');
+						meta.name = 'robots';
+						meta.dataset.mtfJournalInternalRobots = '';
+						document.head.appendChild(meta);
+				}
+
+				meta.content = 'noindex, follow';
+		}
 
 
 		function cleanText(value) {
@@ -440,7 +469,7 @@
 			 ARTICLE ENHANCEMENT
 			 ===================================================== */
 
-		function enhanceCard(card) {
+		function enhanceCard(card, allowInternal) {
 				if (
 						card.dataset.mtfJournalReady
 				) {
@@ -472,6 +501,14 @@
 
 				const tags =
 						nativeTerms(card, 'tag');
+
+				if (
+						hasInternalCategory(categories) &&
+						!allowInternal
+				) {
+						card.remove();
+						return null;
+				}
 
 				applyTaxonomy(
 						card,
@@ -1052,6 +1089,17 @@
 						return;
 				}
 
+				const internalArchive =
+						info.type === 'category' &&
+						isInternalName(info.name);
+
+				if (internalArchive) {
+					document.documentElement.classList.add(
+							'mtf-journal-internal-archive'
+						);
+						ensureNoIndex();
+				}
+
 				document.documentElement.classList.add(
 						'mtf-blog-archive-page'
 				);
@@ -1077,12 +1125,12 @@
 
 				/* ENHANCE NATIVE ARTICLES */
 
-				const records = [
+				let records = [
 						...archive.querySelectorAll(
 								CARD
 						)
 				]
-						.map(enhanceCard)
+						.map(card => enhanceCard(card, internalArchive))
 						.filter(Boolean);
 
 
@@ -1194,6 +1242,20 @@
 								record.tags
 						);
 				});
+
+
+				/* REMOVE INTERNAL POSTS FROM PUBLIC ARCHIVE VIEWS */
+
+				if (!internalArchive) {
+					records = records.filter(record => {
+						if (!hasInternalCategory(record.categories)) {
+								return true;
+						}
+
+						record.card.remove();
+						return false;
+					});
+				}
 
 
 				/* FILTERED PAGE HEADER + BREADCRUMBS */

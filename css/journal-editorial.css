@@ -714,10 +714,13 @@ html.mtf-editorial-blog
 
 .mtf-editorial-article h2 {
 	clear: both;
-	margin: 56px 0 22px;
-	padding: 30px 0 0;
+	display: flex;
+	align-items: center;
+	gap: 18px;
 
-	border-top: 1px solid var(--mtf-editorial-rule);
+	margin: 52px 0 22px;
+	padding: 0;
+	border: 0;
 
 	color: inherit;
 	font-family: Georgia, "Times New Roman", serif;
@@ -726,8 +729,19 @@ html.mtf-editorial-blog
 	font-style: normal;
 	line-height: 1.2;
 	letter-spacing: -.018em;
-	text-align: left;
+	text-align: center;
 	text-transform: none;
+}
+
+.mtf-editorial-article h2::before,
+.mtf-editorial-article h2::after {
+	content: "";
+	display: block;
+	flex: 1 1 auto;
+	min-width: 36px;
+	height: 1px;
+	background: currentColor;
+	opacity: .17;
 }
 
 
@@ -1184,6 +1198,25 @@ html.mtf-editorial-blog
 	text-transform: uppercase;
 }
 
+/* The H2 reference mirrors the centered H2 treatment. */
+.mtf-editorial-article
+section[data-mtf-example^="H2 EXAMPLE"]::before {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+/* The reference section already supplies vertical spacing; avoid stacking
+   each heading's normal article top margin on top of the demo label gap. */
+.mtf-editorial-article[data-mtf-template="true"]
+[data-mtf-demo] > h2,
+.mtf-editorial-article[data-mtf-template="true"]
+[data-mtf-demo] > h3,
+.mtf-editorial-article[data-mtf-template="true"]
+[data-mtf-demo] > h4 {
+	margin-top: 0;
+}
+
 .mtf-editorial-article [data-mtf-demo] {
 	clear: both;
 	margin: 0;
@@ -1369,9 +1402,15 @@ html.mtf-journal-internal .blog-item-comments {
 	}
 
 	.mtf-editorial-article h2 {
-		margin-top: 46px;
+		gap: 12px;
+		margin-top: 44px;
 		margin-bottom: 20px;
-		padding-top: 25px;
+		padding: 0;
+	}
+
+	.mtf-editorial-article h2::before,
+	.mtf-editorial-article h2::after {
+		min-width: 20px;
 	}
 
 	.mtf-editorial-article h3 {

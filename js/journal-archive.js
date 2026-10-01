@@ -317,6 +317,24 @@
 
 
 		
+		function partWord(part) {
+				const words = {
+						1: 'ONE',
+						2: 'TWO',
+						3: 'THREE',
+						4: 'FOUR',
+						5: 'FIVE',
+						6: 'SIX',
+						7: 'SEVEN',
+						8: 'EIGHT',
+						9: 'NINE',
+						10: 'TEN'
+				};
+
+				return words[part] || String(part);
+		}
+
+
 		function applyTaxonomy(
 				card,
 				categories,
@@ -388,7 +406,7 @@
 								const separator =
 										document.createElement('span');
 		
-								separator.textContent = '·';
+								separator.textContent = '—';
 		
 								separator.setAttribute(
 										'aria-hidden',
@@ -402,7 +420,7 @@
 										'mtf-journal-series-part';
 		
 								number.textContent =
-										'Part ' + part;
+										'Part ' + partWord(part);
 		
 								nav.appendChild(separator);
 								nav.appendChild(number);
@@ -848,11 +866,9 @@
 
 			 No hardcoded series names.
 
-			 Check each article's tags in order.
-			 The first tag shared with another published
-			 article becomes the displayed series.
-
-			 A unique tag remains an ordinary tag.
+			 Journal tags are series identifiers. The first
+			 tag on an article becomes the displayed series,
+			 including a one-entry series as Part One.
 			 ===================================================== */
 
 		async function updateSeriesParts(records) {
@@ -887,7 +903,7 @@
 										/* NOT A SERIES */
 
 										if (
-												posts.length < 2
+												posts.length < 1
 										) {
 												continue;
 										}
@@ -1090,12 +1106,20 @@
 					'.mtf-journal-series-status'
 			)?.remove();
 
+			archive.classList.remove(
+					'mtf-journal-single-entry-series'
+			);
+
 			if (
 					info.type !== 'tag' ||
 					records.length !== 1
 			) {
 					return;
 			}
+
+			archive.classList.add(
+					'mtf-journal-single-entry-series'
+			);
 
 			const status = document.createElement('div');
 			status.className = 'mtf-journal-series-status';

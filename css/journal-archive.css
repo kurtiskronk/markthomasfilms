@@ -830,10 +830,17 @@ html.mtf-blog-archive-page
 	 ========================================================= */
 
 html.mtf-blog-archive-page
+.blog-single-column.collection-content-wrapper.mtf-journal-single-entry-series
+.blog-single-column--wrapper {
+	padding-bottom: 0;
+}
+
+
+html.mtf-blog-archive-page
 .mtf-journal-series-status {
 	box-sizing: border-box;
 	width: min(calc(100% - 50px), var(--mtf-journal-list-width));
-	margin: 8px auto 64px;
+	margin: 0 auto 64px;
 	text-align: center;
 }
 
@@ -842,7 +849,7 @@ html.mtf-blog-archive-page
 	display: block;
 	width: 46px;
 	height: 1px;
-	margin: 0 auto 22px;
+	margin: 0 auto 18px;
 	background: var(--mtf-journal-line);
 }
 
@@ -898,6 +905,13 @@ html.mtf-blog-archive-page
 	.blog-single-column--wrapper {
 		padding: 0 25px 48px;
 	}
+
+	html.mtf-blog-archive-page
+	.blog-single-column.collection-content-wrapper.mtf-journal-single-entry-series
+	.blog-single-column--wrapper {
+		padding-bottom: 0;
+	}
+
 
 	html.mtf-blog-archive-page
 	.mtf-journal-series-status {

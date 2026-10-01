@@ -1287,14 +1287,10 @@
 				});
 
 
-				/* SERIES LANDING PAGE */
+				/* AUTOMATIC SERIES NUMBERING
 
-				if (await renderSeriesLanding(archive, info, records)) {
-						return;
-				}
-
-
-				/* AUTOMATIC SERIES NUMBERING */
+				   Tag-filtered series pages intentionally use the same
+				   archive presentation as category-filtered pages. */
 
 				await updateSeriesParts(
 						records

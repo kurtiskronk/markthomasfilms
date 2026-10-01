@@ -504,12 +504,21 @@
       rule.className = 'mtf-series-article-toolbar__rule';
       rule.setAttribute('aria-hidden', 'true');
 
-      const all = document.createElement('a');
-      all.className = 'mtf-series-article-toolbar__all';
-      all.href = series.href;
-      all.innerHTML = '<span aria-hidden="true">☷</span> View Entire Series';
+      let trailing;
 
-      toolbar.append(partText, rule, all);
+      if (total > 1) {
+        trailing = document.createElement('a');
+        trailing.className = 'mtf-series-article-toolbar__all';
+        trailing.href = series.href;
+        trailing.innerHTML =
+          '<span aria-hidden="true">☷</span> View Entire Series';
+      } else {
+        trailing = document.createElement('span');
+        trailing.className = 'mtf-series-article-toolbar__status';
+        trailing.textContent = 'More in this series coming soon.';
+      }
+
+      toolbar.append(partText, rule, trailing);
       header.insertBefore(toolbar, titleBox);
     }
 

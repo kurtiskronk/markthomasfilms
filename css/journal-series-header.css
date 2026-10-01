@@ -264,6 +264,16 @@ html.mtf-editorial-blog
   opacity: .62;
 }
 
+html.mtf-editorial-blog
+.mtf-series-article-toolbar__status {
+  color: rgba(32, 32, 32, .58);
+  font-size: .61rem;
+  font-weight: 400;
+  letter-spacing: .025em;
+  text-transform: none;
+  white-space: nowrap;
+}
+
 
 /* =========================================================
    SHARED ARTICLE META + DECK
@@ -546,6 +556,13 @@ html.mtf-editorial-blog
   html.mtf-editorial-blog
   .mtf-series-article-toolbar__all {
     gap: 6px;
+  }
+
+  html.mtf-editorial-blog
+  .mtf-series-article-toolbar__status {
+    font-size: .56rem;
+    white-space: normal;
+    text-align: right;
   }
 
   html.mtf-editorial-blog

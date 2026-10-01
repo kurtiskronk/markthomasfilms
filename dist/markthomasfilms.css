@@ -3560,6 +3560,42 @@ html.mtf-blog-archive-page
 
 
 /* =========================================================
+	 SINGLE-ENTRY SERIES STATUS
+
+	 Only appears beneath a tag-filtered archive when the series
+	 currently has one public article. It does not alter the card.
+	 ========================================================= */
+
+html.mtf-blog-archive-page
+.mtf-journal-series-status {
+	box-sizing: border-box;
+	width: min(calc(100% - 50px), var(--mtf-journal-list-width));
+	margin: 8px auto 64px;
+	text-align: center;
+}
+
+html.mtf-blog-archive-page
+.mtf-journal-series-status__rule {
+	display: block;
+	width: 46px;
+	height: 1px;
+	margin: 0 auto 22px;
+	background: var(--mtf-journal-line);
+}
+
+html.mtf-blog-archive-page
+.mtf-journal-series-status__text {
+	margin: 0;
+	color: var(--mtf-journal-muted);
+	font-family: var(--mtf-journal-serif);
+	font-size: .92rem;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: .08em;
+}
+
+
+/* =========================================================
 	 MOBILE
 
 	 Single column at 800px.
@@ -3598,6 +3634,19 @@ html.mtf-blog-archive-page
 	html.mtf-blog-archive-page
 	.blog-single-column--wrapper {
 		padding: 0 25px 48px;
+	}
+
+	html.mtf-blog-archive-page
+	.mtf-journal-series-status {
+		width: calc(100% - 50px);
+		margin-top: 0;
+		margin-bottom: 48px;
+	}
+
+	html.mtf-blog-archive-page
+	.mtf-journal-series-status__text {
+		font-size: .86rem;
+		letter-spacing: .055em;
 	}
 
 
@@ -6162,6 +6211,16 @@ html.mtf-editorial-blog
   opacity: .62;
 }
 
+html.mtf-editorial-blog
+.mtf-series-article-toolbar__status {
+  color: rgba(32, 32, 32, .58);
+  font-size: .61rem;
+  font-weight: 400;
+  letter-spacing: .025em;
+  text-transform: none;
+  white-space: nowrap;
+}
+
 
 /* =========================================================
    SHARED ARTICLE META + DECK
@@ -6444,6 +6503,13 @@ html.mtf-editorial-blog
   html.mtf-editorial-blog
   .mtf-series-article-toolbar__all {
     gap: 6px;
+  }
+
+  html.mtf-editorial-blog
+  .mtf-series-article-toolbar__status {
+    font-size: .56rem;
+    white-space: normal;
+    text-align: right;
   }
 
   html.mtf-editorial-blog

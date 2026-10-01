@@ -1078,6 +1078,44 @@
 
 
 		/* =====================================================
+			 SINGLE-ENTRY SERIES STATUS
+
+			 On a tag-filtered series page with only one public
+			 article, add a quiet note below the existing archive.
+			 The archive card and everything above it are untouched.
+			 ===================================================== */
+
+		function updateSingleEntrySeriesStatus(archive, info, records) {
+			document.querySelector(
+					'.mtf-journal-series-status'
+			)?.remove();
+
+			if (
+					info.type !== 'tag' ||
+					records.length !== 1
+			) {
+					return;
+			}
+
+			const status = document.createElement('div');
+			status.className = 'mtf-journal-series-status';
+			status.setAttribute('role', 'note');
+
+			const rule = document.createElement('span');
+			rule.className = 'mtf-journal-series-status__rule';
+			rule.setAttribute('aria-hidden', 'true');
+
+			const text = document.createElement('p');
+			text.className = 'mtf-journal-series-status__text';
+			text.textContent =
+					'First article in this series. More coming soon.';
+
+			status.append(rule, text);
+			archive.after(status);
+		}
+
+
+		/* =====================================================
 			 INITIALIZATION
 			 ===================================================== */
 
@@ -1275,6 +1313,12 @@
 				   archive presentation as category-filtered pages. */
 
 				await updateSeriesParts(
+						records
+				);
+
+				updateSingleEntrySeriesStatus(
+						archive,
+						info,
 						records
 				);
 		}

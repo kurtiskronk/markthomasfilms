@@ -4883,14 +4883,7 @@ html.mtf-editorial-blog
 	line-height: 1.4;
 	letter-spacing: .17em;
 	text-transform: uppercase;
-}
-
-/* The H2 reference mirrors the centered H2 treatment. */
-.mtf-editorial-article
-section[data-mtf-example^="H2 EXAMPLE"]::before {
-	display: block;
-	width: 100%;
-	text-align: center;
+	tex-align:center;
 }
 
 /* The reference section already supplies vertical spacing; avoid stacking

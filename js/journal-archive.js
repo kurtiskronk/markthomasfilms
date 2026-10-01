@@ -25,6 +25,8 @@
 		const CARD =
 				'article.blog-single-column--container';
 
+		const MAX_SERIES_POSTS = 10;
+
 
 		function cleanText(value) {
 				const div = document.createElement('div');
@@ -35,23 +37,6 @@
 						.trim();
 		}
 
-
-		function seriesCopy(name) {
-				const configured =
-						window.MTF &&
-						window.MTF.journalSeriesCopy &&
-						window.MTF.journalSeriesCopy[
-								String(name || '').trim().toLowerCase()
-						];
-
-				return configured || {
-						subtitle:
-								'A continuing Journal series exploring the stories, people and ideas behind the work.',
-
-						intro:
-								'A collection of related Journal articles exploring this subject in greater depth.'
-				};
-		}
 
 
 		/* =====================================================
@@ -872,15 +857,12 @@
 
 
 										/*
-										 * A feed with 20 entries may
-										 * omit older posts.
-										 *
-										 * Do not assign potentially
-										 * incorrect part numbers.
+										 * Journal series are intentionally
+										 * limited to ten published parts.
 										 */
 
 										if (
-												posts.length >= 20
+												posts.length > MAX_SERIES_POSTS
 										) {
 												continue;
 										}
@@ -1006,14 +988,9 @@
 				title.className = 'mtf-journal-hero__title';
 				title.textContent = info.name;
 
-				const subtitle = document.createElement('p');
-				subtitle.className = 'mtf-journal-hero__subtitle';
-				subtitle.textContent =
-						info.type === 'tag'
-								? seriesCopy(info.name).subtitle
-								: 'Articles filed under ' + info.name + '.';
-
-				inner.append(eyebrow, title, subtitle);
+				/* Filtered category/tag pages intentionally stop at the title.
+				   No separately maintained category or series description is used. */
+				inner.append(eyebrow, title);
 				hero.appendChild(inner);
 				archive.before(hero);
 

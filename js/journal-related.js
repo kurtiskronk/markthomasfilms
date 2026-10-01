@@ -15,6 +15,7 @@
   const MAX_POSTS = 3;
   const MAX_ARCHIVE_PAGES = 8;
   const WORDS_PER_MINUTE = 225;
+  const MAX_SERIES_POSTS = 10;
 
   function isPost() {
     return /^\/journal\/[^/]+\/?$/i.test(
@@ -30,7 +31,8 @@
 
       if (url.origin !== location.origin) return '';
 
-      return url.pathname.replace(/\/+$/, '') || '/';
+      return (url.pathname.replace(/\/+$/, '') || '/')
+        .replace(/^\/blog\//i, '/journal/');
     } catch (_) {
       return '';
     }
@@ -69,6 +71,53 @@
     );
 
     return cleanText(link?.textContent || '');
+  }
+
+  function firstTerm(root, type) {
+    const prefix = '/journal/' + type + '/';
+    const className = type === 'category'
+      ? 'blog-item-category'
+      : 'blog-item-tag';
+
+    const link = Array.from(
+      root.querySelectorAll('a[href]')
+    ).find(function (candidate) {
+      const path = canonical(candidate.href);
+
+      return path.startsWith(prefix) ||
+        candidate.classList.contains(className);
+    });
+
+    if (!link) return null;
+
+    const name = cleanText(link.textContent);
+    if (!name) return null;
+
+    const path = canonical(link.href);
+
+    return {
+      name: name,
+      href: path.startsWith(prefix)
+        ? path
+        : prefix + encodeURIComponent(name).replace(/%20/g, '+')
+    };
+  }
+
+  function partWord(number) {
+    const words = {
+      1: 'ONE',
+      2: 'TWO',
+      3: 'THREE',
+      4: 'FOUR',
+      5: 'FIVE',
+      6: 'SIX',
+      7: 'SEVEN',
+      8: 'EIGHT',
+      9: 'NINE',
+      10: 'TEN'
+    };
+
+    return words[number] || String(number);
   }
 
   function articleData(container, base) {
@@ -117,6 +166,9 @@
       categoryLabel: firstCategoryLabel(container),
       categories: taxonomy(container, 'category'),
       tags: taxonomy(container, 'tag'),
+      category: null,
+      tag: null,
+      series: null,
       readMinutes: null
     };
   }
@@ -283,6 +335,207 @@
       });
   }
 
+  const seriesCache = new Map();
+
+  async function seriesPostsFromRSS(tagName) {
+    const url = new URL('/journal/', location.origin);
+    url.searchParams.set('tag', tagName);
+    url.searchParams.set('format', 'rss');
+
+    const response = await fetch(url, {
+      credentials: 'same-origin'
+    });
+
+    if (!response.ok) return [];
+
+    const xml = new DOMParser().parseFromString(
+      await response.text(),
+      'application/xml'
+    );
+
+    if (xml.querySelector('parsererror')) return [];
+
+    const posts = Array.from(
+      xml.querySelectorAll('item')
+    ).map(function (item, index) {
+      const link = item.querySelector('link')
+        ?.textContent.trim();
+
+      const path = link && canonical(link);
+      if (!path || !/^\/journal\/[^/]+$/i.test(path)) {
+        return null;
+      }
+
+      const published = item.querySelector('pubDate')
+        ?.textContent.trim();
+      const parsedDate = Date.parse(published || '');
+
+      return {
+        path: path,
+        date: Number.isFinite(parsedDate)
+          ? parsedDate
+          : null,
+        rssIndex: index
+      };
+    }).filter(Boolean);
+
+    posts.sort(function (a, b) {
+      if (a.date !== null && b.date !== null) {
+        return a.date - b.date || b.rssIndex - a.rssIndex;
+      }
+
+      return b.rssIndex - a.rssIndex;
+    });
+
+    return Array.from(
+      new Map(
+        posts.map(function (post) {
+          return [post.path, post];
+        })
+      ).values()
+    );
+  }
+
+  async function seriesPostsFromTagPage(tag) {
+    if (!tag?.href) return [];
+
+    const response = await fetch(tag.href, {
+      credentials: 'same-origin'
+    });
+
+    if (!response.ok) return [];
+
+    const doc = new DOMParser().parseFromString(
+      await response.text(),
+      'text/html'
+    );
+
+    let posts = Array.from(
+      doc.querySelectorAll(
+        'article.blog-single-column--container'
+      )
+    ).map(function (article, index) {
+      const link = article.querySelector(
+        '.blog-title a[href]'
+      );
+
+      if (!link) return null;
+
+      const path = canonical(link.href);
+      if (!path || !/^\/journal\/[^/]+$/i.test(path)) {
+        return null;
+      }
+
+      const time = article.querySelector(
+        'time[datetime], time, .blog-date'
+      );
+
+      const rawDate = time?.getAttribute('datetime') ||
+        cleanText(time?.textContent || '');
+      const parsedDate = Date.parse(rawDate || '');
+
+      return {
+        path: path,
+        date: Number.isFinite(parsedDate)
+          ? parsedDate
+          : null,
+        archiveIndex: index
+      };
+    }).filter(Boolean);
+
+    if (
+      posts.length &&
+      posts.every(function (post) {
+        return post.date !== null;
+      })
+    ) {
+      posts.sort(function (a, b) {
+        return a.date - b.date;
+      });
+    } else {
+      // Squarespace archive pages are normally newest-first.
+      posts.reverse();
+    }
+
+    return Array.from(
+      new Map(
+        posts.map(function (post) {
+          return [post.path, post];
+        })
+      ).values()
+    );
+  }
+
+  async function seriesPosition(tag, currentPath) {
+    if (!tag?.name || !currentPath) return null;
+
+    const key = tag.name.toLowerCase();
+
+    if (!seriesCache.has(key)) {
+      seriesCache.set(
+        key,
+        (async function () {
+          try {
+            const rss = await seriesPostsFromRSS(tag.name);
+
+            if (
+              rss.length >= 2 &&
+              rss.length <= MAX_SERIES_POSTS
+            ) {
+              return rss;
+            }
+          } catch (_) {
+            // Fall through to the visible tag archive.
+          }
+
+          try {
+            const archive = await seriesPostsFromTagPage(tag);
+
+            return archive.length >= 2 &&
+              archive.length <= MAX_SERIES_POSTS
+              ? archive
+              : [];
+          } catch (_) {
+            return [];
+          }
+        })()
+      );
+    }
+
+    let posts = await seriesCache.get(key);
+
+    let index = posts.findIndex(function (post) {
+      return post.path === currentPath;
+    });
+
+    // If the RSS feed returned a valid series but did not contain this
+    // article, retry against the rendered tag archive before giving up.
+    if (index === -1) {
+      try {
+        const archive = await seriesPostsFromTagPage(tag);
+
+        if (
+          archive.length >= 2 &&
+          archive.length <= MAX_SERIES_POSTS
+        ) {
+          posts = archive;
+          index = posts.findIndex(function (post) {
+            return post.path === currentPath;
+          });
+        }
+      } catch (_) {
+        // Leave index at -1.
+      }
+    }
+
+    return index === -1
+      ? null
+      : {
+          part: index + 1,
+          total: posts.length
+        };
+  }
+
   function readMinutesFromDocument(doc) {
     const content = doc.querySelector(
       '.blog-item-content, .blog-body-wrapper'
@@ -325,8 +578,21 @@
         'text/html'
       );
 
-      const category = firstCategoryLabel(doc);
-      if (category) post.categoryLabel = category;
+      const category = firstTerm(doc, 'category');
+      const tag = firstTerm(doc, 'tag');
+
+      if (category) {
+        post.category = category;
+        post.categoryLabel = category.name;
+      }
+
+      if (tag) {
+        post.tag = tag;
+        post.series = await seriesPosition(
+          tag,
+          canonical(post.path)
+        );
+      }
 
       const minutes = readMinutesFromDocument(doc);
       if (minutes) post.readMinutes = minutes;
@@ -357,9 +623,44 @@
     const body = document.createElement('div');
     body.className = 'mtf-blog-related__body';
 
-    const eyebrow = document.createElement('div');
-    eyebrow.className = 'mtf-blog-related__category';
-    eyebrow.textContent = post.categoryLabel || 'Journal';
+    const taxonomyBlock = document.createElement('div');
+    taxonomyBlock.className = 'mtf-blog-related__taxonomy';
+
+    const categoryRow = document.createElement('div');
+    categoryRow.className = 'mtf-blog-related__category';
+
+    if (post.category) {
+      const categoryLink = document.createElement('a');
+      categoryLink.href = post.category.href;
+      categoryLink.textContent = post.category.name;
+      categoryRow.appendChild(categoryLink);
+    } else {
+      const categoryText = document.createElement('span');
+      categoryText.textContent = post.categoryLabel || 'Journal';
+      categoryRow.appendChild(categoryText);
+    }
+
+    taxonomyBlock.appendChild(categoryRow);
+
+    if (post.tag) {
+      const seriesRow = document.createElement('div');
+      seriesRow.className = 'mtf-blog-related__series';
+
+      const tagLink = document.createElement('a');
+      tagLink.href = post.tag.href;
+      tagLink.textContent = post.tag.name;
+      seriesRow.appendChild(tagLink);
+
+      if (post.series) {
+        const part = document.createElement('span');
+        part.className = 'mtf-blog-related__series-part';
+        part.textContent =
+          ' — Part ' + partWord(post.series.part);
+        seriesRow.appendChild(part);
+      }
+
+      taxonomyBlock.appendChild(seriesRow);
+    }
 
     const title = document.createElement('h3');
     title.className = 'mtf-blog-related__card-title';
@@ -369,7 +670,7 @@
     titleLink.textContent = post.title;
 
     title.appendChild(titleLink);
-    body.append(eyebrow, title);
+    body.append(taxonomyBlock, title);
 
     if (post.excerpt) {
       const excerpt = document.createElement('p');

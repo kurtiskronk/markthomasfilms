@@ -28,7 +28,7 @@
     window.MTF.journalSeriesCopy || {}
   );
 
-  const MAX_SERIES_POSTS = 20;
+  const MAX_SERIES_POSTS = 10;
 
   function isPost() {
     return /^\/journal\/[^/]+\/?$/i.test(
@@ -467,17 +467,7 @@
       7: 'SEVEN',
       8: 'EIGHT',
       9: 'NINE',
-      10: 'TEN',
-      11: 'ELEVEN',
-      12: 'TWELVE',
-      13: 'THIRTEEN',
-      14: 'FOURTEEN',
-      15: 'FIFTEEN',
-      16: 'SIXTEEN',
-      17: 'SEVENTEEN',
-      18: 'EIGHTEEN',
-      19: 'NINETEEN',
-      20: 'TWENTY'
+      10: 'TEN'
     };
 
     const seriesLabel = document.createElement('div');
@@ -646,7 +636,7 @@
 
       if (
         posts.length >= 2 &&
-        posts.length < MAX_SERIES_POSTS &&
+        posts.length <= MAX_SERIES_POSTS &&
         posts.some(function (post) {
           return post.path === currentPath;
         })

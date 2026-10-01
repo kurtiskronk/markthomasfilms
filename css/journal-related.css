@@ -108,14 +108,17 @@
 
 
 /* =========================================================
-   CATEGORY EYEBROW
+   CATEGORY + SERIES TAXONOMY
    ========================================================= */
+
+.mtf-blog-related__taxonomy {
+  margin: 0 0 15px;
+}
 
 .mtf-blog-related__category {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 0 0 16px;
 
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10px;
@@ -130,6 +133,40 @@
   flex: 1;
   height: 1px;
   background: rgba(32, 32, 32, .28);
+}
+
+.mtf-blog-related__category a,
+.mtf-blog-related__category span {
+  color: #202020;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mtf-blog-related__series {
+  margin-top: 7px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.mtf-blog-related__series a {
+  color: #9a5718;
+  text-decoration: none;
+}
+
+.mtf-blog-related__series-part {
+  color: #65666b;
+}
+
+.mtf-blog-related__category a:hover,
+.mtf-blog-related__category a:focus-visible,
+.mtf-blog-related__series a:hover,
+.mtf-blog-related__series a:focus-visible {
+  opacity: .62;
 }
 
 

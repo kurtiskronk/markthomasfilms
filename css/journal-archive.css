@@ -160,6 +160,15 @@ html.mtf-blog-archive-page
 }
 
 
+/* Filtered category/tag heroes intentionally have no descriptive
+   subtitle. Remove the title's trailing margin in that compact state. */
+html.mtf-blog-archive-page
+.mtf-journal-filter-hero
+.mtf-journal-hero__title {
+	margin-bottom: 0;
+}
+
+
 /* =========================================================
 	 FILTERED ARCHIVE BREADCRUMBS
 

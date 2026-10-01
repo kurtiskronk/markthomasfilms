@@ -4873,7 +4873,8 @@ html.mtf-editorial-blog
 
 .mtf-editorial-article section[data-mtf-example]::before {
 	content: attr(data-mtf-example);
-	display: inline-block;
+	display: block;
+	width: 100%;
 	margin: 0 0 24px;
 	padding: 0;
 	color: rgba(32, 32, 32, .52);
@@ -4882,8 +4883,8 @@ html.mtf-editorial-blog
 	font-weight: 600;
 	line-height: 1.4;
 	letter-spacing: .17em;
+	text-align: center;
 	text-transform: uppercase;
-	tex-align:center;
 }
 
 /* The reference section already supplies vertical spacing; avoid stacking

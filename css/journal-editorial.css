@@ -171,7 +171,7 @@ html.mtf-editorial-blog .mtf-blog-breadcrumbs {
 	align-items: center;
 	flex-wrap: wrap;
 
-	gap: 3px clamp(12px, 1.8vw, 28px);
+	gap: 0;
 
 	width: 100vw;
 	min-height: 36px;
@@ -184,10 +184,10 @@ html.mtf-editorial-blog .mtf-blog-breadcrumbs {
 	transform: translateX(-50%);
 
 	font-family: inherit;
-	font-size: .66rem;
+	font-size: .60rem;
 	font-weight: 400;
 	line-height: 1.5;
-	letter-spacing: .18em;
+	letter-spacing: .10em;
 
 	text-align: center;
 	text-transform: uppercase;
@@ -198,8 +198,7 @@ html.mtf-editorial-blog .mtf-blog-breadcrumbs {
 
 html.mtf-editorial-blog
 .mtf-blog-breadcrumbs__label {
-	color: #dedede;
-	white-space: nowrap;
+	display: none;
 }
 
 

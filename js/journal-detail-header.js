@@ -1,8 +1,11 @@
-
 /* =========================================================
-	 MARK THOMAS FILMS — BLOG BREADCRUMBS
-	 Blog > full article title. Reuses the film bar's appearance
-	 without duplicating film metadata or navigation logic.
+	 MARK THOMAS FILMS — JOURNAL BREADCRUMBS
+
+	 Default article breadcrumb:
+	 Journal › Article Title
+
+	 Series articles are expanded later by
+	 journal-series-header.js.
 	 ========================================================= */
 
 (function () {
@@ -18,71 +21,68 @@
 		);
 	}
 
-	function init() {
-		if (!isPost()) return;
+	function makeItem(content, href, current) {
+		const item = document.createElement('li');
+		item.className = 'mtf-blog-breadcrumbs__item';
 
-		const wrapper = document.querySelector(
-			'.blog-item-wrapper'
-		);
+		if (href) {
+			const link = document.createElement('a');
+			link.href = href;
+			link.textContent = content;
+			item.appendChild(link);
+		} else {
+			const span = document.createElement('span');
+			span.className = current
+				? 'mtf-blog-breadcrumbs__current'
+				: '';
+			span.textContent = content;
 
-		if (
-			!wrapper ||
-			wrapper.querySelector('.mtf-blog-breadcrumbs')
-		) {
-			return;
+			if (current) {
+				span.setAttribute('aria-current', 'page');
+			}
+
+			item.appendChild(span);
 		}
 
-		const h1 = wrapper.querySelector(
-			'h1.entry-title, .blog-item-title h1, h1'
-		);
+		return item;
+	}
 
-		if (!h1 || !h1.textContent.trim()) return;
-
-		const nav = document.createElement('nav');
-
-		nav.className = 'mtf-blog-breadcrumbs';
-		nav.setAttribute('aria-label', 'Blog breadcrumbs');
-
-		const label = document.createElement('span');
-
-		label.className = 'mtf-blog-breadcrumbs__label';
-		label.textContent = 'Navigate to:';
-
-		const list = document.createElement('ol');
-		list.className = 'mtf-blog-breadcrumbs__list';
-
-		const blogItem = document.createElement('li');
-		blogItem.className = 'mtf-blog-breadcrumbs__item';
-
-		const blogLink = document.createElement('a');
-		blogLink.href = '/journal';
-		blogLink.textContent = 'Journal';
-
-		blogItem.appendChild(blogLink);
-
-		const currentItem = document.createElement('li');
-		currentItem.className = 'mtf-blog-breadcrumbs__item';
+	function separatorItem() {
+		const item = document.createElement('li');
+		item.className =
+			'mtf-blog-breadcrumbs__item mtf-blog-breadcrumbs__item--separator';
 
 		const separator = document.createElement('span');
 		separator.className = 'mtf-blog-breadcrumbs__separator';
 		separator.setAttribute('aria-hidden', 'true');
 		separator.textContent = '›';
 
-		const current = document.createElement('span');
+		item.appendChild(separator);
+		return item;
+	}
 
-		current.className = 'mtf-blog-breadcrumbs__current';
-		current.setAttribute('aria-current', 'page');
-		current.textContent = h1.textContent.trim();
+	function render(nav, crumbs) {
+		const list = document.createElement('ol');
+		list.className = 'mtf-blog-breadcrumbs__list';
 
-		currentItem.append(separator, current);
+		crumbs.forEach(function (crumb, index) {
+			if (index) {
+				list.appendChild(separatorItem());
+			}
 
-		list.append(blogItem, currentItem);
-		nav.append(label, list);
+			list.appendChild(
+				makeItem(
+					crumb.label,
+					crumb.href || '',
+					Boolean(crumb.current)
+				)
+			);
+		});
 
-		wrapper.prepend(nav);
+		nav.replaceChildren(list);
+	}
 
-		// Do not inject competing BreadcrumbList schema if another
-		// Squarespace or SEO integration has already provided it.
+	function ensureSchema(h1) {
 		const hasSchema = Array.from(
 			document.querySelectorAll(
 				'script[type="application/ld+json"]'
@@ -93,36 +93,86 @@
 			);
 		});
 
-		if (!hasSchema) {
-			const schema = document.createElement('script');
+		if (hasSchema) return;
 
-			schema.type = 'application/ld+json';
-			schema.dataset.mtfBlogBreadcrumbSchema = '';
+		const schema = document.createElement('script');
 
-			schema.textContent = JSON.stringify({
-				'@context': 'https://schema.org',
-				'@type': 'BreadcrumbList',
-				itemListElement: [
-					{
-						'@type': 'ListItem',
-						position: 1,
-						name: 'Journal',
-						item: new URL('/journal', location.origin).href
-					},
-					{
-						'@type': 'ListItem',
-						position: 2,
-						name: h1.textContent.trim(),
-						item: location.origin + location.pathname
-					}
-				]
-			}).replace(/</g, '\\u003c');
+		schema.type = 'application/ld+json';
+		schema.dataset.mtfJournalBreadcrumbSchema = '';
 
-			document.head.appendChild(schema);
-		}
+		schema.textContent = JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{
+					'@type': 'ListItem',
+					position: 1,
+					name: 'Journal',
+					item: new URL('/journal', location.origin).href
+				},
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: h1.textContent.trim(),
+					item: location.origin + location.pathname
+				}
+			]
+		}).replace(/</g, '\\u003c');
+
+		document.head.appendChild(schema);
 	}
 
-	window.MTF.blogDetailHeader = {
+	function init() {
+		if (!isPost()) return;
+
+		const wrapper = document.querySelector(
+			'.blog-item-wrapper'
+		);
+
+		if (!wrapper) return;
+
+		const h1 = wrapper.querySelector(
+			'h1.entry-title, .blog-item-title h1, h1'
+		);
+
+		if (!h1 || !h1.textContent.trim()) return;
+
+		let nav = wrapper.querySelector(
+			':scope > .mtf-blog-breadcrumbs'
+		);
+
+		if (!nav) {
+			nav = document.createElement('nav');
+			nav.className = 'mtf-blog-breadcrumbs';
+			nav.setAttribute(
+				'aria-label',
+				'Journal breadcrumbs'
+			);
+			wrapper.prepend(nav);
+		}
+
+		render(nav, [
+			{
+				label: 'Journal',
+				href: '/journal'
+			},
+			{
+				label: h1.textContent.trim(),
+				current: true
+			}
+		]);
+
+		ensureSchema(h1);
+
+		window.MTF.journalBreadcrumbs = {
+			nav: nav,
+			render: function (crumbs) {
+				render(nav, crumbs);
+			}
+		};
+	}
+
+	window.MTF.journalDetailHeader = {
 		init: init
 	};
 

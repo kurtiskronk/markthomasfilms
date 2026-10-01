@@ -26,6 +26,34 @@
 				'article.blog-single-column--container';
 
 
+		function cleanText(value) {
+				const div = document.createElement('div');
+				div.innerHTML = String(value || '');
+
+				return (div.textContent || '')
+						.replace(/\s+/g, ' ')
+						.trim();
+		}
+
+
+		function seriesCopy(name) {
+				const configured =
+						window.MTF &&
+						window.MTF.journalSeriesCopy &&
+						window.MTF.journalSeriesCopy[
+								String(name || '').trim().toLowerCase()
+						];
+
+				return configured || {
+						subtitle:
+								'A continuing Journal series exploring the stories, people and ideas behind the work.',
+
+						intro:
+								'A collection of related Journal articles exploring this subject in greater depth.'
+				};
+		}
+
+
 		/* =====================================================
 			 PAGE DETECTION
 			 ===================================================== */
@@ -534,9 +562,24 @@
 						}
 				);
 
+				const excerptText = cleanText(
+						card.querySelector('.blog-excerpt-wrapper')?.textContent || ''
+				);
+
+				const bodyText = cleanText(
+						card.querySelector('.blog-body-wrapper')?.textContent || ''
+				);
+
+				const wordCount = bodyText
+						? bodyText.split(/\s+/).length
+						: excerptText.split(/\s+/).filter(Boolean).length;
+
 				return {
 						card,
 						path,
+						title: cleanText(title.textContent),
+						excerpt: excerptText,
+						readTime: Math.max(1, Math.ceil(wordCount / 225)),
 						categories,
 						tags
 				};
@@ -712,12 +755,20 @@
 										return {
 												path,
 
+												title: cleanText(
+																item.querySelector('title')?.textContent || ''
+												),
+
+												excerpt: cleanText(
+																item.querySelector('description')?.textContent || ''
+												),
+
 												date:
-														Number.isFinite(
-																parsedDate
-														)
-																? parsedDate
-																: null,
+																Number.isFinite(
+																		parsedDate
+																)
+																				? parsedDate
+																				: null,
 
 												index
 										};
@@ -873,6 +924,212 @@
 				);
 		}
 
+		/* =====================================================
+			 SERIES LANDING PAGE
+			 ===================================================== */
+
+		function insertSeriesLandingHero(
+				archive,
+				seriesName,
+				category
+		) {
+				if (document.querySelector('.mtf-journal-series-landing-hero')) {
+						return;
+				}
+
+				const hero = document.createElement('section');
+				hero.className = 'mtf-journal-series-landing-hero';
+
+				const eyebrow = ['Journal'];
+				if (category?.name) eyebrow.push(category.name);
+
+				hero.innerHTML = `
+						<div class="mtf-journal-series-landing-hero__inner">
+								<p class="mtf-journal-series-landing-hero__eyebrow"></p>
+								<h1 class="mtf-journal-series-landing-hero__title"></h1>
+								<p class="mtf-journal-series-landing-hero__subtitle"></p>
+						</div>
+				`;
+
+				hero.querySelector('.mtf-journal-series-landing-hero__eyebrow')
+						.textContent = eyebrow.join(' / ');
+
+				hero.querySelector('.mtf-journal-series-landing-hero__title')
+						.textContent = seriesName;
+
+				hero.querySelector('.mtf-journal-series-landing-hero__subtitle')
+						.textContent = seriesCopy(seriesName).subtitle;
+
+				archive.before(hero);
+
+				const nav = document.createElement('nav');
+				nav.className = 'mtf-journal-series-breadcrumbs';
+				nav.setAttribute('aria-label', 'Journal breadcrumbs');
+
+				const crumbs = [{ label: 'Journal', href: '/journal' }];
+
+				if (category?.name) {
+						crumbs.push({ label: category.name, href: category.href });
+				}
+
+				crumbs.push({ label: seriesName, current: true });
+
+				const list = document.createElement('ol');
+
+				crumbs.forEach((crumb, index) => {
+						if (index) {
+								const separator = document.createElement('li');
+								separator.className = 'mtf-journal-series-breadcrumbs__separator';
+								separator.setAttribute('aria-hidden', 'true');
+								separator.textContent = '›';
+								list.appendChild(separator);
+						}
+
+						const item = document.createElement('li');
+
+						if (crumb.href) {
+								const link = document.createElement('a');
+								link.href = crumb.href;
+								link.textContent = crumb.label;
+								item.appendChild(link);
+						} else {
+								const current = document.createElement('span');
+								current.textContent = crumb.label;
+								current.setAttribute('aria-current', 'page');
+								item.appendChild(current);
+						}
+
+						list.appendChild(item);
+				});
+
+				nav.appendChild(list);
+				hero.after(nav);
+		}
+
+
+		function seriesRow(record, post, part, total) {
+				const text = record.card.querySelector('.blog-single-column--text');
+				if (!text) return;
+
+				const title = record.title || post.title;
+				const excerpt = record.excerpt || post.excerpt;
+				const category = record.categories[0] || null;
+
+				text.replaceChildren();
+
+				const partLabel = document.createElement('div');
+				partLabel.className = 'mtf-journal-series-row__part';
+				partLabel.textContent = 'Part ' + part + ' of ' + total;
+
+				const main = document.createElement('div');
+				main.className = 'mtf-journal-series-row__main';
+
+				const heading = document.createElement('h2');
+				heading.className = 'mtf-journal-series-row__title';
+
+				const titleLink = document.createElement('a');
+				titleLink.href = record.path;
+				titleLink.textContent = title;
+				heading.appendChild(titleLink);
+
+				const deck = document.createElement('p');
+				deck.className = 'mtf-journal-series-row__excerpt';
+				deck.textContent = excerpt;
+
+				const meta = document.createElement('div');
+				meta.className = 'mtf-journal-series-row__meta';
+
+				const time = document.createElement('span');
+				time.textContent = record.readTime + ' min read';
+				meta.appendChild(time);
+
+				if (category?.name) {
+						const divider = document.createElement('span');
+						divider.setAttribute('aria-hidden', 'true');
+						divider.textContent = '|';
+
+						const cat = document.createElement('a');
+						cat.href = category.href;
+						cat.textContent = category.name;
+
+						meta.append(divider, cat);
+				}
+
+				main.append(heading, deck, meta);
+
+				const read = document.createElement('a');
+				read.className = 'mtf-journal-series-row__read';
+				read.href = record.path;
+				read.innerHTML = 'Read Article <span aria-hidden="true">→</span>';
+
+				text.append(partLabel, main, read);
+				record.card.classList.add('mtf-journal-series-row');
+		}
+
+
+		async function renderSeriesLanding(archive, info, records) {
+				if (info.type !== 'tag' || !info.name) return false;
+
+				const posts = await seriesPosts(info.name);
+
+				if (posts.length < 2 || posts.length >= 20) {
+						return false;
+				}
+
+				const recordMap = new Map(
+						records.map(record => [record.path, record])
+				);
+
+				const ordered = posts.map(post => ({
+						post,
+						record: recordMap.get(post.path)
+				})).filter(item => item.record);
+
+				if (ordered.length < 2) return false;
+
+				document.documentElement.classList.add('mtf-journal-series-page');
+
+				const category = ordered
+						.map(item => item.record.categories[0])
+						.find(Boolean) || null;
+
+				insertSeriesLandingHero(archive, info.name, category);
+
+				const wrapper = archive.querySelector('.blog-single-column--wrapper');
+				if (!wrapper) return true;
+
+				const intro = document.createElement('div');
+				intro.className = 'mtf-journal-series-intro';
+				intro.textContent = seriesCopy(info.name).intro;
+				wrapper.prepend(intro);
+
+				ordered.forEach((item, index) => {
+						item.record.title = item.record.title || item.post.title;
+						item.record.excerpt = item.record.excerpt || item.post.excerpt;
+
+						seriesRow(
+								item.record,
+								item.post,
+								index + 1,
+								posts.length
+						);
+
+						wrapper.appendChild(item.record.card);
+				});
+
+				const footer = document.createElement('div');
+				footer.className = 'mtf-journal-series-footer';
+
+				const all = document.createElement('a');
+				all.href = '/journal';
+				all.innerHTML = '<span aria-hidden="true">☷</span> View All Journal Articles <span aria-hidden="true">→</span>';
+
+				footer.appendChild(all);
+				wrapper.appendChild(footer);
+
+				return true;
+		}
+
 
 		/* =====================================================
 			 INITIALIZATION
@@ -998,6 +1255,17 @@
 
 						/* UPDATE THE RECORD */
 
+						record.title = cleanText(
+								item.title || record.title
+						);
+
+						record.excerpt = cleanText(
+								item.excerpt ||
+								item.bodyExcerpt ||
+								item.description ||
+								record.excerpt
+						);
+
 						record.categories =
 								categories.length
 										? categories
@@ -1017,6 +1285,13 @@
 								record.tags
 						);
 				});
+
+
+				/* SERIES LANDING PAGE */
+
+				if (await renderSeriesLanding(archive, info, records)) {
+						return;
+				}
 
 
 				/* AUTOMATIC SERIES NUMBERING */

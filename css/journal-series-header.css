@@ -437,14 +437,23 @@ html.mtf-editorial-blog
 
 /* =========================================================
    PREVIOUS / ALL / NEXT
+
+   Published and pending/scheduled articles intentionally use
+   the same three-column, two-row component. Every column gets
+   the same fixed top row and content-driven second row so the
+   PREVIOUS / icon / NEXT line aligns, while article titles all
+   begin at the top of row two and grow downward only as needed.
    ========================================================= */
 
 html.mtf-editorial-blog
 .mtf-series-pagination {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
+  grid-template-columns:
+    minmax(0, 2fr)
+    minmax(150px, 1fr)
+    minmax(0, 2fr);
   align-items: stretch;
-  margin: 18px 0 4px;
+  margin: 24px 0 4px;
 }
 
 html.mtf-editorial-blog
@@ -453,38 +462,59 @@ html.mtf-editorial-blog
   padding: 0 20px;
 }
 
+/* Navigation dividers are intentionally quieter than the rules used
+   elsewhere in the series module. */
 html.mtf-editorial-blog
 .mtf-series-pagination > div + div {
-  border-left: 1px solid var(--mtf-series-line);
-}
-
-html.mtf-editorial-blog
-.mtf-series-pagination a {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  color: inherit;
-  text-decoration: none;
+  border-left: 1px solid rgba(32, 32, 32, .115);
 }
 
 html.mtf-editorial-blog
 .mtf-series-pagination
 > .mtf-series-pagination__article--previous {
   padding-left: 0;
+  padding-right: 34px;
+}
+
+html.mtf-editorial-blog
+.mtf-series-pagination
+> .mtf-series-pagination__all {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 html.mtf-editorial-blog
 .mtf-series-pagination
 > .mtf-series-pagination__article--next {
+  padding-left: 34px;
   padding-right: 0;
   text-align: right;
 }
 
 html.mtf-editorial-blog
-.mtf-series-pagination__label {
-  margin-bottom: 5px;
+.mtf-series-pagination__stack {
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 13px;
+  align-content: start;
+  align-items: start;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  color: inherit;
+  text-decoration: none;
+}
 
+html.mtf-editorial-blog
+.mtf-series-pagination__top,
+html.mtf-editorial-blog
+.mtf-series-pagination__bottom {
+  align-self: start;
+  margin: 0;
+}
+
+html.mtf-editorial-blog
+.mtf-series-pagination__label {
   font-family: var(--mtf-series-sans);
   font-size: .58rem;
   font-weight: 600;
@@ -495,11 +525,13 @@ html.mtf-editorial-blog
 
 html.mtf-editorial-blog
 .mtf-series-pagination__title {
+  display: block;
+  height: max-content;
+  min-height: 0;
   font-family: var(--mtf-series-serif);
-  font-size: 1rem;
+  font-size: clamp(1.08rem, 1.4vw, 1.28rem);
   line-height: 1.28;
 }
-
 
 html.mtf-editorial-blog
 .mtf-series-pagination__title--pending {
@@ -508,19 +540,21 @@ html.mtf-editorial-blog
 }
 
 html.mtf-editorial-blog
-.mtf-series-pagination--pending
-.mtf-series-pagination__article:not(:has(a)) {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.mtf-series-pagination__stack--all {
+  justify-items: center;
+  text-align: center;
 }
 
 html.mtf-editorial-blog
-.mtf-series-pagination__all a {
-  align-items: center;
-  gap: 7px;
-  text-align: center;
+.mtf-series-pagination__icon {
+  font-family: var(--mtf-series-sans);
+  font-size: .58rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
 
+html.mtf-editorial-blog
+.mtf-series-pagination__all-text {
   font-family: var(--mtf-series-sans);
   font-size: .58rem;
   font-weight: 700;

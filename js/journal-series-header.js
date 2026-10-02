@@ -656,55 +656,97 @@
     return section;
   }
 
-  function seriesNavigation(posts, currentIndex, seriesHref) {
+  function seriesNavigation(config) {
     const nav = document.createElement('nav');
     nav.className = 'mtf-series-pagination';
-    nav.setAttribute('aria-label', 'Series navigation');
+    nav.setAttribute(
+      'aria-label',
+      config.pending ? 'Series navigation preview' : 'Series navigation'
+    );
 
-    const previous = posts[currentIndex - 1];
-    const next = posts[currentIndex + 1];
+    if (config.pending) {
+      nav.classList.add('mtf-series-pagination--pending');
+    }
 
-    function articleLink(post, direction) {
+    function articleCell(post, direction, fallbackTitle) {
       const cell = document.createElement('div');
       cell.className =
         'mtf-series-pagination__article mtf-series-pagination__article--' +
         direction;
 
-      if (!post) {
+      /* Published and pending navigation intentionally share this exact
+         two-row structure. The only difference is whether row two is a
+         link to a known article or a non-clickable placeholder. Keeping
+         one renderer prevents editor/scheduled previews from drifting
+         away from the live published footer. */
+      if (!post && !fallbackTitle) {
         cell.setAttribute('aria-hidden', 'true');
         return cell;
       }
 
-      const link = document.createElement('a');
-      link.href = post.path;
+      const stack = document.createElement(post ? 'a' : 'div');
+      stack.className = 'mtf-series-pagination__stack';
+
+      if (post) {
+        stack.href = post.path;
+      }
 
       const label = document.createElement('span');
-      label.className = 'mtf-series-pagination__label';
+      label.className =
+        'mtf-series-pagination__label mtf-series-pagination__top';
       label.textContent = direction === 'previous'
         ? 'Previous Article'
         : 'Next Article';
 
       const articleTitle = document.createElement('span');
-      articleTitle.className = 'mtf-series-pagination__title';
-      articleTitle.textContent = post.title;
+      articleTitle.className =
+        'mtf-series-pagination__title mtf-series-pagination__bottom';
+      articleTitle.textContent = post ? post.title : fallbackTitle;
 
-      link.append(label, articleTitle);
-      cell.appendChild(link);
+      if (!post) {
+        articleTitle.classList.add(
+          'mtf-series-pagination__title--pending'
+        );
+      }
+
+      stack.append(label, articleTitle);
+      cell.appendChild(stack);
       return cell;
     }
 
-    const previousCell = articleLink(previous, 'previous');
+    const previousCell = articleCell(
+      config.previous || null,
+      'previous',
+      config.previousFallback || ''
+    );
 
     const allCell = document.createElement('div');
     allCell.className = 'mtf-series-pagination__all';
 
     const allLink = document.createElement('a');
-    allLink.href = seriesHref;
-    allLink.innerHTML =
-      '<span aria-hidden="true">☷</span><span>All Articles<br>In This Series</span>';
+    allLink.className =
+      'mtf-series-pagination__stack mtf-series-pagination__stack--all';
+    allLink.href = config.seriesHref;
+
+    const allIcon = document.createElement('span');
+    allIcon.className =
+      'mtf-series-pagination__top mtf-series-pagination__icon';
+    allIcon.setAttribute('aria-hidden', 'true');
+    allIcon.textContent = '☷';
+
+    const allText = document.createElement('span');
+    allText.className =
+      'mtf-series-pagination__bottom mtf-series-pagination__all-text';
+    allText.innerHTML = 'All Articles<br>In This Series';
+
+    allLink.append(allIcon, allText);
     allCell.appendChild(allLink);
 
-    const nextCell = articleLink(next, 'next');
+    const nextCell = articleCell(
+      config.next || null,
+      'next',
+      config.nextFallback || ''
+    );
 
     nav.append(previousCell, allCell, nextCell);
     return nav;
@@ -734,7 +776,12 @@
 
     content.append(
       seriesIndex(posts, currentPath),
-      seriesNavigation(posts, currentIndex, seriesHref)
+      seriesNavigation({
+        previous: posts[currentIndex - 1] || null,
+        next: posts[currentIndex + 1] || null,
+        seriesHref: seriesHref,
+        pending: false
+      })
     );
   }
 
@@ -811,72 +858,6 @@
     return section;
   }
 
-  function pendingSeriesNavigation(posts, seriesHref) {
-    const nav = document.createElement('nav');
-    nav.className =
-      'mtf-series-pagination mtf-series-pagination--pending';
-    nav.setAttribute('aria-label', 'Series navigation preview');
-
-    const previous = document.createElement('div');
-    previous.className =
-      'mtf-series-pagination__article mtf-series-pagination__article--previous';
-
-    const latestPublished = posts[posts.length - 1] || null;
-
-    if (latestPublished) {
-      const link = document.createElement('a');
-      link.href = latestPublished.path;
-
-      const label = document.createElement('span');
-      label.className = 'mtf-series-pagination__label';
-      label.textContent = 'Latest Published Article';
-
-      const title = document.createElement('span');
-      title.className = 'mtf-series-pagination__title';
-      title.textContent = latestPublished.title;
-
-      link.append(label, title);
-      previous.appendChild(link);
-    } else {
-      const label = document.createElement('span');
-      label.className = 'mtf-series-pagination__label';
-      label.textContent = 'Previous Article';
-
-      const title = document.createElement('span');
-      title.className =
-        'mtf-series-pagination__title mtf-series-pagination__title--pending';
-      title.textContent = 'Not available yet';
-
-      previous.append(label, title);
-    }
-
-    const allCell = document.createElement('div');
-    allCell.className = 'mtf-series-pagination__all';
-
-    const allLink = document.createElement('a');
-    allLink.href = seriesHref;
-    allLink.innerHTML =
-      '<span aria-hidden="true">☷</span><span>All Published Articles<br>In This Series</span>';
-    allCell.appendChild(allLink);
-
-    const next = document.createElement('div');
-    next.className =
-      'mtf-series-pagination__article mtf-series-pagination__article--next';
-
-    const nextLabel = document.createElement('span');
-    nextLabel.className = 'mtf-series-pagination__label';
-    nextLabel.textContent = 'Next Article';
-
-    const nextTitle = document.createElement('span');
-    nextTitle.className =
-      'mtf-series-pagination__title mtf-series-pagination__title--pending';
-    nextTitle.textContent = 'Coming soon';
-
-    next.append(nextLabel, nextTitle);
-    nav.append(previous, allCell, next);
-
-    return nav;
-  }
 
   function appendPendingSeriesFooter(
     wrapper,
@@ -895,7 +876,14 @@
 
     content.append(
       pendingSeriesIndex(posts, currentTitle),
-      pendingSeriesNavigation(posts, seriesHref)
+      seriesNavigation({
+        previous: posts[posts.length - 1] || null,
+        previousFallback: 'Not available yet',
+        next: null,
+        nextFallback: 'Coming soon',
+        seriesHref: seriesHref,
+        pending: true
+      })
     );
   }
 

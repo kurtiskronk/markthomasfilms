@@ -171,18 +171,27 @@
       url.searchParams.set('tag', tagName);
       url.searchParams.set('format', 'rss');
 
+      /* Use the public, anonymous series feed even while Squarespace
+         is open in editing mode. Authenticated editor cookies can
+         cause the same URL to return preview-aware data instead of
+         the public series state. */
       const response = await fetch(url, {
-        credentials: 'same-origin'
+        credentials: 'omit',
+        cache: 'no-store'
       });
 
-      if (!response.ok) return [];
+      if (!response.ok) {
+        return { ok: false, posts: [] };
+      }
 
       const xml = new DOMParser().parseFromString(
         await response.text(),
         'application/xml'
       );
 
-      if (xml.querySelector('parsererror')) return [];
+      if (xml.querySelector('parsererror')) {
+        return { ok: false, posts: [] };
+      }
 
       const posts = Array.from(
         xml.querySelectorAll('item')
@@ -223,20 +232,23 @@
         return b.rssIndex - a.rssIndex;
       });
 
-      return Array.from(
-        new Map(
-          posts.map(function (post) {
-            return [post.path, post];
-          })
-        ).values()
-      );
+      return {
+        ok: true,
+        posts: Array.from(
+          new Map(
+            posts.map(function (post) {
+              return [post.path, post];
+            })
+          ).values()
+        )
+      };
     } catch (error) {
       console.warn(
         'Journal: series feed unavailable',
         tagName,
         error
       );
-      return [];
+      return { ok: false, posts: [] };
     }
   }
 
@@ -249,7 +261,8 @@
       url.searchParams.set('format', 'json');
 
       const response = await fetch(url, {
-        credentials: 'same-origin',
+        credentials: 'omit',
+        cache: 'no-store',
         headers: { Accept: 'application/json' }
       });
 
@@ -442,6 +455,7 @@
     const category = config.category || null;
     const part = config.part || null;
     const total = config.total || null;
+    const pendingSeriesNumber = Boolean(config.pendingSeriesNumber);
     const excerpt = cleanText(config.excerpt || '');
     const minutes = config.minutes || 1;
 
@@ -455,6 +469,10 @@
     header.classList.toggle(
       'mtf-series-article-header',
       Boolean(series)
+    );
+    header.classList.toggle(
+      'mtf-series-article-header--pending',
+      Boolean(series && pendingSeriesNumber)
     );
 
     /* Squarespace may render the native excerpt before the H1.
@@ -496,9 +514,11 @@
 
       const partText = document.createElement('span');
       partText.className = 'mtf-series-article-toolbar__part';
-      partText.textContent = total > 1
-        ? 'Part ' + part + ' of ' + total
-        : 'Part ' + part;
+      partText.textContent = pendingSeriesNumber
+        ? 'Series Article'
+        : total > 1
+          ? 'Part ' + part + ' of ' + total
+          : 'Part ' + part;
 
       const rule = document.createElement('span');
       rule.className = 'mtf-series-article-toolbar__rule';
@@ -506,7 +526,12 @@
 
       let trailing;
 
-      if (total > 1) {
+      if (pendingSeriesNumber) {
+        trailing = document.createElement('span');
+        trailing.className = 'mtf-series-article-toolbar__status';
+        trailing.textContent =
+          'Part numbering will update when published.';
+      } else if (total > 1) {
         trailing = document.createElement('a');
         trailing.className = 'mtf-series-article-toolbar__all';
         trailing.href = series.href;
@@ -562,10 +587,11 @@
 
       const seriesLabel = document.createElement('div');
       seriesLabel.className = 'mtf-multi-part-series';
-      seriesLabel.textContent =
-        series.name.toUpperCase() +
-        ' — PART ' +
-        (partWords[part] || String(part));
+      seriesLabel.textContent = pendingSeriesNumber
+        ? series.name.toUpperCase() + ' — PART [X]'
+        : series.name.toUpperCase() +
+          ' — PART ' +
+          (partWords[part] || String(part));
 
       titleBox.after(seriesLabel);
       deckAnchor = seriesLabel;
@@ -693,7 +719,7 @@
       node.remove();
     });
 
-    /* A series can begin with a single published/scheduled entry.
+    /* A series can begin with a single public entry.
        The hero and article header still identify the series, but
        the footer index/navigation becomes useful only once another
        entry is available. */
@@ -804,56 +830,24 @@
 
     const currentPath = canonical(location.pathname);
     let detected = null;
+    let pendingSeries = null;
 
     for (const tag of tags) {
-      let posts = await seriesPosts(tag.name);
+      const feed = await seriesPosts(tag.name);
+      const posts = feed.posts;
       const currentIsInFeed = posts.some(function (post) {
         return post.path === currentPath;
       });
 
-      /* RSS/tag feeds do not reliably include a future-scheduled
-         article while Mark is previewing it. When the current post
-         has a single tag, treat that tag as its series identifier
-         and seed the feed with the current article if necessary.
-
-         Journal convention: tags are reserved for series; standalone
-         articles should normally have no tag. */
-      if (!currentIsInFeed && tags.length === 1) {
-        const rawDate =
-          item?.publishOn ||
-          item?.publishedOn ||
-          item?.publishDate ||
-          item?.addedOn ||
-          item?.updatedOn ||
-          '';
-        const parsedDate = Date.parse(rawDate);
-
-        posts = posts.concat({
-          path: currentPath,
-          title: cleanText(item?.title || h1.textContent || ''),
-          excerpt: excerpt,
-          date: Number.isFinite(parsedDate)
-            ? parsedDate
-            : Date.now(),
-          rssIndex: -1,
-          categories: categories
-        });
-
-        posts.sort(function (a, b) {
-          if (a.date !== null && b.date !== null) {
-            return a.date - b.date || b.rssIndex - a.rssIndex;
-          }
-
-          return b.rssIndex - a.rssIndex;
-        });
-      }
-
+      /* The public, anonymous feed is the source of truth for real
+         numbering. If the current article is present there, it is
+         published and can be numbered accurately even while the
+         Squarespace editor is open. */
       if (
+        feed.ok &&
         posts.length >= 1 &&
         posts.length <= MAX_SERIES_POSTS &&
-        posts.some(function (post) {
-          return post.path === currentPath;
-        })
+        currentIsInFeed
       ) {
         detected = {
           name: tag.name,
@@ -862,10 +856,62 @@
         };
         break;
       }
+
+      /* A draft or scheduled article is intentionally absent from
+         the public feed. Do not guess its part number from the
+         currently published siblings. With one Journal tag, the tag
+         still identifies the series, so preview the full series
+         styling with an explicit unknown-number state. */
+      if (
+        feed.ok &&
+        !currentIsInFeed &&
+        tags.length === 1 &&
+        posts.length < MAX_SERIES_POSTS
+      ) {
+        pendingSeries = {
+          name: tag.name,
+          href: tag.href
+        };
+      }
     }
 
-    /* If a tag cannot be resolved as a valid series, keep the fully
-       rendered standalone Journal template rather than degrading. */
+    if (!detected && pendingSeries) {
+      wrapper.classList.add(
+        'mtf-journal-series-article',
+        'mtf-journal-series-article--pending'
+      );
+      document.documentElement.classList.add(
+        'mtf-journal-series-article-page',
+        'mtf-journal-series-pending-page'
+      );
+
+      insertHero(
+        wrapper,
+        pendingSeries.name,
+        category,
+        pendingSeries.name + ' series'
+      );
+
+      updateBreadcrumbs(
+        pendingSeries,
+        category,
+        articleTitle
+      );
+
+      enhanceArticleHeader(wrapper, {
+        series: pendingSeries,
+        category: category,
+        excerpt: excerpt,
+        minutes: minutes,
+        pendingSeriesNumber: true
+      });
+
+      return;
+    }
+
+    /* If public series resolution itself fails, keep the fully
+       rendered standalone Journal template rather than presenting a
+       false part number or publication state. */
     if (!detected) return;
 
     const details = await filteredMetadata(detected.name);

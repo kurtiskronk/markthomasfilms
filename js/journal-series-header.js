@@ -351,8 +351,7 @@
     wrapper,
     heroTitle,
     category,
-    ariaLabel,
-    seriesMetaText
+    ariaLabel
   ) {
     const eyebrowParts = ['Journal'];
     if (category?.name) eyebrowParts.push(category.name);
@@ -380,27 +379,6 @@
       });
     }
 
-    function updateSeriesMeta(hero) {
-      const title = hero.querySelector(
-        '.mtf-journal-hero__title'
-      );
-      let meta = hero.querySelector(
-        '.mtf-journal-hero__series-meta'
-      );
-
-      if (!seriesMetaText) {
-        meta?.remove();
-        return;
-      }
-
-      if (!meta) {
-        meta = document.createElement('p');
-        meta.className = 'mtf-journal-hero__series-meta';
-        title?.after(meta);
-      }
-
-      meta.textContent = seriesMetaText;
-    }
 
     const existing = wrapper.querySelector(
       ':scope > .mtf-journal-hero'
@@ -413,7 +391,6 @@
 
       if (title) title.textContent = heroTitle || 'Journal';
       updateEyebrow(existing);
-      updateSeriesMeta(existing);
 
       existing.setAttribute(
         'aria-label',
@@ -442,8 +419,6 @@
     hero.querySelector(
       '.mtf-journal-hero__title'
     ).textContent = heroTitle || 'Journal';
-
-    updateSeriesMeta(hero);
 
     wrapper.prepend(hero);
     return hero;
@@ -624,20 +599,10 @@
 
     titleBox.before(meta);
 
-    let deckAnchor = titleBox;
-
-    if (series) {
-      const seriesLabel = document.createElement('div');
-      seriesLabel.className = 'mtf-multi-part-series';
-      seriesLabel.textContent = pendingSeriesNumber
-        ? series.name.toUpperCase() + ' — PART [X]'
-        : series.name.toUpperCase() +
-          ' — PART ' +
-          partWord(part);
-
-      titleBox.after(seriesLabel);
-      deckAnchor = seriesLabel;
-    }
+    /* The hero provides series identity and the toolbar provides
+       series position. Do not repeat `SERIES NAME — PART X` beneath
+       the article H1; that duplication was intentionally removed. */
+    const deckAnchor = titleBox;
 
     if (excerpt) {
       const deck = document.createElement('p');
@@ -1024,11 +989,25 @@
       'mtf-journal-hero-article-page'
     );
 
+    /* =======================================================
+       DESIGN DECISION — INDIVIDUAL ARTICLE HERO TITLE
+
+       The photographic hero is contextual, not a duplicate H1.
+       - Standalone article: large hero title = `Journal`.
+       - Series article: large hero title = exact series/tag name.
+       - The actual article title remains the large H1 in the cream
+         article header below the breadcrumbs.
+
+       This is intentional. It keeps long article titles out of the
+       hero, reduces duplicated content, and lets a series/tag archive
+       and an article inside that series share the same hero identity.
+       Do not switch the hero back to the article title accidentally.
+       ======================================================= */
     insertHero(
       wrapper,
-      articleTitle,
+      'Journal',
       category,
-      articleTitle
+      articleTitle + ' — Journal article'
     );
 
     updateStandaloneBreadcrumbs(
@@ -1107,10 +1086,9 @@
 
       insertHero(
         wrapper,
-        articleTitle,
+        pendingSeries.name,
         category,
-        articleTitle,
-        pendingSeries.name + ' — PART [X]'
+        pendingSeries.name + ' series'
       );
 
       updateBreadcrumbs(
@@ -1180,12 +1158,9 @@
 
     insertHero(
       wrapper,
-      articleTitle,
+      detected.name,
       seriesCategory,
-      articleTitle,
-      detected.name +
-        ' — PART ' +
-        partWord(currentIndex + 1)
+      detected.name + ' series'
     );
 
     updateBreadcrumbs(

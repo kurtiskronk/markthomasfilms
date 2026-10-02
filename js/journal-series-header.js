@@ -12,7 +12,7 @@
 
    Tagged series articles layer on only the pieces that are
    actually series-specific:
-   - series title in the hero
+   - series context beneath the article title in the hero
    - series crumb in breadcrumbs
    - Part X of Y / View Entire Series toolbar
    - SERIES NAME — PART X label
@@ -28,6 +28,23 @@
 
 
   const MAX_SERIES_POSTS = 10;
+
+  function partWord(part) {
+    const words = {
+      1: 'ONE',
+      2: 'TWO',
+      3: 'THREE',
+      4: 'FOUR',
+      5: 'FIVE',
+      6: 'SIX',
+      7: 'SEVEN',
+      8: 'EIGHT',
+      9: 'NINE',
+      10: 'TEN'
+    };
+
+    return words[part] || String(part);
+  }
 
   function isPost() {
     return /^\/journal\/[^/]+\/?$/i.test(
@@ -330,7 +347,13 @@
   }
 
 
-  function insertHero(wrapper, heroTitle, category, ariaLabel) {
+  function insertHero(
+    wrapper,
+    heroTitle,
+    category,
+    ariaLabel,
+    seriesMetaText
+  ) {
     const eyebrowParts = ['Journal'];
     if (category?.name) eyebrowParts.push(category.name);
 
@@ -357,6 +380,28 @@
       });
     }
 
+    function updateSeriesMeta(hero) {
+      const title = hero.querySelector(
+        '.mtf-journal-hero__title'
+      );
+      let meta = hero.querySelector(
+        '.mtf-journal-hero__series-meta'
+      );
+
+      if (!seriesMetaText) {
+        meta?.remove();
+        return;
+      }
+
+      if (!meta) {
+        meta = document.createElement('p');
+        meta.className = 'mtf-journal-hero__series-meta';
+        title?.after(meta);
+      }
+
+      meta.textContent = seriesMetaText;
+    }
+
     const existing = wrapper.querySelector(
       ':scope > .mtf-journal-hero'
     );
@@ -368,6 +413,7 @@
 
       if (title) title.textContent = heroTitle || 'Journal';
       updateEyebrow(existing);
+      updateSeriesMeta(existing);
 
       existing.setAttribute(
         'aria-label',
@@ -396,6 +442,8 @@
     hero.querySelector(
       '.mtf-journal-hero__title'
     ).textContent = heroTitle || 'Journal';
+
+    updateSeriesMeta(hero);
 
     wrapper.prepend(hero);
     return hero;
@@ -579,26 +627,13 @@
     let deckAnchor = titleBox;
 
     if (series) {
-      const partWords = {
-        1: 'ONE',
-        2: 'TWO',
-        3: 'THREE',
-        4: 'FOUR',
-        5: 'FIVE',
-        6: 'SIX',
-        7: 'SEVEN',
-        8: 'EIGHT',
-        9: 'NINE',
-        10: 'TEN'
-      };
-
       const seriesLabel = document.createElement('div');
       seriesLabel.className = 'mtf-multi-part-series';
       seriesLabel.textContent = pendingSeriesNumber
         ? series.name.toUpperCase() + ' — PART [X]'
         : series.name.toUpperCase() +
           ' — PART ' +
-          (partWords[part] || String(part));
+          partWord(part);
 
       titleBox.after(seriesLabel);
       deckAnchor = seriesLabel;
@@ -991,11 +1026,9 @@
 
     insertHero(
       wrapper,
-      'Journal',
+      articleTitle,
       category,
-      category?.name
-        ? 'Journal / ' + category.name
-        : 'Journal'
+      articleTitle
     );
 
     updateStandaloneBreadcrumbs(
@@ -1074,9 +1107,10 @@
 
       insertHero(
         wrapper,
-        pendingSeries.name,
+        articleTitle,
         category,
-        pendingSeries.name + ' series'
+        articleTitle,
+        pendingSeries.name + ' — PART [X]'
       );
 
       updateBreadcrumbs(
@@ -1146,9 +1180,12 @@
 
     insertHero(
       wrapper,
-      detected.name,
+      articleTitle,
       seriesCategory,
-      detected.name + ' series'
+      articleTitle,
+      detected.name +
+        ' — PART ' +
+        partWord(currentIndex + 1)
     );
 
     updateBreadcrumbs(

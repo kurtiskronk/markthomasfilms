@@ -27,6 +27,21 @@ html.mtf-editorial-blog
 }
 
 
+html.mtf-editorial-blog
+.mtf-journal-hero__series-meta {
+  max-width: 780px;
+  margin: 13px 0 0;
+
+  color: rgba(255, 255, 255, .78);
+  font-family: var(--mtf-series-sans);
+  font-size: .69rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+
 /* =========================================================
    SHARED JOURNAL ARTICLE HEADER
 
@@ -540,6 +555,13 @@ html.mtf-editorial-blog
   html.mtf-editorial-blog
   .mtf-journal-series-hero__inner {
     padding: 38px 25px;
+  }
+
+  html.mtf-editorial-blog
+  .mtf-journal-hero__series-meta {
+    margin-top: 10px;
+    font-size: .62rem;
+    letter-spacing: .15em;
   }
 
   html.mtf-editorial-blog

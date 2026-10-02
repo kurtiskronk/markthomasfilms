@@ -37,29 +37,11 @@
     );
   }
 
-  function publicOrigin() {
-    const candidates = [
-      document.querySelector('link[rel="canonical"]')?.href,
-      document.querySelector('meta[property="og:url"]')?.content
-    ].filter(Boolean);
-
-    for (const value of candidates) {
-      try {
-        const url = new URL(value, location.href);
-        if (/^https?:$/i.test(url.protocol)) return url.origin;
-      } catch (_) {
-        /* Keep trying the next public-site hint. */
-      }
-    }
-
-    return location.origin;
-  }
-
   function canonical(value, base) {
     try {
       const url = new URL(
         value,
-        base || publicOrigin() || location.origin
+        base || location.origin
       );
 
       /* Series data may be fetched from the public custom domain
@@ -190,16 +172,18 @@
 
   async function seriesPosts(tagName) {
     try {
-      const url = new URL('/journal/', publicOrigin());
+      const url = new URL('/journal/', location.origin);
       url.searchParams.set('tag', tagName);
       url.searchParams.set('format', 'rss');
 
-      /* Use the public, anonymous series feed even while Squarespace
-         is open in editing mode. Authenticated editor cookies can
-         cause the same URL to return preview-aware data instead of
-         the public series state. */
+      /* Use the origin the page is actually running on. On the live
+         site this is markthomasfilms.com; inside Squarespace's editor
+         it is the Squarespace preview origin. The editor-origin feed
+         is same-origin and exposes published siblings correctly.
+         RSS item links may still use the public domain, so entries are
+         matched by pathname rather than hostname. */
       const response = await fetch(url, {
-        credentials: 'omit',
+        credentials: 'same-origin',
         cache: 'no-store'
       });
 
@@ -279,12 +263,12 @@
     try {
       const url = new URL(
         termURL('tag', tagName),
-        publicOrigin()
+        location.origin
       );
       url.searchParams.set('format', 'json');
 
       const response = await fetch(url, {
-        credentials: 'omit',
+        credentials: 'same-origin',
         cache: 'no-store',
         headers: { Accept: 'application/json' }
       });
@@ -925,13 +909,31 @@
     }
 
     const wrapper = document.querySelector('.blog-item-wrapper');
-    const h1 = wrapper?.querySelector(
-      'h1.entry-title, .blog-item-title h1, h1'
-    );
-
-    if (!wrapper || !h1) return;
+    if (!wrapper) return;
 
     const item = await currentMetadata();
+
+    /* Resolve the article title from Squarespace's actual article
+       title field, never from a generic H1. In editing mode Squarespace
+       can render other H1s (including Journal UI) before the native
+       post title; a broad `querySelector('h1')` could therefore make
+       the article appear to be titled "Journal". */
+    const titleBox = wrapper.querySelector(
+      '.blog-item-top-wrapper .blog-item-title, .blog-item-title'
+    );
+    const h1 = titleBox?.querySelector('h1.entry-title, h1') ||
+      wrapper.querySelector('h1.entry-title');
+    const metadataTitle = cleanText(item?.title || '');
+    const domTitle = cleanText(h1?.textContent || '');
+    const articleTitle = metadataTitle || domTitle;
+
+    if (!articleTitle) return;
+
+    /* Keep the native visible post title synchronized with the
+       authoritative Squarespace metadata in editor and live views. */
+    if (h1 && metadataTitle && domTitle !== metadataTitle) {
+      h1.textContent = metadataTitle;
+    }
 
     const metadataTags = normalizeTerms(
       item?.tags,
@@ -967,7 +969,6 @@
     }
 
     const category = categories[0] || null;
-    const articleTitle = cleanText(h1.textContent);
     const excerpt = cleanText(
       item?.excerpt ||
       item?.bodyExcerpt ||
@@ -1023,10 +1024,11 @@
         return post.path === currentPath;
       });
 
-      /* The public, anonymous feed is the source of truth for real
-         numbering. If the current article is present there, it is
-         published and can be numbered accurately even while the
-         Squarespace editor is open. */
+      /* The same-origin RSS feed is the source of truth for real
+         numbering. On both the live site and inside Squarespace's
+         editor it exposes published siblings; returned links are
+         matched by pathname, so public-domain RSS links still match
+         editor-origin article URLs. */
       if (
         feed.ok &&
         posts.length >= 1 &&
@@ -1041,13 +1043,13 @@
         break;
       }
 
-      /* A draft or scheduled article is intentionally absent from
-         the public feed. Do not guess its part number from the
-         currently published siblings. With one Journal tag, the tag
-         still identifies the series, so preview the full series
-         styling with an explicit unknown-number state. */
+      /* If a tagged article is absent from the feed, its final part
+         number is not safely knowable yet (draft/scheduled state).
+         A feed/network failure must not make a tagged article look
+         standalone either. With one Journal tag we still know the
+         article belongs to that series, so preserve the complete
+         pending-series preview instead of inventing Part 1. */
       if (
-        feed.ok &&
         !currentIsInFeed &&
         tags.length === 1 &&
         posts.length < MAX_SERIES_POSTS
@@ -1101,9 +1103,9 @@
       return;
     }
 
-    /* If public series resolution itself fails, keep the fully
-       rendered standalone Journal template rather than presenting a
-       false part number or publication state. */
+    /* Multiple tags are intentionally ambiguous. If none can be
+       resolved as a published series, keep the shared Journal article
+       template rather than guessing which tag is the series. */
     if (!detected) return;
 
     const details = await filteredMetadata(detected.name);

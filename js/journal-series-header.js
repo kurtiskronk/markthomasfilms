@@ -37,12 +37,35 @@
     );
   }
 
+  function publicOrigin() {
+    const candidates = [
+      document.querySelector('link[rel="canonical"]')?.href,
+      document.querySelector('meta[property="og:url"]')?.content
+    ].filter(Boolean);
+
+    for (const value of candidates) {
+      try {
+        const url = new URL(value, location.href);
+        if (/^https?:$/i.test(url.protocol)) return url.origin;
+      } catch (_) {
+        /* Keep trying the next public-site hint. */
+      }
+    }
+
+    return location.origin;
+  }
+
   function canonical(value, base) {
     try {
-      const url = new URL(value, base || location.origin);
+      const url = new URL(
+        value,
+        base || publicOrigin() || location.origin
+      );
 
-      if (url.origin !== location.origin) return '';
-
+      /* Series data may be fetched from the public custom domain
+         while the page itself is running inside Squarespace's editor
+         host. The pathname, not matching hostnames, is the stable
+         identity for Journal entries. */
       return url.pathname.replace(/\/+$/, '') || '/';
     } catch (_) {
       return '';
@@ -167,7 +190,7 @@
 
   async function seriesPosts(tagName) {
     try {
-      const url = new URL('/journal/', location.origin);
+      const url = new URL('/journal/', publicOrigin());
       url.searchParams.set('tag', tagName);
       url.searchParams.set('format', 'rss');
 
@@ -256,7 +279,7 @@
     try {
       const url = new URL(
         termURL('tag', tagName),
-        location.origin
+        publicOrigin()
       );
       url.searchParams.set('format', 'json');
 
@@ -731,6 +754,167 @@
     );
   }
 
+
+  function pendingSeriesIndex(posts, currentTitle) {
+    const section = document.createElement('section');
+    section.className =
+      'mtf-series-index mtf-series-index--pending';
+    section.setAttribute('aria-label', 'Articles in this series');
+
+    const heading = document.createElement('div');
+    heading.className = 'mtf-series-index__heading';
+
+    const title = document.createElement('h2');
+    title.textContent = 'In This Series';
+
+    const rule = document.createElement('span');
+    rule.setAttribute('aria-hidden', 'true');
+    heading.append(title, rule);
+
+    const body = document.createElement('div');
+    body.className = 'mtf-series-index__body';
+
+    const list = document.createElement('ol');
+    list.className = 'mtf-series-index__list';
+
+    posts.forEach(function (post, index) {
+      const li = document.createElement('li');
+      li.className = 'mtf-series-index__item';
+
+      const number = document.createElement('span');
+      number.className = 'mtf-series-index__number';
+      number.textContent = String(index + 1) + '.';
+
+      const link = document.createElement('a');
+      link.href = post.path;
+      link.textContent = post.title;
+
+      li.append(number, link);
+      list.appendChild(li);
+    });
+
+    const current = document.createElement('li');
+    current.className =
+      'mtf-series-index__item is-current is-pending';
+
+    const currentNumber = document.createElement('span');
+    currentNumber.className = 'mtf-series-index__number';
+    currentNumber.textContent = '[X]';
+
+    const currentLabel = document.createElement('span');
+    currentLabel.className = 'mtf-series-index__item-title';
+    currentLabel.textContent = currentTitle;
+
+    current.append(currentNumber, currentLabel);
+    list.appendChild(current);
+
+    const status = document.createElement('div');
+    status.className = 'mtf-series-index__pending-note';
+
+    const statusLead = document.createElement('p');
+    statusLead.className = 'mtf-series-index__pending-lead';
+    statusLead.textContent =
+      'This article is part of this series.';
+
+    const statusCopy = document.createElement('p');
+    statusCopy.textContent =
+      'Series order and navigation will update when published.';
+
+    status.append(statusLead, statusCopy);
+    body.append(list, status);
+    section.append(heading, body);
+
+    return section;
+  }
+
+  function pendingSeriesNavigation(posts, seriesHref) {
+    const nav = document.createElement('nav');
+    nav.className =
+      'mtf-series-pagination mtf-series-pagination--pending';
+    nav.setAttribute('aria-label', 'Series navigation preview');
+
+    const previous = document.createElement('div');
+    previous.className =
+      'mtf-series-pagination__article mtf-series-pagination__article--previous';
+
+    const latestPublished = posts[posts.length - 1] || null;
+
+    if (latestPublished) {
+      const link = document.createElement('a');
+      link.href = latestPublished.path;
+
+      const label = document.createElement('span');
+      label.className = 'mtf-series-pagination__label';
+      label.textContent = 'Latest Published Article';
+
+      const title = document.createElement('span');
+      title.className = 'mtf-series-pagination__title';
+      title.textContent = latestPublished.title;
+
+      link.append(label, title);
+      previous.appendChild(link);
+    } else {
+      const label = document.createElement('span');
+      label.className = 'mtf-series-pagination__label';
+      label.textContent = 'Previous Article';
+
+      const title = document.createElement('span');
+      title.className =
+        'mtf-series-pagination__title mtf-series-pagination__title--pending';
+      title.textContent = 'Not available yet';
+
+      previous.append(label, title);
+    }
+
+    const allCell = document.createElement('div');
+    allCell.className = 'mtf-series-pagination__all';
+
+    const allLink = document.createElement('a');
+    allLink.href = seriesHref;
+    allLink.innerHTML =
+      '<span aria-hidden="true">☷</span><span>All Published Articles<br>In This Series</span>';
+    allCell.appendChild(allLink);
+
+    const next = document.createElement('div');
+    next.className =
+      'mtf-series-pagination__article mtf-series-pagination__article--next';
+
+    const nextLabel = document.createElement('span');
+    nextLabel.className = 'mtf-series-pagination__label';
+    nextLabel.textContent = 'Next Article';
+
+    const nextTitle = document.createElement('span');
+    nextTitle.className =
+      'mtf-series-pagination__title mtf-series-pagination__title--pending';
+    nextTitle.textContent = 'Coming soon';
+
+    next.append(nextLabel, nextTitle);
+    nav.append(previous, allCell, next);
+
+    return nav;
+  }
+
+  function appendPendingSeriesFooter(
+    wrapper,
+    posts,
+    currentTitle,
+    seriesHref
+  ) {
+    const content = wrapper.querySelector('.blog-item-content');
+    if (!content) return;
+
+    content.querySelectorAll(
+      '.mtf-series-index, .mtf-series-pagination'
+    ).forEach(function (node) {
+      node.remove();
+    });
+
+    content.append(
+      pendingSeriesIndex(posts, currentTitle),
+      pendingSeriesNavigation(posts, seriesHref)
+    );
+  }
+
   async function init() {
     if (!isPost()) return;
 
@@ -870,7 +1054,8 @@
       ) {
         pendingSeries = {
           name: tag.name,
-          href: tag.href
+          href: tag.href,
+          posts: posts
         };
       }
     }
@@ -905,6 +1090,13 @@
         minutes: minutes,
         pendingSeriesNumber: true
       });
+
+      appendPendingSeriesFooter(
+        wrapper,
+        pendingSeries.posts || [],
+        articleTitle,
+        pendingSeries.href
+      );
 
       return;
     }

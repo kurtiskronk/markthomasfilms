@@ -367,6 +367,59 @@ html.mtf-editorial-blog
 }
 
 
+html.mtf-editorial-blog
+.mtf-series-index__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(220px, .8fr);
+  align-items: center;
+  gap: 30px;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__item-title {
+  color: inherit;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__item.is-pending
+.mtf-series-index__number {
+  font-family: var(--mtf-series-sans);
+  font-size: .72em;
+  letter-spacing: .06em;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__pending-note {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 28px;
+  border-left: 1px solid var(--mtf-series-line);
+
+  color: rgba(32, 32, 32, .58);
+  font-family: var(--mtf-series-serif);
+  font-size: .9rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__pending-note p {
+  margin: 0;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__pending-note p + p {
+  margin-top: 2px;
+}
+
+html.mtf-editorial-blog
+.mtf-series-index__pending-lead {
+  color: rgba(32, 32, 32, .7);
+}
+
+
 /* =========================================================
    PREVIOUS / ALL / NEXT
    ========================================================= */
@@ -430,6 +483,21 @@ html.mtf-editorial-blog
   font-family: var(--mtf-series-serif);
   font-size: 1rem;
   line-height: 1.28;
+}
+
+
+html.mtf-editorial-blog
+.mtf-series-pagination__title--pending {
+  color: rgba(32, 32, 32, .52);
+  font-style: italic;
+}
+
+html.mtf-editorial-blog
+.mtf-series-pagination--pending
+.mtf-series-pagination__article:not(:has(a)) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 html.mtf-editorial-blog
@@ -517,6 +585,20 @@ html.mtf-editorial-blog
   html.mtf-editorial-blog
   .mtf-series-index__item.is-current::before {
     left: -11px;
+  }
+
+  html.mtf-editorial-blog
+  .mtf-series-index__body {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  html.mtf-editorial-blog
+  .mtf-series-index__pending-note {
+    padding: 16px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--mtf-series-line);
+    text-align: center;
   }
 
   html.mtf-editorial-blog

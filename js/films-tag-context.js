@@ -82,6 +82,19 @@ window.MTF.filmCategoryContext = {
 window.MTF.filmTagContext = {
 
 /* ==================================================
+	ALAMO HEIGHTS UNITED METHODIST CHURCH
+	================================================== */
+
+'alamo heights united methodist church': {
+	name:	'Alamo Heights United Methodist Church',
+	type:	'church',
+	paragraphs: [
+		'Alamo Heights United Methodist Church provides a meaningful San Antonio setting for wedding ceremonies centered on commitment, family, faith, and community. Church weddings create important moments to preserve, from the processional and vows to music, readings, and the reactions of loved ones.',
+		'Browse wedding films featuring Alamo Heights United Methodist Church by Mark Thomas Films to see how real ceremonies become part of the larger wedding-day story. Each film connects the significance of the ceremony with the relationships, celebrations, and unscripted moments surrounding the couple.'
+	]
+},
+
+/* ==================================================
 	AMERICAN BANK CENTER
 	================================================== */
 
@@ -133,8 +146,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Austin?',
 			paragraphs: [
-				'If you’re planning an Austin wedding, we’d love to hear where you are celebrating and what matters most to you. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout Austin and Central Texas.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning an Austin wedding, we’d love to hear where you are celebrating and what matters most to you. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout Austin and Central Texas.'
 			]
 		}
 	}
@@ -150,6 +162,32 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Bandera weddings combine the character of the Texas Hill Country with ranch settings, open landscapes, historic surroundings, and the relaxed atmosphere that makes this part of Texas distinctive. Couples planning a wedding in Bandera have opportunities to create a celebration that feels personal, scenic, and unmistakably Texan.',
 		'Explore Bandera wedding films by Mark Thomas Films to see real wedding days captured throughout the area. From quiet preparations and emotional ceremonies to energetic receptions, these films preserve the people, places, and unscripted moments that make every Bandera wedding different.'
+	]
+},
+
+/* ==================================================
+	BETHANY LUTHERAN CHURCH
+	================================================== */
+
+'bethany lutheran church': {
+	name:	'Bethany Lutheran Church',
+	type:	'church',
+	paragraphs: [
+		'Bethany Lutheran Church offers a traditional setting for wedding ceremonies where vows, faith, family, music, and meaningful traditions come together. A church ceremony gives the wedding story a natural emotional foundation built around the words and people at the center of the day.',
+		'Explore wedding films featuring Bethany Lutheran Church by Mark Thomas Films to see how ceremonies are preserved through professional audio, thoughtful camera coverage, and a focus on genuine reactions. Each film carries those moments into the celebrations and relationships that follow.'
+	]
+},
+
+/* ==================================================
+	BLESSED SACRAMENT CATHOLIC CHURCH
+	================================================== */
+
+'blessed sacrament catholic church': {
+	name:	'Blessed Sacrament Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'Blessed Sacrament Catholic Church provides a reverent setting for Catholic wedding ceremonies shaped by faith, family, vows, and sacramental traditions. The processional, readings, exchange of vows and rings, and reactions of loved ones become important parts of the complete wedding story.',
+		'Browse wedding films featuring Blessed Sacrament Catholic Church by Mark Thomas Films to see how real Catholic ceremonies are preserved through cinematic wedding videography. These films document both the significance of the liturgy and the personal moments surrounding the couple and their families.'
 	]
 },
 
@@ -192,8 +230,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Boerne?',
 			paragraphs: [
-				'If you’re planning a wedding in Boerne or the surrounding Texas Hill Country, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around the people, moments, and memories that make your day your own.',
-				'Build a preliminary quote to explore coverage options and pricing, then we can talk through the details and create coverage that fits your wedding day.'
+				'If you’re planning a wedding in Boerne or the surrounding Texas Hill Country, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around the people, moments, and memories that make your day your own.'
 			]
 		}
 	}
@@ -209,6 +246,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Braches House provides an intimate setting for wedding celebrations where personal details, family connections, and the natural rhythm of the day can take center stage. Weddings here can feel especially personal because the setting allows the people and relationships surrounding the couple to remain at the heart of the celebration.',
 		'Explore Braches House wedding films by Mark Thomas Films to see how real couples have celebrated at this distinctive venue. Each film brings together meaningful details, candid interactions, ceremony moments, and reception memories into a cinematic record of the wedding day.'
+	]
+},
+
+/* ==================================================
+	BUDA
+	================================================== */
+
+'buda': {
+	name:	'Buda',
+	type:	'location',
+	paragraphs: [
+		'Buda weddings offer couples a Central Texas setting close to Austin while retaining the character of a smaller community. Venues, churches, outdoor spaces, and nearby Hill Country surroundings give couples a range of options for ceremonies and celebrations.',
+		'Explore Buda wedding films by Mark Thomas Films to see real celebrations documented through meaningful vows, family relationships, speeches, traditions, dancing, and candid moments. Each film preserves both the setting and the people who make the wedding story personal.'
 	]
 },
 
@@ -264,8 +314,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Canyon Lake?',
 			paragraphs: [
-				'If you’re planning a wedding in Canyon Lake or the surrounding Texas Hill Country, we’d love to hear what you have in mind. Mark Thomas Films offers wedding videography and photography designed around real moments, natural emotion, and the people who matter most.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your Canyon Lake wedding day.'
+				'If you’re planning a wedding in Canyon Lake or the surrounding Texas Hill Country, we’d love to hear what you have in mind. Mark Thomas Films offers wedding videography and photography designed around real moments, natural emotion, and the people who matter most.'
 			]
 		}
 	}
@@ -294,6 +343,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Castroville offers couples a wedding setting with small-town Texas character, historic surroundings, and convenient access to the greater San Antonio area. Weddings in Castroville often bring together local traditions, family connections, and relaxed celebrations in a setting that feels distinct from the city.',
 		'Browse Castroville wedding films by Mark Thomas Films to experience real celebrations filmed throughout the area. These stories preserve the vows, laughter, family interactions, reception energy, and personal moments that make every Castroville wedding unique.'
+	]
+},
+
+/* ==================================================
+	CESTOHOWA
+	================================================== */
+
+'cestohowa': {
+	name:	'Cestohowa',
+	type:	'location',
+	paragraphs: [
+		'Cestohowa wedding celebrations reflect the close family connections, faith, community, and South Texas traditions that give the area its character. Wedding days here may move between churches, family gatherings, reception halls, and the people and places that have personal meaning to the couple.',
+		'Explore Cestohowa wedding films by Mark Thomas Films to see real celebrations documented with an emphasis on vows, family relationships, traditions, speeches, dancing, and candid moments. Each film preserves both the setting and the people who make the wedding story personal.'
 	]
 },
 
@@ -349,11 +411,23 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding at The Chandelier of Gruene?',
 			paragraphs: [
-				'If you’re planning your wedding at The Chandelier of Gruene, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around real moments, natural emotion, and the people whose voices and relationships make the day meaningful.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your Chandelier of Gruene wedding.'
+				'If you’re planning your wedding at The Chandelier of Gruene, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around real moments, natural emotion, and the people whose voices and relationships make the day meaningful.'
 			]
 		}
 	}
+},
+
+/* ==================================================
+	COMFORT
+	================================================== */
+
+'comfort': {
+	name:	'Comfort',
+	type:	'location',
+	paragraphs: [
+		'Comfort weddings place couples in a distinctive part of the Texas Hill Country surrounded by small-town character, open landscapes, ranch properties, and nearby wedding venues. The area gives celebrations a relaxed sense of place while remaining connected to communities throughout the Hill Country.',
+		'Browse Comfort wedding films by Mark Thomas Films to see real wedding stories preserved through cinematic videography. These films focus on vows, family connections, traditions, emotional reactions, speeches, dancing, and the unscripted moments that make each celebration different.'
+	]
 },
 
 /* ==================================================
@@ -435,6 +509,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	ÉILAN HOTEL & SPA
+	================================================== */
+
+'éilan hotel & spa': {
+	name:	'Éilan Hotel & Spa',
+	type:	'venue',
+	paragraphs: [
+		'Éilan Hotel & Spa offers a distinctive setting for wedding celebrations where preparations, portraits, ceremonies, and reception events can become part of a polished wedding-day experience. Hotel weddings create opportunities to document both carefully planned details and the spontaneous interactions happening around them.',
+		'Browse Éilan Hotel & Spa wedding films by Mark Thomas Films to see real celebrations captured through cinematic wedding videography. Each film focuses on the couple, their families, meaningful words, emotional reactions, and the energy that gives the day its individual character.'
+	]
+},
+
+/* ==================================================
 	FALLS CITY
 	================================================== */
 
@@ -473,11 +560,36 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Falls City?',
 			paragraphs: [
-				'If you’re planning a Falls City wedding, we’d love to learn about your ceremony, reception plans, family traditions, and the moments that matter most to you. Mark Thomas Films creates story-driven wedding films and photography that preserve not only how the day looked, but the voices and emotions that made it yours.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning a Falls City wedding, we’d love to learn about your ceremony, reception plans, family traditions, and the moments that matter most to you. Mark Thomas Films creates story-driven wedding films and photography that preserve not only how the day looked, but the voices and emotions that made it yours.'
 			]
 		}
 	}
+},
+
+/* ==================================================
+	FALLS CITY COMMUNITY HALL
+	================================================== */
+
+'falls city community hall': {
+	name:	'Falls City Community Hall',
+	type:	'venue',
+	paragraphs: [
+		'Falls City Community Hall provides a familiar South Texas gathering place for wedding receptions centered on family, community, music, dancing, and celebration. Reception halls often become the setting for some of the most energetic and personal moments of the wedding day.',
+		'Explore wedding films featuring Falls City Community Hall by Mark Thomas Films to see real receptions filled with entrances, speeches, dances, traditions, laughter, and time spent with loved ones. Each film preserves the personality of the celebration along with the people who made it memorable.'
+	]
+},
+
+/* ==================================================
+	FIRST BAPTIST CHURCH OF FLORESVILLE
+	================================================== */
+
+'first baptist church of floresville': {
+	name:	'First Baptist Church of Floresville',
+	type:	'church',
+	paragraphs: [
+		'First Baptist Church of Floresville provides a meaningful setting for wedding ceremonies centered on commitment, faith, family, and community. The ceremony creates opportunities to preserve vows, music, readings, family reactions, and the quiet interactions that often become some of the most valued memories of the day.',
+		'Browse wedding films featuring First Baptist Church of Floresville by Mark Thomas Films to see how real ceremonies become part of a complete wedding story. Each film connects the significance of the ceremony with the relationships and celebrations surrounding the couple.'
+	]
 },
 
 /* ==================================================
@@ -519,8 +631,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Fredericksburg?',
 			paragraphs: [
-				'If you’re planning a wedding in Fredericksburg or the surrounding Texas Hill Country, we’d love to hear about the setting, timeline, and people you want to remember most. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout the region.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning a wedding in Fredericksburg or the surrounding Texas Hill Country, we’d love to hear about the setting, timeline, and people you want to remember most. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout the region.'
 			]
 		}
 	}
@@ -540,6 +651,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	GARDEN RIDGE
+	================================================== */
+
+'garden ridge': {
+	name:	'Garden Ridge',
+	type:	'location',
+	paragraphs: [
+		'Garden Ridge weddings offer couples a setting between San Antonio and New Braunfels with convenient access to venues, churches, and surrounding Hill Country communities. The location works well for celebrations that bring together guests from across the greater San Antonio and Central Texas area.',
+		'Explore Garden Ridge wedding films by Mark Thomas Films to see real celebrations documented with an emphasis on people, relationships, meaningful words, family traditions, and candid moments. Each film preserves the atmosphere of the day along with the emotions that made it personal.'
+	]
+},
+
+/* ==================================================
 	GEORGE WEST
 	================================================== */
 
@@ -549,6 +673,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'George West weddings bring together South Texas scenery, community, family traditions, and celebrations that often feel closely connected to the people and places surrounding the couple. Local churches, ranch properties, and reception spaces provide a range of settings for wedding days in the area.',
 		'Explore George West wedding films by Mark Thomas Films to see real celebrations documented from beginning to end. These films preserve the vows, family connections, reception traditions, dancing, laughter, and unexpected moments that make every wedding different.'
+	]
+},
+
+/* ==================================================
+	GEORGETOWN
+	================================================== */
+
+'georgetown': {
+	name:	'Georgetown',
+	type:	'location',
+	paragraphs: [
+		'Georgetown weddings offer couples a Central Texas setting with historic character, churches, dedicated venues, outdoor spaces, and convenient access to the greater Austin area. The variety allows wedding days to feel formal, relaxed, traditional, or entirely personal to the couple.',
+		'Browse Georgetown wedding films by Mark Thomas Films to see real Central Texas celebrations captured through vows, family relationships, speeches, traditions, dancing, and unscripted moments. Each film tells the story of the people at the center of the day.'
 	]
 },
 
@@ -575,6 +712,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Gonzales weddings combine historic Texas character with churches, ranches, event spaces, and surrounding countryside that can accommodate many different styles of celebration. The area provides a distinctive setting for couples who want their wedding day to feel connected to family, community, and place.',
 		'Explore Gonzales wedding films by Mark Thomas Films to see real wedding stories captured throughout the area. These films preserve the details couples planned as well as the unplanned laughter, emotions, conversations, and celebrations that ultimately make each wedding personal.'
+	]
+},
+
+/* ==================================================
+	HAYES HOLLOW AT HIDDEN FALLS
+	================================================== */
+
+'hayes hollow at hidden falls': {
+	name:	'Hayes Hollow at Hidden Falls',
+	type:	'venue',
+	paragraphs: [
+		'Hayes Hollow at Hidden Falls offers a dedicated Texas wedding setting for ceremonies, portraits, receptions, and time spent with family and friends. A venue that brings several parts of the wedding day together gives each couple room to shape the celebration around their own style and priorities.',
+		'Explore Hayes Hollow at Hidden Falls wedding films by Mark Thomas Films to see real celebrations documented from meaningful vows through speeches, dancing, and the unscripted moments in between. Each film keeps the people and relationships at the center of the story.'
 	]
 },
 
@@ -617,8 +767,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Helotes?',
 			paragraphs: [
-				'If you’re planning a wedding in Helotes or the surrounding San Antonio and Hill Country area, we’d love to hear what you have in mind. Mark Thomas Films offers wedding videography and photography built around real moments, natural emotion, and the people who matter most.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning a wedding in Helotes or the surrounding San Antonio and Hill Country area, we’d love to hear what you have in mind. Mark Thomas Films offers wedding videography and photography built around real moments, natural emotion, and the people who matter most.'
 			]
 		}
 	}
@@ -634,6 +783,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Hofmann Ranch offers a Texas ranch setting for weddings where open surroundings and dedicated celebration spaces create opportunities for ceremonies, portraits, receptions, and relaxed time with guests. The setting allows couples to combine classic wedding traditions with the character of a ranch celebration.',
 		'Browse Hofmann Ranch wedding films by Mark Thomas Films to see how different couples have made the venue their own. Each film documents the meaningful details, family relationships, ceremony moments, speeches, dancing, and spontaneous interactions that shaped the wedding day.'
+	]
+},
+
+/* ==================================================
+	HOLY SPIRIT CATHOLIC CHURCH
+	================================================== */
+
+'holy spirit catholic church': {
+	name:	'Holy Spirit Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'Holy Spirit Catholic Church provides a reverent setting for Catholic wedding ceremonies where faith, family, vows, and sacramental traditions become central parts of the day. Professional audio and thoughtful camera placement help preserve the words, music, rituals, and reactions that make the ceremony meaningful.',
+		'Browse wedding films featuring Holy Spirit Catholic Church by Mark Thomas Films to see how real Catholic ceremonies are woven into complete wedding stories. Each film preserves the significance of the liturgy along with the relationships, emotions, and celebrations surrounding the couple.'
 	]
 },
 
@@ -673,6 +835,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Hotel Valencia Riverwalk offers couples a sophisticated downtown San Antonio setting with convenient access to the River Walk and the energy of the city. Hotel weddings allow preparations, portraits, gatherings, and celebrations to unfold within a setting designed for a complete wedding-day experience.',
 		'Browse Hotel Valencia Riverwalk wedding films by Mark Thomas Films to see real San Antonio weddings captured in and around this downtown venue. Each film preserves the atmosphere of the setting while focusing on the couple, their families, and the moments that give the celebration its meaning.'
+	]
+},
+
+/* ==================================================
+	HYATT REGENCY AUSTIN
+	================================================== */
+
+'hyatt regency austin': {
+	name:	'Hyatt Regency Austin',
+	type:	'venue',
+	paragraphs: [
+		'Hyatt Regency Austin offers a downtown Austin setting for wedding celebrations where preparations, portraits, gatherings, and reception events can unfold within the energy of the city. Hotel weddings provide a flexible backdrop for couples bringing together family, friends, traditions, and personal details.',
+		'Explore Hyatt Regency Austin wedding films by Mark Thomas Films to see real Austin celebrations preserved through cinematic storytelling. These films focus on meaningful words, emotional reactions, family relationships, reception energy, and the unscripted moments couples will want to revisit.'
 	]
 },
 
@@ -744,12 +919,37 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding at Kendall Point?',
 			paragraphs: [
-				'If you’re planning a wedding at Kendall Point, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around real moments, natural emotion, and the people who matter most.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your Kendall Point wedding day.'
+				'If you’re planning a wedding at Kendall Point, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around real moments, natural emotion, and the people who matter most.'
 			]
 			/* Optional buttonText and VERIFIED buttonUrl may be added here. */
 		}
 	}
+},
+
+/* ==================================================
+	KARNES CITY
+	================================================== */
+
+'karnes city': {
+	name:	'Karnes City',
+	type:	'location',
+	paragraphs: [
+		'Karnes City weddings reflect the family connections, community traditions, churches, halls, ranches, and South Texas character of the surrounding area. Celebrations in smaller communities often carry a strong sense of place shaped by the people and relationships gathered together.',
+		'Explore Karnes City wedding films by Mark Thomas Films to see real South Texas wedding stories documented through meaningful ceremonies, family traditions, speeches, dancing, laughter, and candid moments. Each film preserves both what happened and how the celebration felt.'
+	]
+},
+
+/* ==================================================
+	KING RANCH MUSEUM
+	================================================== */
+
+'king ranch museum': {
+	name:	'King Ranch Museum',
+	type:	'venue',
+	paragraphs: [
+		'King Ranch Museum provides a distinctive South Texas setting for wedding-related celebrations with a strong sense of place and character. Unique locations like this give couples a visual backdrop that feels different from a traditional ballroom while allowing the people and relationships to remain at the center of the day.',
+		'Browse wedding films featuring King Ranch Museum by Mark Thomas Films to see how real celebrations are documented through vows, family interactions, speeches, dancing, and candid moments. Each film preserves both the atmosphere of the setting and the story unfolding within it.'
+	]
 },
 
 /* ==================================================
@@ -779,6 +979,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	LA CANTERA RESORT & SPA
+	================================================== */
+
+'la cantera resort & spa': {
+	name:	'La Cantera Resort & Spa',
+	type:	'venue',
+	paragraphs: [
+		'La Cantera Resort & Spa offers a polished San Antonio setting for wedding celebrations with opportunities for preparations, portraits, ceremonies, receptions, and wedding-weekend events. Resort weddings can bring many parts of the experience together while still allowing each couple to create a celebration that feels personal.',
+		'Explore La Cantera Resort & Spa wedding films by Mark Thomas Films to see real celebrations documented through cinematic wedding videography. Each story combines the setting and carefully planned details with meaningful vows, family relationships, speeches, reactions, and candid moments.'
+	]
+},
+
+/* ==================================================
 	LA VERNIA
 	================================================== */
 
@@ -788,6 +1001,45 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'La Vernia weddings offer couples a South Texas setting close to San Antonio while maintaining the character of a smaller community. Churches, ranches, halls, and event venues throughout the area provide options for weddings rooted in family, tradition, and a relaxed celebration with the people who matter most.',
 		'Explore La Vernia wedding films by Mark Thomas Films to see real wedding stories from the area. These films preserve meaningful ceremonies, candid family interactions, reception traditions, speeches, dancing, and the unscripted moments that make every La Vernia wedding different.'
+	]
+},
+
+/* ==================================================
+	LE SAN MICHELE
+	================================================== */
+
+'le san michele': {
+	name:	'Le San Michele',
+	type:	'venue',
+	paragraphs: [
+		'Le San Michele offers a distinctive Central Texas setting for wedding celebrations where outdoor surroundings and thoughtfully planned event spaces can become part of the visual story. The property gives couples room to create a wedding day shaped by their own style, people, and traditions.',
+		'Browse Le San Michele wedding films by Mark Thomas Films to see real celebrations preserved through vows, portraits, speeches, dancing, laughter, and spontaneous interactions. Each film uses the venue as a backdrop while keeping the couple and their relationships at the center.'
+	]
+},
+
+/* ==================================================
+	LOS ENCINOS
+	================================================== */
+
+'los encinos': {
+	name:	'Los Encinos',
+	type:	'venue',
+	paragraphs: [
+		'Los Encinos provides a Texas wedding setting for ceremonies and celebrations surrounded by the people, details, and traditions that make each wedding distinct. Dedicated event spaces give couples the flexibility to shape the day around their own priorities while creating opportunities for both polished imagery and candid moments.',
+		'Explore Los Encinos wedding films by Mark Thomas Films to see real celebrations documented through meaningful vows, family interactions, speeches, dancing, and the moments that happen naturally throughout the day. Each film preserves the personality of the couple and the atmosphere of the celebration.'
+	]
+},
+
+/* ==================================================
+	LOST MISSION
+	================================================== */
+
+'lost mission': {
+	name:	'Lost Mission',
+	type:	'venue',
+	paragraphs: [
+		'Lost Mission offers a distinctive Texas wedding setting for ceremonies, portraits, receptions, and gatherings with family and friends. Its venue environment gives couples a memorable backdrop while allowing the details, traditions, and people surrounding them to define the celebration.',
+		'Browse Lost Mission wedding films by Mark Thomas Films to see real wedding days preserved through cinematic storytelling. These films capture vows, emotional reactions, family relationships, speeches, dancing, and the unscripted interactions that make each celebration personal.'
 	]
 },
 
@@ -814,6 +1066,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'McKinney weddings offer couples a North Texas setting with a broad range of venues, churches, event spaces, and surrounding landscapes for ceremonies and receptions. Whether the celebration is formal, relaxed, modern, or traditional, the people and relationships surrounding the couple ultimately define the wedding day.',
 		'Explore McKinney wedding films by Mark Thomas Films to see real Texas wedding stories documented through cinematic videography. These films preserve the vows, details, family connections, speeches, dancing, and unexpected moments that couples can return to long after the celebration is over.'
+	]
+},
+
+/* ==================================================
+	MCNAY ART MUSEUM
+	================================================== */
+
+'mcnay art museum': {
+	name:	'McNay Art Museum',
+	type:	'venue',
+	paragraphs: [
+		'McNay Art Museum offers a distinctive San Antonio setting for wedding celebrations where architecture, art, and the surrounding property create a memorable visual backdrop. Weddings in a setting like this can combine carefully planned design with the natural emotion and relationships that unfold throughout the day.',
+		'Explore McNay Art Museum wedding films by Mark Thomas Films to see real celebrations captured through cinematic wedding videography. Each film preserves the setting while focusing on vows, family connections, speeches, reactions, and the candid moments that give the wedding its meaning.'
 	]
 },
 
@@ -856,8 +1121,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding at Nativity BVM?',
 			paragraphs: [
-				'If you’re planning your wedding ceremony at Nativity of the Blessed Virgin Mary Catholic Church, we’d love to learn about your plans for the ceremony, reception, family traditions, and the moments that matter most to you. Mark Thomas Films creates story-driven wedding films and photography designed to preserve both the significance of the ceremony and the celebration surrounding it.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning your wedding ceremony at Nativity of the Blessed Virgin Mary Catholic Church, we’d love to learn about your plans for the ceremony, reception, family traditions, and the moments that matter most to you. Mark Thomas Films creates story-driven wedding films and photography designed to preserve both the significance of the ceremony and the celebration surrounding it.'
 			]
 		}
 	}
@@ -906,6 +1170,32 @@ window.MTF.filmTagContext = {
 			]
 		}
 	}
+},
+
+/* ==================================================
+	NEW BRAUNFELS BIBLE CHURCH
+	================================================== */
+
+'new braunfels bible church': {
+	name:	'New Braunfels Bible Church',
+	type:	'church',
+	paragraphs: [
+		'New Braunfels Bible Church provides a meaningful setting for wedding ceremonies centered on commitment, faith, family, and community. The vows, music, readings, processional, and reactions of loved ones naturally become important parts of the wedding story.',
+		'Browse wedding films featuring New Braunfels Bible Church by Mark Thomas Films to see how real ceremonies are preserved through professional audio and thoughtful camera coverage. Each film connects the ceremony with the relationships, traditions, and celebrations that surround the couple.'
+	]
+},
+
+/* ==================================================
+	NEW BRAUNFELS CIVIC & CONVENTION CENTER
+	================================================== */
+
+'new braunfels civic & convention center': {
+	name:	'New Braunfels Civic & Convention Center',
+	type:	'venue',
+	paragraphs: [
+		'New Braunfels Civic & Convention Center provides a flexible setting for wedding receptions and large celebrations in the heart of New Braunfels. Event spaces like this become personal through the people, décor, traditions, music, and moments couples bring into them.',
+		'Explore New Braunfels Civic & Convention Center wedding films by Mark Thomas Films to see real celebrations filled with entrances, speeches, first dances, family traditions, laughter, and reception energy. Each film preserves both the planned events and the spontaneous interactions that make the day unique.'
+	]
 },
 
 /* ==================================================
@@ -1005,8 +1295,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Reception at Panna Maria Hall?',
 			paragraphs: [
-				'If your wedding celebration includes Panna Maria Hall, we’d love to hear about your ceremony, reception plans, family traditions, and the people who matter most to you. Mark Thomas Films creates wedding films and photography designed to preserve the full story of the day, including the voices and moments that can become even more meaningful with time.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding celebration.'
+				'If your wedding celebration includes Panna Maria Hall, we’d love to hear about your ceremony, reception plans, family traditions, and the people who matter most to you. Mark Thomas Films creates wedding films and photography designed to preserve the full story of the day, including the voices and moments that can become even more meaningful with time.'
 			]
 		}
 	}
@@ -1026,6 +1315,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	PLAYA DEL CARMEN
+	================================================== */
+
+'playa del carmen': {
+	name:	'Playa del Carmen',
+	type:	'location',
+	paragraphs: [
+		'Playa del Carmen weddings offer couples a destination setting in Mexico where travel, tropical surroundings, resort celebrations, and time with family and friends can all become part of the wedding experience. Destination wedding days often extend beyond a single ceremony or reception and create a story shaped by the shared trip as well as the celebration itself.',
+		'Browse Playa del Carmen wedding films by Mark Thomas Films to see destination wedding stories preserved through cinematic videography. These films focus on the couple, their families, meaningful words, emotional reactions, and the spontaneous moments that make traveling together for a wedding unforgettable.'
+	]
+},
+
+/* ==================================================
 	PRIVATE RANCH
 	================================================== */
 
@@ -1035,6 +1337,32 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Private ranch weddings give couples the freedom to celebrate in a setting that often carries personal, family, or regional significance. Open landscapes, familiar surroundings, custom layouts, and fewer traditional venue constraints can make a ranch wedding feel especially connected to the couple and the people closest to them.',
 		'Browse private ranch wedding films by Mark Thomas Films to see how unique Texas properties become the backdrop for ceremonies and celebrations. These films capture the scenery and details of each location while keeping the focus on relationships, emotion, traditions, and authentic moments.'
+	]
+},
+
+/* ==================================================
+	QUINTANA ROO
+	================================================== */
+
+'quintana roo': {
+	name:	'Quintana Roo',
+	type:	'location',
+	paragraphs: [
+		'Quintana Roo offers a distinctive destination setting for weddings in Mexico, with celebrations shaped by travel, tropical surroundings, resort experiences, and time shared with family and friends. Destination weddings create opportunities to preserve not only the ceremony and reception, but also the atmosphere surrounding the larger experience.',
+		'Explore Quintana Roo wedding films by Mark Thomas Films to see real destination celebrations documented through vows, family relationships, speeches, reactions, and candid moments. Each film keeps the people and emotions at the center while allowing the location to remain an important part of the story.'
+	]
+},
+
+/* ==================================================
+	RIO CIBOLO RANCH
+	================================================== */
+
+'rio cibolo ranch': {
+	name:	'Rio Cibolo Ranch',
+	type:	'venue',
+	paragraphs: [
+		'Rio Cibolo Ranch offers a Texas ranch setting for wedding celebrations where natural surroundings and dedicated event spaces can become part of the complete wedding-day experience. Ranch weddings create opportunities for outdoor ceremonies, portraits, family gatherings, and receptions filled with personality.',
+		'Browse Rio Cibolo Ranch wedding films by Mark Thomas Films to see how real couples have celebrated through meaningful vows, family traditions, speeches, dancing, and candid moments. Each film combines the character of the setting with the relationships and emotions that define the wedding story.'
 	]
 },
 
@@ -1200,8 +1528,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding in Spring Branch?',
 			paragraphs: [
-				'If you’re planning a wedding in Spring Branch or the surrounding Texas Hill Country, we’d love to hear where you are celebrating and what matters most to you. Mark Thomas Films offers story-driven wedding videography and photography designed around real moments and natural emotion.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning a wedding in Spring Branch or the surrounding Texas Hill Country, we’d love to hear where you are celebrating and what matters most to you. Mark Thomas Films offers story-driven wedding videography and photography designed around real moments and natural emotion.'
 			]
 		}
 	}
@@ -1217,6 +1544,45 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'St. Andrew’s Lutheran Church provides a meaningful setting for wedding ceremonies centered on faith, commitment, family, and community. The ceremony brings together the vows, readings, music, traditions, and emotional reactions that often become some of the most important moments preserved from the wedding day.',
 		'Browse wedding films featuring St. Andrew’s Lutheran Church by Mark Thomas Films to see how these ceremonies become part of a larger cinematic wedding story. Each film connects the significance of the ceremony with the relationships and celebrations that surround the couple throughout the day.'
+	]
+},
+
+/* ==================================================
+	ST. ANN'S CATHOLIC CHURCH
+	================================================== */
+
+"st. ann's catholic church": {
+	name:	"St. Ann's Catholic Church",
+	type:	'church',
+	paragraphs: [
+		'St. Ann’s Catholic Church provides a traditional setting for Catholic wedding ceremonies where faith, family, vows, and sacramental traditions come together. The ceremony includes many of the words, rituals, and emotional reactions couples value being able to see and hear again.',
+		'Explore wedding films featuring St. Ann’s Catholic Church by Mark Thomas Films to see how real ceremonies are preserved through professional audio and cinematic coverage. Each film connects the significance of the liturgy with the relationships and celebrations surrounding the couple.'
+	]
+},
+
+/* ==================================================
+	ST. ANTHONY MARY CLARET CATHOLIC CHURCH
+	================================================== */
+
+'st. anthony mary claret catholic church': {
+	name:	'St. Anthony Mary Claret Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'St. Anthony Mary Claret Catholic Church provides a reverent setting for Catholic wedding ceremonies shaped by faith, family, commitment, and tradition. The processional, readings, vows, music, sacramental moments, and reactions of loved ones become important parts of the complete wedding story.',
+		'Browse wedding films featuring St. Anthony Mary Claret Catholic Church by Mark Thomas Films to see how real Catholic ceremonies are documented with thoughtful camera placement and professional audio. Each film preserves both the significance of the ceremony and the people surrounding it.'
+	]
+},
+
+/* ==================================================
+	ST. ELIZABETH ANN SETON CATHOLIC CHURCH
+	================================================== */
+
+'st. elizabeth ann seton catholic church': {
+	name:	'St. Elizabeth Ann Seton Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'St. Elizabeth Ann Seton Catholic Church offers a meaningful setting for Catholic wedding ceremonies where vows, family, faith, music, and sacramental traditions take center stage. Careful preparation helps preserve the ceremony without distracting from the people experiencing it.',
+		'Explore wedding films featuring St. Elizabeth Ann Seton Catholic Church by Mark Thomas Films to see how real ceremonies become part of a larger wedding-day story. These films capture the words, reactions, relationships, and traditions couples can return to long after the celebration.'
 	]
 },
 
@@ -1247,6 +1613,32 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	ST. JOSEPH CATHOLIC CHURCH - HONEY CREEK
+	================================================== */
+
+'st. joseph catholic church - honey creek': {
+	name:	'St. Joseph Catholic Church - Honey Creek',
+	type:	'church',
+	paragraphs: [
+		'St. Joseph Catholic Church - Honey Creek provides a meaningful Texas Hill Country setting for Catholic wedding ceremonies centered on faith, family, vows, and tradition. The ceremony offers important moments to preserve through professional audio and thoughtful camera coverage, from the processional and readings through the exchange of vows and rings.',
+		'Browse wedding films featuring St. Joseph Catholic Church - Honey Creek by Mark Thomas Films to see how real Catholic ceremonies are woven into complete wedding stories. Each film preserves the significance of the liturgy alongside the relationships, reactions, and celebrations surrounding the couple.'
+	]
+},
+
+/* ==================================================
+	ST. MARTIN OF TOURS CATHOLIC CHURCH
+	================================================== */
+
+'st. martin of tours catholic church': {
+	name:	'St. Martin of Tours Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'St. Martin of Tours Catholic Church provides a traditional setting for Catholic wedding ceremonies rooted in faith, family, commitment, and sacramental tradition. The words, music, rituals, and reactions that unfold during the ceremony often become some of the most meaningful moments preserved from the wedding day.',
+		'Explore wedding films featuring St. Martin of Tours Catholic Church by Mark Thomas Films to see how real ceremonies are documented through professional audio and cinematic videography. Each film connects the significance of the ceremony with the people and celebrations that follow.'
+	]
+},
+
+/* ==================================================
 	ST. PAUL LUTHERAN CHURCH
 	================================================== */
 
@@ -1273,6 +1665,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	ST. PETER THE APOSTLE CATHOLIC CHURCH
+	================================================== */
+
+'st. peter the apostle catholic church': {
+	name:	'St. Peter the Apostle Catholic Church',
+	type:	'church',
+	paragraphs: [
+		'St. Peter the Apostle Catholic Church provides a meaningful setting for Catholic wedding ceremonies shaped by faith, family, vows, and tradition. The processional, readings, exchange of vows and rings, music, and emotional reactions become important parts of the complete wedding story.',
+		'Browse wedding films featuring St. Peter the Apostle Catholic Church by Mark Thomas Films to see how real ceremonies are preserved through thoughtful camera coverage and professional audio. Each film carries the significance of the ceremony into the relationships and celebrations surrounding the couple.'
+	]
+},
+
+/* ==================================================
 	STONE CREST VENUE
 	================================================== */
 
@@ -1282,6 +1687,32 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Stone Crest Venue provides a Texas wedding setting designed for couples to bring ceremonies, receptions, portraits, and personal details together in one celebration. Dedicated wedding venues offer the flexibility to shape the space around the couple’s style while creating opportunities for both polished imagery and candid moments.',
 		'Explore Stone Crest Venue wedding films by Mark Thomas Films to see how real couples have used the venue for their own celebrations. Each film documents the details of the day alongside vows, family connections, speeches, dancing, laughter, and the unscripted moments that tell the complete story.'
+	]
+},
+
+/* ==================================================
+	STOCKDALE
+	================================================== */
+
+'stockdale': {
+	name:	'Stockdale',
+	type:	'location',
+	paragraphs: [
+		'Stockdale weddings often reflect the close family connections, community traditions, churches, halls, ranch properties, and South Texas surroundings that give the area its character. Celebrations here can feel especially personal because the people and places involved are often deeply connected to the couple.',
+		'Browse Stockdale wedding films by Mark Thomas Films to see real South Texas celebrations preserved through meaningful ceremonies, family traditions, speeches, dancing, laughter, and candid interactions. Each film documents the relationships and emotions that make the wedding story worth remembering.'
+	]
+},
+
+/* ==================================================
+	SUNSET STATION
+	================================================== */
+
+'sunset station': {
+	name:	'Sunset Station',
+	type:	'venue',
+	paragraphs: [
+		'Sunset Station offers a distinctive San Antonio setting for wedding receptions and celebrations with an atmosphere that differs from a traditional ballroom or ranch venue. The space becomes personal through the couple’s design, music, family traditions, and the people gathered to celebrate with them.',
+		'Explore Sunset Station wedding films by Mark Thomas Films to see real San Antonio celebrations documented through speeches, first dances, family interactions, laughter, and reception energy. Each film preserves both the character of the setting and the spontaneous moments that make the wedding personal.'
 	]
 },
 
@@ -1324,8 +1755,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Texas Hill Country Wedding?',
 			paragraphs: [
-				'If you’re planning a wedding in the Texas Hill Country, we’d love to hear where you’re celebrating and what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout the region, from established venues to private properties and destinations off the beaten path.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding day.'
+				'If you’re planning a wedding in the Texas Hill Country, we’d love to hear where you’re celebrating and what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography for celebrations throughout the region, from established venues to private properties and destinations off the beaten path.'
 			]
 		}
 	}
@@ -1358,6 +1788,32 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	THE CHAPEL OF THE INCARNATE WORD
+	================================================== */
+
+'the chapel of the incarnate word': {
+	name:	'The Chapel of the Incarnate Word',
+	type:	'church',
+	paragraphs: [
+		'The Chapel of the Incarnate Word provides a meaningful setting for wedding ceremonies centered on faith, commitment, family, and tradition. The chapel ceremony creates opportunities to preserve vows, music, readings, processional moments, and emotional reactions with care and respect.',
+		'Browse wedding films featuring The Chapel of the Incarnate Word by Mark Thomas Films to see how real ceremonies become part of a complete wedding story. Each film preserves the significance of the ceremony along with the relationships and celebrations surrounding the couple.'
+	]
+},
+
+/* ==================================================
+	THE GARDENS AT OLD TOWN HELOTES
+	================================================== */
+
+'the gardens at old town helotes': {
+	name:	'The Gardens at Old Town Helotes',
+	type:	'venue',
+	paragraphs: [
+		'The Gardens at Old Town Helotes offers a distinctive Helotes setting for wedding celebrations with access to the character and atmosphere of the surrounding community. The venue provides a backdrop for ceremonies, portraits, receptions, and the personal details couples bring to the day.',
+		'Explore The Gardens at Old Town Helotes wedding films by Mark Thomas Films to see real celebrations documented through vows, family relationships, speeches, dancing, and candid moments. Each film focuses on the people and emotions that make the wedding story unique.'
+	]
+},
+
+/* ==================================================
 	THE KENDALL
 	================================================== */
 
@@ -1371,6 +1827,19 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	THE LODGE EVENT CENTER
+	================================================== */
+
+'the lodge event center': {
+	name:	'The Lodge Event Center',
+	type:	'venue',
+	paragraphs: [
+		'The Lodge Event Center provides a dedicated setting for wedding receptions and celebrations where family, friends, music, traditions, and personal details come together. Event spaces become unique through the people and moments that fill them throughout the wedding day.',
+		'Browse The Lodge Event Center wedding films by Mark Thomas Films to see real celebrations preserved through entrances, speeches, dances, laughter, family interactions, and spontaneous moments. Each film documents both the planned events and the personality of the celebration.'
+	]
+},
+
+/* ==================================================
 	THE MARQUARDT RANCH
 	================================================== */
 
@@ -1380,6 +1849,45 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'The Marquardt Ranch offers a Texas ranch setting for weddings surrounded by open scenery and the relaxed character of the Hill Country. Ranch venues create opportunities for outdoor ceremonies, portraits, gatherings, and receptions where the landscape itself becomes part of the visual story of the day.',
 		'Browse The Marquardt Ranch wedding films by Mark Thomas Films to see real couples celebrate through vows, family traditions, speeches, dancing, and candid moments. Each film combines the atmosphere of the ranch with the personalities and relationships that make every wedding different.'
+	]
+},
+
+/* ==================================================
+	THE MILESTONE BOERNE
+	================================================== */
+
+'the milestone boerne': {
+	name:	'The Milestone Boerne',
+	type:	'venue',
+	paragraphs: [
+		'The Milestone Boerne offers a Texas Hill Country setting for wedding ceremonies and receptions where couples can bring the major parts of the day together in one location. The venue creates opportunities for portraits, vows, gatherings, and celebrations shaped by each couple’s style and priorities.',
+		'Explore The Milestone Boerne wedding films by Mark Thomas Films to see real Hill Country celebrations captured through meaningful vows, family relationships, speeches, dancing, and candid moments. Each film preserves the setting while keeping the people and emotions at the center of the story.'
+	]
+},
+
+/* ==================================================
+	THE MILESTONE GEORGETOWN
+	================================================== */
+
+'the milestone georgetown': {
+	name:	'The Milestone Georgetown',
+	type:	'venue',
+	paragraphs: [
+		'The Milestone Georgetown offers a Central Texas setting for wedding ceremonies and receptions where couples can bring together family, friends, traditions, and personal details in one celebration. Dedicated venue spaces create opportunities for portraits, meaningful ceremonies, and energetic receptions.',
+		'Browse The Milestone Georgetown wedding films by Mark Thomas Films to see real celebrations documented from vows and emotional reactions through speeches, dances, and spontaneous moments. Each film keeps the couple and their relationships at the heart of the story.'
+	]
+},
+
+/* ==================================================
+	THE MILESTONE NEW BRAUNFELS
+	================================================== */
+
+'the milestone new braunfels': {
+	name:	'The Milestone New Braunfels',
+	type:	'venue',
+	paragraphs: [
+		'The Milestone New Braunfels offers a Central Texas wedding setting for ceremonies, portraits, receptions, and time spent with family and friends. Bringing multiple parts of the wedding day together at one venue allows the celebration to develop naturally around the couple’s own style and traditions.',
+		'Explore The Milestone New Braunfels wedding films by Mark Thomas Films to see real celebrations preserved through vows, family relationships, speeches, dancing, laughter, and candid interactions. Each film documents the setting while focusing on the people who make the day meaningful.'
 	]
 },
 
@@ -1435,8 +1943,7 @@ window.MTF.filmTagContext = {
 		cta: {
 			heading: 'Planning a Wedding at The Preserve at Canyon Lake?',
 			paragraphs: [
-				'If you’re planning your wedding at The Preserve at Canyon Lake, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around the people and moments you’ll want to remember long after the celebration is over.',
-				'Build a preliminary quote to explore coverage and pricing, then we can talk through the details of your wedding at The Preserve.'
+				'If you’re planning your wedding at The Preserve at Canyon Lake, we’d love to hear what you have in mind. Mark Thomas Films offers story-driven wedding videography and photography built around the people and moments you’ll want to remember long after the celebration is over.'
 			]
 		}
 	}
@@ -1456,6 +1963,45 @@ window.MTF.filmTagContext = {
 },
 
 /* ==================================================
+	THE ST. ANTHONY HOTEL
+	================================================== */
+
+'the st. anthony hotel': {
+	name:	'The St. Anthony Hotel',
+	type:	'venue',
+	paragraphs: [
+		'The St. Anthony Hotel offers a distinctive downtown San Antonio setting for wedding celebrations where historic character and polished event spaces can become part of the atmosphere of the day. Hotel weddings create opportunities for preparations, portraits, gatherings, and receptions within a connected experience.',
+		'Browse The St. Anthony Hotel wedding films by Mark Thomas Films to see real San Antonio celebrations captured through cinematic storytelling. These films preserve meaningful vows, family relationships, speeches, reactions, dancing, and the unscripted moments that make each wedding personal.'
+	]
+},
+
+/* ==================================================
+	THE VERANDA
+	================================================== */
+
+'the veranda': {
+	name:	'The Veranda',
+	type:	'venue',
+	paragraphs: [
+		'The Veranda offers a distinctive setting for wedding celebrations where ceremonies, portraits, gatherings, and receptions can unfold around the couple and their guests. The venue becomes personal through the details, traditions, relationships, and atmosphere each wedding brings to the property.',
+		'Explore The Veranda wedding films by Mark Thomas Films to see real celebrations documented through meaningful vows, family interactions, speeches, dancing, and candid moments. Each film uses the setting as a backdrop while keeping the people and emotions at the center of the story.'
+	]
+},
+
+/* ==================================================
+	THE WESTIN RIVERWALK
+	================================================== */
+
+'the westin riverwalk': {
+	name:	'The Westin Riverwalk',
+	type:	'venue',
+	paragraphs: [
+		'The Westin Riverwalk offers a downtown San Antonio setting for wedding celebrations with convenient access to the character and energy of the River Walk. Hotel weddings can bring preparations, portraits, gatherings, and reception events together while giving couples room to personalize the experience.',
+		'Browse The Westin Riverwalk wedding films by Mark Thomas Films to see real San Antonio celebrations documented through cinematic wedding videography. Each film preserves the setting alongside vows, family relationships, speeches, reactions, dancing, and the candid moments that define the day.'
+	]
+},
+
+/* ==================================================
 	VILLA AT CIBOLO CHASE
 	================================================== */
 
@@ -1465,6 +2011,19 @@ window.MTF.filmTagContext = {
 	paragraphs: [
 		'Villa at Cibolo Chase offers a distinctive Texas wedding setting for couples planning a celebration surrounded by family, friends, and thoughtfully chosen details. The venue provides a backdrop for ceremonies, portraits, receptions, and the many smaller interactions that happen naturally throughout a wedding day.',
 		'Browse Villa at Cibolo Chase wedding films by Mark Thomas Films to see how real couples have made the venue part of their wedding story. Each film preserves the atmosphere of the location along with vows, emotional reactions, speeches, dancing, laughter, and candid moments.'
+	]
+},
+
+/* ==================================================
+	WESTERN SKY WEDDING & EVENT VENUE
+	================================================== */
+
+'western sky wedding & event venue': {
+	name:	'Western Sky Wedding & Event Venue',
+	type:	'venue',
+	paragraphs: [
+		'Western Sky Wedding & Event Venue provides a dedicated Texas setting for wedding ceremonies and receptions where couples can bring together family, friends, traditions, and personal details. The venue creates opportunities for portraits, meaningful vows, celebrations, and the unscripted moments that happen between scheduled events.',
+		'Explore Western Sky Wedding & Event Venue wedding films by Mark Thomas Films to see real celebrations preserved through cinematic storytelling. Each film focuses on the relationships, emotions, speeches, laughter, dancing, and candid interactions that make the wedding personal.'
 	]
 },
 

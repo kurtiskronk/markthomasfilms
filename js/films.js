@@ -111,6 +111,22 @@
   function initIndividualFilm() {
 
     /*
+     * Squarespace's native Previous / Next post navigation is
+     * redundant now that individual films have the custom
+     * related-films component. Remove it only on film detail pages;
+     * archive pagination is controlled separately.
+     */
+
+    const nativePagination = document.querySelector(
+      '#itemPagination.item-pagination--prev-next'
+    );
+
+    if (nativePagination) {
+      nativePagination.remove();
+    }
+
+
+    /*
      * With no archive context, films-footer.js renders
      * only the universal About sections.
      *
@@ -234,28 +250,6 @@
     const context = getArchiveContext(archive);
 
     const compact = isLaterPage();
-
-
-    /*
-     * Programmatic SEO for first-page tag archives.
-     *
-     * films-seo.js intentionally ignores categories,
-     * individual films and paginated archive URLs.
-     */
-
-    if (
-      archive &&
-      window.MTF.filmSEO &&
-      typeof window.MTF.filmSEO.render === 'function'
-    ) {
-
-      window.MTF.filmSEO.render(
-        archive,
-        context,
-        { compact: compact }
-      );
-
-    }
 
 
     /*

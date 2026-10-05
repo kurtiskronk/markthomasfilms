@@ -136,3 +136,42 @@ body:has(.mtf-films-footer__shared)
         transition: none;
     }
 }
+
+/* =========================================================
+   FILMS FOOTER — REFINED AUTHORITY PAGE RHYTHM
+
+   Preserve the normal generous opening space for the first
+   tag-specific section and the first shared About section.
+   Tighten only the transitions between related sections.
+   ========================================================= */
+
+/* Authority/footer H2s stay subordinate to the archive H1. */
+.mtf-films-footer .mtf-section__title--subsection {
+    font-size: clamp(1.6rem, 2vw, 2rem);
+    line-height: 1.15;
+}
+
+/* Consecutive authority sections should read as one content group. */
+.mtf-films-footer__specific + .mtf-films-footer__specific {
+    padding-top: clamp(18px, 2vw, 30px);
+}
+
+/* Same treatment for consecutive shared footer sections. */
+.mtf-films-footer__shared + .mtf-films-footer__shared {
+    padding-top: clamp(18px, 2vw, 30px);
+}
+
+/* Keep the planning CTA closely connected to the authority copy. */
+.mtf-films-footer__specific + .mtf-films-footer__cta {
+    padding-top: 8px;
+}
+
+.mtf-films-footer__cta {
+    padding-bottom: 36px;
+}
+
+/* Tighten the handoff from the shared About content to testimonials. */
+.mtf-films-footer + .mtf-film-testimonials {
+    padding-top: 28px;
+}
+

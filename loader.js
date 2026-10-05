@@ -13,7 +13,7 @@
 				'https://markthomasfilms.mark-a7f.workers.dev';
 
 		const assetVersion =
-				'2026-10-05-films-authority-pages-r002';
+				'2026-10-05-films-authority-pages-r003';
 
 		const jsFiles = [
 				'js/films-tag-context.js',

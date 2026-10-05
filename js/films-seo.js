@@ -72,6 +72,12 @@
       );
     }
 
+    const header = context && context.header || {};
+    const headerParagraph = text(header.paragraph);
+
+    if (headerParagraph) return headerParagraph;
+
+    /* Category/fallback contexts may still use paragraphs arrays. */
     const values = context && Array.isArray(context.paragraphs)
       ? context.paragraphs
       : [];

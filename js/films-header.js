@@ -1,8 +1,9 @@
 /* =========================================================
    MARK THOMAS FILMS — TAG/CATEGORY HEADER
 
-   Reads one entry from films-tag-context.js. Missing or empty
-   optional fields render nothing. No anchor flag required.
+   Tag pages use exactly one concise header.paragraph.
+   Category/fallback contexts may still use paragraphs arrays.
+   Missing or empty optional fields render nothing.
    ========================================================= */
 (function () {
   'use strict';
@@ -38,9 +39,11 @@
       text(header.title) || text(header.subtitle) ||
       text(header.galleryTitle) || text(header.eyebrow)
     );
-    const intro = !compact && context && Array.isArray(header.paragraphs)
-      ? header.paragraphs
-      : (!compact && context && context.paragraphs || []);
+    const intro = !compact && enhanced
+      ? (text(header.paragraph) ? [header.paragraph.trim()] : [])
+      : (!compact && context && Array.isArray(context.paragraphs)
+          ? context.paragraphs
+          : []);
 
     const section = document.createElement('section');
     section.className = 'mtf-archive-context mtf-films-header' +

@@ -1,9 +1,13 @@
 /* =========================================================
    MARK THOMAS FILMS — COLLECTION FOOTER
 
-   1. Available tag-specific sections, then optional tag CTA.
+   1. Optional authority content from context.footer:
+      tag-specific sections, then optional tag CTA.
    2. Shared About sections (films-footer-shared.js).
    3. Existing rotating testimonials remain a separate component.
+
+   A tag with no footer is a standard tag page.
+   A tag with footer content is an expanded authority page.
 
    This file never executes on an individual film page.
    ========================================================= */
@@ -164,6 +168,7 @@
     root.className = 'mtf-films-footer';
     root.setAttribute('aria-label', 'More about Mark Thomas Films');
 
+    /* The presence of context.footer is the authority-page signal. */
     const footer = context && context.footer;
     const customSections = footer && Array.isArray(footer.sections) ? footer.sections : [];
     customSections.forEach(function (item) {

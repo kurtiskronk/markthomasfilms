@@ -237,6 +237,28 @@
 
 
     /*
+     * Programmatic SEO for first-page tag archives.
+     *
+     * films-seo.js intentionally ignores categories,
+     * individual films and paginated archive URLs.
+     */
+
+    if (
+      archive &&
+      window.MTF.filmSEO &&
+      typeof window.MTF.filmSEO.render === 'function'
+    ) {
+
+      window.MTF.filmSEO.render(
+        archive,
+        context,
+        { compact: compact }
+      );
+
+    }
+
+
+    /*
      * Tag/category heading or main film browser.
      */
 

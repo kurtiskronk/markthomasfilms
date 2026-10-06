@@ -184,18 +184,81 @@
       cities: cities.map(function (item) { return item.name; }),
       venues: venues.map(function (item) { return item.name; }),
       state: state,
-      country: country
+      stateTag: stateTag ? stateTag.name : '',
+      country: country,
+      countryTag: countryTag ? countryTag.name : ''
     };
   }
 
-  function locationText(location) {
-    const names = location.cities && location.cities.length
-      ? location.cities.join(' / ') : location.city;
-    const destination = [names, location.state].filter(Boolean).join(', ');
-    const suffix = location.country && location.country !== 'United States'
-      ? [destination, location.country].filter(Boolean).join(', ')
-      : destination;
-    return location.venues.concat(suffix ? [suffix] : []).join('  ·  ');
+  function appendSubtitleSeparator(parent, value) {
+    const separator = document.createElement('span');
+    separator.className = 'mtf-film-detail__subtitle-separator';
+    separator.setAttribute('aria-hidden', 'true');
+    separator.textContent = value;
+    parent.appendChild(separator);
+  }
+
+  function appendSubtitleTag(parent, tagName, label) {
+    if (!tagName) return;
+
+    const link = document.createElement('a');
+    link.className = 'mtf-film-detail__subtitle-link';
+    link.href = tagURL(tagName);
+    link.textContent = label || tagName;
+    parent.appendChild(link);
+  }
+
+  function makeLocationSubtitle(location) {
+    const subtitle = document.createElement('p');
+    subtitle.className = 'mtf-film-detail__subtitle';
+
+    const venues = Array.isArray(location.venues) ? location.venues : [];
+    const cities = Array.isArray(location.cities) && location.cities.length
+      ? location.cities
+      : (location.city ? [location.city] : []);
+
+    venues.forEach(function (venue, index) {
+      if (index > 0) appendSubtitleSeparator(subtitle, '  ·  ');
+      appendSubtitleTag(subtitle, venue);
+    });
+
+    const hasDestination = Boolean(
+      cities.length ||
+      location.state ||
+      (location.country && location.country !== 'United States')
+    );
+
+    if (venues.length && hasDestination) {
+      appendSubtitleSeparator(subtitle, '  ·  ');
+    }
+
+    cities.forEach(function (city, index) {
+      if (index > 0) appendSubtitleSeparator(subtitle, ' / ');
+      appendSubtitleTag(subtitle, city);
+    });
+
+    if (location.state) {
+      if (cities.length) appendSubtitleSeparator(subtitle, ', ');
+      appendSubtitleTag(
+        subtitle,
+        location.stateTag || location.state,
+        location.state
+      );
+    }
+
+    if (location.country && location.country !== 'United States') {
+      if (cities.length || location.state) {
+        appendSubtitleSeparator(subtitle, ', ');
+      }
+
+      appendSubtitleTag(
+        subtitle,
+        location.countryTag || location.country,
+        location.country
+      );
+    }
+
+    return subtitle.childNodes.length ? subtitle : null;
   }
 
   function primaryDestination(film, location) {
@@ -350,11 +413,8 @@
     title.classList.add('mtf-film-detail__couple-title');
     header.classList.add('mtf-film-detail-header');
 
-    const subtitleText = locationText(location);
-    if (subtitleText) {
-      const subtitle = document.createElement('p');
-      subtitle.className = 'mtf-film-detail__subtitle';
-      subtitle.textContent = subtitleText;
+    const subtitle = makeLocationSubtitle(location);
+    if (subtitle) {
       title.insertAdjacentElement('afterend', subtitle);
     }
 

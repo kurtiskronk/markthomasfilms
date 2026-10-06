@@ -252,6 +252,37 @@ html.mtf-film-detail-page
 }
 
 
+html.mtf-film-detail-page
+.blog-item-top-wrapper
+.mtf-film-detail__subtitle-link {
+  color: inherit;
+  text-decoration: none;
+  border: 0;
+}
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
+.mtf-film-detail__subtitle-link:hover,
+html.mtf-film-detail-page
+.blog-item-top-wrapper
+.mtf-film-detail__subtitle-link:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html.mtf-film-detail-page
+.blog-item-top-wrapper
+.mtf-film-detail__subtitle-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+.mtf-film-detail__subtitle-separator {
+  white-space: pre;
+}
+
+
 /* Hide original Squarespace tags on film detail pages. */
 
 html.mtf-film-detail-page

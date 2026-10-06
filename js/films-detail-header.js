@@ -134,8 +134,33 @@
     return subtitle.childNodes.length ? subtitle : null;
   }
 
+  function trimDescriptionMetadata() {
+    document.querySelectorAll(
+      'meta[name="description"], ' +
+      'meta[property="og:description"], ' +
+      'meta[name="twitter:description"]'
+    ).forEach(function (meta) {
+      const value = meta.getAttribute('content');
+
+      if (typeof value !== 'string') return;
+
+      const trimmed = value.trim();
+
+      if (trimmed !== value) {
+        meta.setAttribute('content', trimmed);
+      }
+    });
+  }
+
   function init() {
     if (!isIndividualFilmPage()) return null;
+
+    /*
+     * Squarespace can preserve leading/trailing whitespace from
+     * an individual Film SEO description. Normalize only the
+     * description metadata; do not rewrite the copy itself.
+     */
+    trimDescriptionMetadata();
 
     const logic = MTF.filmBreadcrumbs;
     const shared = MTF.siteBreadcrumbs;

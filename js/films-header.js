@@ -133,11 +133,14 @@
     }
 
     const headingText = text(header.title) || text(context && context.name) || archive.name;
-    /* Keep existing H1s intact; never inject a second H1 in main. */
-    const headingTag = enhanced && !document.querySelector('main h1, #page h1')
-      ? 'h1'
-      : 'h2';
-    const title = document.createElement(headingTag);
+
+    /*
+     * This is the primary heading for tag/category archive pages.
+     * Squarespace renders each native film-card title as an H1, but
+     * films-cards.js normalizes those card headings to H2 after this
+     * archive header is created.
+     */
+    const title = document.createElement('h1');
     title.className = 'mtf-archive-context-title' +
       (enhanced ? ' mtf-section__title mtf-section__title--display' : '');
     title.textContent = headingText;

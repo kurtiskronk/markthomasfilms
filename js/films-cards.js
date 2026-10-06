@@ -54,7 +54,7 @@
 				);
 
 			/*
-			 * Only normalize Squarespace film/journal
+			 * Only normalize Squarespace film/blog
 			 * tag and category archive URLs.
 			 *
 			 * All other links remain untouched.
@@ -164,24 +164,36 @@
 		return items;
 	}
 
-	
-	function shouldDisplayFilmTag(tag) {
-			const letters = String(tag || "")
-					.trim()
-					.replace(/[^A-Za-z]/g, "");
-	
-			// Hide tags entered with 3+ uppercase letters.
-			// Two-letter state abbreviations remain visible.
-			return letters.length < 3 ||
-					letters !== letters.toUpperCase();
-	}
-	
-	window.MTF.shouldDisplayFilmTag = shouldDisplayFilmTag;
-	
 	function hideEnteredAllCapsTags(items) {
-			return items.filter(item =>
-					shouldDisplayFilmTag(item.text)
-			);
+
+		return items.filter(function (item) {
+
+			const originalText =
+				item.text.trim();
+
+			const lettersOnly =
+				originalText.replace(
+					/[^A-Za-z]/g,
+					''
+				);
+
+			/*
+			 * CSS text-transform does not alter textContent.
+			 * This therefore checks how the tag was actually
+			 * entered in Squarespace.
+			 *
+			 * Three or more letters in ALL CAPS are hidden.
+			 * TX remains visible.
+			 */
+
+			const wasEnteredAllCaps =
+				lettersOnly.length >= 3 &&
+				lettersOnly ===
+					lettersOnly.toUpperCase();
+
+			return !wasEnteredAllCaps;
+
+		});
 	}
 
 	function renderMetaLine(
@@ -301,7 +313,7 @@
 				postDocument,
 				'.blog-item-tag, ' +
 				'a[href*="/films/tag/"], ' +
-				'a[href*="/journal/tag/"]'
+				'a[href*="/blog/tag/"]'
 			);
 
 		}
@@ -318,6 +330,67 @@
 
 		}
 	}
+
+	function normalizeArchiveCardHeading(post, titleLink) {
+
+		/*
+		 * Squarespace renders film-card titles as H1s on tag/category
+		 * archive pages. Once our archive header supplies the page H1,
+		 * each individual film card should be a subordinate H2.
+		 *
+		 * Scope this conversion to pages where films-header.js has
+		 * actually rendered the archive H1. This intentionally leaves
+		 * the main /films listing unchanged in this targeted patch.
+		 */
+
+		const pageHeading =
+			document.querySelector(
+				'.mtf-archive-context-title:is(h1)'
+			);
+
+		if (!pageHeading || !titleLink) {
+			return;
+		}
+
+		const heading =
+			titleLink.closest(
+				'h1.blog-title'
+			);
+
+		if (!heading) {
+			return;
+		}
+
+		const replacement =
+			document.createElement(
+				'h2'
+			);
+
+		Array.from(
+			heading.attributes
+		).forEach(function (attribute) {
+
+			replacement.setAttribute(
+				attribute.name,
+				attribute.value
+			);
+
+		});
+
+		while (heading.firstChild) {
+
+			replacement.appendChild(
+				heading.firstChild
+			);
+
+		}
+
+		heading.replaceWith(
+			replacement
+		);
+
+	}
+
 
 	function process(post) {
 
@@ -349,6 +422,11 @@
 		if (!titleLink) {
 			return;
 		}
+
+		normalizeArchiveCardHeading(
+			post,
+			titleLink
+		);
 
 		const postURL =
 			titleLink.href;
@@ -406,7 +484,7 @@
 				metaSection,
 				'.blog-categories, ' +
 				'a[href*="/films/category/"], ' +
-				'a[href*="/journal/category/"]'
+				'a[href*="/blog/category/"]'
 			);
 
 		const existingTags =
@@ -414,7 +492,7 @@
 				post,
 				'.blog-item-tag, ' +
 				'a[href*="/films/tag/"], ' +
-				'a[href*="/journal/tag/"]'
+				'a[href*="/blog/tag/"]'
 			);
 
 		if (metaSection) {

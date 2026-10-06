@@ -1436,6 +1436,45 @@ html.mtf-film-archive-page
   font-style: italic;
   color: var(--mtf-section-muted, #777);
 }
+
+/* =========================================================
+   TAG PAGE — VIMEO HERO
+
+   Default source comes from window.MTF.defaultFilmHeroVideoUrl.
+   A tag can override it with header.heroVideoUrl.
+   ========================================================= */
+
+.mtf-films-header__hero {
+  position: relative;
+  width: 100%;
+  max-width: var(--mtf-content-width);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--mtf-radius, 5px);
+  background: #111;
+}
+
+.mtf-films-header__hero-frame {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Decorative autoplay hero should not intercept clicks/taps. */
+.mtf-films-header__hero:not(.mtf-films-header__hero--reduced-motion)
+.mtf-films-header__hero-frame {
+  pointer-events: none;
+}
+
+/* Reduced-motion visitors get a normal, user-controlled Vimeo player. */
+.mtf-films-header__hero--reduced-motion
+.mtf-films-header__hero-frame {
+  pointer-events: auto;
+}
 .mtf-films-header--enhanced .mtf-films-header__intro {
   max-width: var(--mtf-reading-width);
   margin: 24px auto 32px;
@@ -1467,6 +1506,10 @@ html.mtf-film-archive-page
   .mtf-films-header--enhanced.mtf-archive-context {
     margin-bottom: 32px;
     padding-top: 36px;
+  }
+
+  .mtf-films-header__hero {
+    border-radius: 4px;
   }
 }
 

@@ -13,6 +13,63 @@
     return typeof value === 'string' ? value.trim() : '';
   }
 
+  function vimeoId(value) {
+    const source = text(value);
+    if (!source) return '';
+
+    if (/^\d+$/.test(source)) return source;
+
+    try {
+      const url = new URL(source, window.location.origin);
+      const match = url.pathname.match(/(?:\/video)?\/(\d+)(?:\/|$)/);
+      return match ? match[1] : '';
+    } catch (error) {
+      const match = source.match(/(?:vimeo\.com\/(?:video\/)?)?(\d{6,})/i);
+      return match ? match[1] : '';
+    }
+  }
+
+  function heroVideoURL(header) {
+    return text(header && header.heroVideoUrl) ||
+      text(window.MTF.defaultFilmHeroVideoUrl);
+  }
+
+  function createHeroVideo(header, context) {
+    const source = heroVideoURL(header);
+    const id = vimeoId(source);
+    if (!id) return null;
+
+    const reduceMotion = Boolean(
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+
+    const hero = document.createElement('div');
+    hero.className = 'mtf-films-header__hero' +
+      (reduceMotion ? ' mtf-films-header__hero--reduced-motion' : '');
+
+    const iframe = document.createElement('iframe');
+    iframe.className = 'mtf-films-header__hero-frame';
+    iframe.src = 'https://player.vimeo.com/video/' + id +
+      (reduceMotion
+        ? '?autoplay=0&muted=1&loop=0&controls=1&title=0&byline=0&portrait=0&dnt=1'
+        : '?autoplay=1&muted=1&loop=1&background=1&autopause=0&playsinline=1&dnt=1');
+    iframe.title = text(context && context.name)
+      ? context.name.trim() + ' wedding film hero'
+      : 'Mark Thomas Films wedding film hero';
+    iframe.loading = 'eager';
+    iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+    if (!reduceMotion) {
+      iframe.setAttribute('tabindex', '-1');
+    }
+
+    hero.appendChild(iframe);
+    return hero;
+  }
+
   function paragraphs(parent, values, className) {
     if (!Array.isArray(values)) return 0;
     let count = 0;
@@ -95,6 +152,12 @@
     const countSlot = document.createElement('div');
     countSlot.className = 'mtf-film-count-slot';
 
+    function renderHero() {
+      if (!enhanced) return;
+      const hero = createHeroVideo(header, context);
+      if (hero) inner.appendChild(hero);
+    }
+
     function renderIntro() {
       if (!Array.isArray(intro) || !intro.some(text)) return;
       const copy = document.createElement('div');
@@ -113,6 +176,7 @@
     }
 
     if (enhanced) {
+      renderHero();
       renderIntro();
       if (text(header.galleryTitle)) {
         const galleryTitle = document.createElement('h2');

@@ -27,7 +27,7 @@ window.MTF = window.MTF || {};
 
 /* Used whenever header.heroVideoUrl is blank or omitted. */
 window.MTF.defaultFilmHeroVideoUrl =
-	'';
+	'https://vimeo.com/910505328';
 
 /* ==================================================
 	 TAG / AUTHORITY PAGE TEMPLATE

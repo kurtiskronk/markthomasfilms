@@ -9,6 +9,9 @@
   padding: clamp(44px, 6vw, 80px) var(--mtf-section-gutter) 0;
   background: transparent;
 }
+.mtf-breadcrumbs + .mtf-films-header--enhanced.mtf-archive-context {
+  padding-top: 32px;
+}
 .mtf-films-header--enhanced .mtf-films-header__inner {
   width: 100%;
   max-width: var(--mtf-content-width);
@@ -106,6 +109,10 @@
   .mtf-films-header--enhanced.mtf-archive-context {
     margin-bottom: 32px;
     padding-top: 36px;
+  }
+
+  .mtf-breadcrumbs + .mtf-films-header--enhanced.mtf-archive-context {
+    padding-top: 28px;
   }
 
   .mtf-films-header__hero {

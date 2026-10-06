@@ -2,6 +2,8 @@
    MARK THOMAS FILMS — TAG/CATEGORY HEADER
 
    Tag pages use exactly one concise header.paragraph.
+   Tag breadcrumbs use films-breadcrumbs.js for hierarchy and
+   site-breadcrumbs.js for shared rendering + schema.
    Category/fallback contexts may still use paragraphs arrays.
    Missing or empty optional fields render nothing.
    ========================================================= */
@@ -190,6 +192,36 @@
       inner.appendChild(countSlot);
       renderBrowser();
       renderIntro();
+    }
+
+    if (
+      !compact &&
+      archive.type === 'tag' &&
+      window.MTF.filmBreadcrumbs &&
+      window.MTF.siteBreadcrumbs &&
+      typeof window.MTF.filmBreadcrumbs.archiveItems === 'function' &&
+      typeof window.MTF.siteBreadcrumbs.create === 'function'
+    ) {
+      const crumbs = window.MTF.filmBreadcrumbs.archiveItems(
+        archive,
+        context
+      );
+
+      if (crumbs.length) {
+        const nav = window.MTF.siteBreadcrumbs.create(
+          crumbs,
+          {
+            ariaLabel: 'Wedding film breadcrumbs',
+            className: 'mtf-breadcrumbs--films-tag'
+          }
+        );
+
+        filmGrid.parentNode.insertBefore(nav, filmGrid);
+
+        if (typeof window.MTF.siteBreadcrumbs.syncSchema === 'function') {
+          window.MTF.siteBreadcrumbs.syncSchema(crumbs);
+        }
+      }
     }
 
     filmGrid.parentNode.insertBefore(section, filmGrid);

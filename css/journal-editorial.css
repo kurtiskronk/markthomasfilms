@@ -134,15 +134,16 @@ html.mtf-editorial-blog .blog-item-content {
 
 
 /* =========================================================
-	 BREADCRUMB SPACE
+	 BREADCRUMB SPACE + ARTICLE GAP
 
-	 Display the charcoal bar before JavaScript inserts
-	 the actual breadcrumbs to prevent a layout jump.
+	 The shared visual treatment lives in components.css.
+	 Journal keeps only its page-specific reserved space and
+	 32px handoff into the article header.
 	 ========================================================= */
 
 html.mtf-editorial-blog
 .blog-item-wrapper:not(
-	:has(> .mtf-blog-breadcrumbs)
+	:has(> .mtf-breadcrumbs)
 )::before {
 	content: '';
 	position: relative;
@@ -156,117 +157,10 @@ html.mtf-editorial-blog
 	transform: translateX(-50%);
 }
 
-
-/* =========================================================
-	 ACTUAL BREADCRUMBS
-	 ========================================================= */
-
-html.mtf-editorial-blog .mtf-blog-breadcrumbs {
-	position: relative;
-	left: 50%;
-	box-sizing: border-box;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-
-	gap: 0;
-
-	width: 100vw;
-	min-height: 36px;
-	margin: 0 0 32px;
-	padding: 7px 20px;
-
-	background: #373737;
-	color: #f4f4f4;
-
-	transform: translateX(-50%);
-
-	font-family: inherit;
-	font-size: .60rem;
-	font-weight: 400;
-	line-height: 1.5;
-	letter-spacing: .10em;
-
-	text-align: center;
-	text-transform: uppercase;
-}
-
-
-/* NAVIGATE TO LABEL */
-
 html.mtf-editorial-blog
-.mtf-blog-breadcrumbs__label {
-	display: none;
-}
-
-
-/* BREADCRUMB LIST */
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs__list {
-	display: flex;
-	justify-content: center;
-	align-items: baseline;
-	flex-wrap: wrap;
-	gap: 0;
-
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs__item {
-	display: inline-flex;
-	align-items: baseline;
-}
-
-
-/* SEPARATOR */
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs__separator {
-	margin: 0 14px;
-	color: #c8c8c8;
-	font-size: 1.2em;
-	letter-spacing: 0;
-}
-
-
-/* LINKS */
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs a {
-	color: #ededed;
-	opacity: .85;
-	text-decoration: none;
-	transition: opacity 180ms ease;
-}
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs a:hover,
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs a:focus-visible {
-	color: #fff;
-	opacity: 1;
-	text-decoration: none;
-}
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs a:focus-visible {
-	outline: 2px solid #fff;
-	outline-offset: 4px;
-}
-
-
-/* CURRENT ARTICLE */
-
-html.mtf-editorial-blog
-.mtf-blog-breadcrumbs__current {
-	color: #fff;
-	font-weight: 700;
+.blog-item-wrapper
+> .mtf-breadcrumbs {
+	margin-bottom: 32px;
 }
 
 
@@ -572,34 +466,16 @@ html.mtf-editorial-blog
 		padding: 0 18px 30px;
 	}
 
-	/* Breadcrumb bar */
+	/* Breadcrumb-to-article spacing. Shared bar styling is in components.css. */
 
 	html.mtf-editorial-blog
 	.blog-item-wrapper:not(
-		:has(> .mtf-blog-breadcrumbs)
+		:has(> .mtf-breadcrumbs)
 	)::before,
 	html.mtf-editorial-blog
-	.mtf-blog-breadcrumbs {
-		min-height: 36px;
+	.blog-item-wrapper
+	> .mtf-breadcrumbs {
 		margin-bottom: 28px;
-	}
-
-	html.mtf-editorial-blog
-	.mtf-blog-breadcrumbs {
-		padding: 8px 12px;
-
-		font-size: .58rem;
-		letter-spacing: .08em;
-	}
-
-	html.mtf-editorial-blog
-	.mtf-blog-breadcrumbs__label {
-		display: none;
-	}
-
-	html.mtf-editorial-blog
-	.mtf-blog-breadcrumbs__separator {
-		margin: 0 8px;
 	}
 
 	/* Header */
@@ -632,14 +508,6 @@ html.mtf-editorial-blog
 	 REDUCED MOTION
 	 ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-
-	html.mtf-editorial-blog
-	.mtf-blog-breadcrumbs a {
-		transition: none;
-	}
-
-}
 
 
 

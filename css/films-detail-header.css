@@ -48,16 +48,15 @@ html.mtf-film-detail-page
 
 
 /* =========================================================
-   BREADCRUMB SPACE
+   BREADCRUMB SPACE + FILM HEADER GAP
 
-   Draw the charcoal bar immediately. When JavaScript
-   inserts the real breadcrumbs, this placeholder
-   disappears without retaining extra space.
+   Shared breadcrumb presentation lives in components.css.
+   Keep the same 32px handoff used by Journal articles.
    ========================================================= */
 
 html.mtf-film-detail-page
 .blog-item-top-wrapper:not(
-  :has(.mtf-film-detail__breadcrumbs)
+  :has(> .mtf-breadcrumbs)
 )::before {
   content: "";
   position: relative;
@@ -66,133 +65,15 @@ html.mtf-film-detail-page
   box-sizing: border-box;
   width: 100vw;
   min-height: 36px;
-  margin: 0 0 20px;
+  margin: 0 0 32px;
   background: #373737;
   transform: translateX(-50%);
 }
 
-
-/* =========================================================
-   ACTUAL BREADCRUMB BAR
-   ========================================================= */
-
 html.mtf-film-detail-page
 .blog-item-top-wrapper
-.mtf-film-detail__breadcrumbs {
-  position: relative;
-  left: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 4px clamp(12px, 1.8vw, 28px);
-
-  box-sizing: border-box;
-  width: 100vw;
-  max-width: none;
-  min-height: 36px;
-  margin: 0 0 20px;
-  padding: 7px 20px;
-
-  transform: translateX(-50%);
-
-  background: #373737;
-  color: #f4f4f4;
-
-  font-family: inherit;
-  font-size: .66rem;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-
-/* NAVIGATE TO LABEL */
-
-.mtf-film-detail__crumb-label {
-  flex: 0 0 auto;
-  color: #dedede;
-  white-space: nowrap;
-}
-
-
-/* BREADCRUMB LIST */
-
-.mtf-film-detail__crumb-list {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0;
-
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mtf-film-detail__crumb {
-  display: inline-flex;
-  align-items: baseline;
-  white-space: nowrap;
-  margin: 0;
-  padding: 0;
-}
-
-
-/* SEPARATORS */
-
-.mtf-film-detail__crumb-separator {
-  display: inline-block;
-  margin: 0 clamp(9px, 1.25vw, 20px);
-  color: #c8c8c8;
-
-  font-size: 1.2em;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-
-/* BREADCRUMB LINKS — NO UNDERLINES */
-
-html.mtf-film-detail-page
-.blog-item-top-wrapper
-.mtf-film-detail__crumb-link {
-  color: #ededed;
-  text-decoration: none;
-  border: 0;
-  opacity: .85;
-  transition: opacity 200ms ease;
-}
-
-html.mtf-film-detail-page
-.blog-item-top-wrapper
-.mtf-film-detail__crumb-link:hover,
-
-html.mtf-film-detail-page
-.blog-item-top-wrapper
-.mtf-film-detail__crumb-link:focus-visible {
-  color: #fff;
-  opacity: 1;
-  text-decoration: none;
-}
-
-html.mtf-film-detail-page
-.blog-item-top-wrapper
-.mtf-film-detail__crumb-link:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 5px;
-}
-
-
-/* CURRENT FILM */
-
-.mtf-film-detail__crumb-current {
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: .18em;
+> .mtf-breadcrumbs {
+  margin-bottom: 32px;
 }
 
 
@@ -304,23 +185,12 @@ html.mtf-film-detail-page
 
   html.mtf-film-detail-page
   .blog-item-top-wrapper:not(
-    :has(.mtf-film-detail__breadcrumbs)
-  )::before {
-    min-height: 48px;
-  }
-
+    :has(> .mtf-breadcrumbs)
+  )::before,
   html.mtf-film-detail-page
   .blog-item-top-wrapper
-  .mtf-film-detail__breadcrumbs {
-    min-height: 48px;
-    gap: 3px 10px;
-    padding: 8px 14px;
-    font-size: .6rem;
-    letter-spacing: .13em;
-  }
-
-  .mtf-film-detail__crumb-separator {
-    margin: 0 7px;
+  > .mtf-breadcrumbs {
+    margin-bottom: 28px;
   }
 
   html.mtf-film-detail-page
@@ -332,20 +202,6 @@ html.mtf-film-detail-page
 
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  html.mtf-film-detail-page
-  .blog-item-top-wrapper
-  .mtf-film-detail__crumb-link {
-    transition: none;
-  }
-
-}
 
 
 /* =========================================================

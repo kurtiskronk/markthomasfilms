@@ -465,3 +465,112 @@ a.mtf-arrow-link:focus-visible {
 form.react-form-contents {
   padding-bottom: 60px;
 }
+
+/* ==========================================================
+   BREADCRUMBS — SHARED SITE COMPONENT
+
+   Visual source of truth: the compact Journal breadcrumb bar.
+   Films and Journal supply their own hierarchy; this file owns
+   the shared presentation only.
+   ========================================================== */
+
+.mtf-breadcrumbs {
+  position: relative;
+  left: 50%;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  width: 100vw;
+  min-height: 36px;
+  margin: 0;
+  padding: 7px 20px;
+
+  background: #373737;
+  color: #f4f4f4;
+  transform: translateX(-50%);
+
+  font-family: inherit;
+  font-size: .60rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: .10em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.mtf-breadcrumbs__list {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mtf-breadcrumbs__item {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0;
+  padding: 0;
+}
+
+.mtf-breadcrumbs__separator {
+  margin: 0 14px;
+  color: #c8c8c8;
+  font-size: 1.2em;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.mtf-breadcrumbs__link {
+  color: #ededed;
+  opacity: .85;
+  text-decoration: none;
+  border: 0;
+  transition: opacity 180ms ease;
+}
+
+.mtf-breadcrumbs__link:hover,
+.mtf-breadcrumbs__link:focus-visible {
+  color: #fff;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.mtf-breadcrumbs__link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.mtf-breadcrumbs__current {
+  color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .mtf-breadcrumbs {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: .58rem;
+    letter-spacing: .08em;
+  }
+
+  .mtf-breadcrumbs__separator {
+    margin: 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mtf-breadcrumbs__link {
+    transition: none;
+  }
+}
+

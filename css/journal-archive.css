@@ -183,90 +183,10 @@ html.mtf-editorial-blog
 /* =========================================================
 	 FILTERED ARCHIVE BREADCRUMBS
 
-	 Category and tag pages use the same compact charcoal
-	 breadcrumb treatment as individual Journal articles.
+	 Shared breadcrumb presentation lives in components.css.
+	 Filtered Journal pages intentionally keep the bar flush
+	 beneath the photographic hero.
 	 ========================================================= */
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs {
-	position: relative;
-	left: 50%;
-	box-sizing: border-box;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-
-	width: 100vw;
-	min-height: 36px;
-	margin: 0;
-	padding: 7px 20px;
-
-	background: #373737;
-	color: #f4f4f4;
-	transform: translateX(-50%);
-
-	font-family: inherit;
-	font-size: .60rem;
-	font-weight: 400;
-	line-height: 1.5;
-	letter-spacing: .10em;
-	text-align: center;
-	text-transform: uppercase;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs
-.mtf-blog-breadcrumbs__list {
-	display: flex;
-	justify-content: center;
-	align-items: baseline;
-	flex-wrap: wrap;
-	gap: 0;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs
-.mtf-blog-breadcrumbs__item {
-	display: inline-flex;
-	align-items: baseline;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs
-.mtf-blog-breadcrumbs__separator {
-	margin: 0 14px;
-	color: #c8c8c8;
-	font-size: 1.2em;
-	letter-spacing: 0;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs a {
-	color: #ededed;
-	opacity: .85;
-	text-decoration: none;
-	transition: opacity 180ms ease;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs a:hover,
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs a:focus-visible {
-	color: #fff;
-	opacity: 1;
-}
-
-html.mtf-blog-archive-page
-.mtf-journal-archive-breadcrumbs
-.mtf-blog-breadcrumbs__current {
-	color: #fff;
-	font-weight: 700;
-}
 
 
 /* =========================================================
@@ -927,21 +847,6 @@ html.mtf-blog-archive-page
 		font-size: clamp(31px, 8.2vw, 38px);
 		line-height: 1.06;
 		letter-spacing: -.02em;
-	}
-
-
-	html.mtf-blog-archive-page
-	.mtf-journal-archive-breadcrumbs {
-		min-height: 36px;
-		padding: 8px 12px;
-		font-size: .58rem;
-		letter-spacing: .08em;
-	}
-
-	html.mtf-blog-archive-page
-	.mtf-journal-archive-breadcrumbs
-	.mtf-blog-breadcrumbs__separator {
-		margin: 0 8px;
 	}
 
 

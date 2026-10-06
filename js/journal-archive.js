@@ -967,42 +967,6 @@
 			 and compact breadcrumb bar used elsewhere.
 			 ===================================================== */
 
-		function breadcrumbItem(label, href, current) {
-				const item = document.createElement('li');
-				item.className = 'mtf-blog-breadcrumbs__item';
-
-				if (href) {
-						const link = document.createElement('a');
-						link.href = href;
-						link.textContent = label;
-						item.appendChild(link);
-				} else {
-						const span = document.createElement('span');
-						span.textContent = label;
-						if (current) {
-								span.className = 'mtf-blog-breadcrumbs__current';
-								span.setAttribute('aria-current', 'page');
-						}
-						item.appendChild(span);
-				}
-
-				return item;
-		}
-
-		function breadcrumbSeparator() {
-				const item = document.createElement('li');
-				item.className =
-						'mtf-blog-breadcrumbs__item mtf-blog-breadcrumbs__item--separator';
-
-				const separator = document.createElement('span');
-				separator.className = 'mtf-blog-breadcrumbs__separator';
-				separator.setAttribute('aria-hidden', 'true');
-				separator.textContent = '›';
-				item.appendChild(separator);
-
-				return item;
-		}
-
 		function insertFilteredHeader(archive, info, records) {
 				if (!info.type || !info.name) return;
 
@@ -1066,30 +1030,27 @@
 						current: true
 				});
 
-				const nav = document.createElement('nav');
-				nav.className =
-						'mtf-blog-breadcrumbs mtf-journal-archive-breadcrumbs';
-				nav.setAttribute('aria-label', 'Journal breadcrumbs');
+				const shared = window.MTF.siteBreadcrumbs;
 
-				const list = document.createElement('ol');
-				list.className = 'mtf-blog-breadcrumbs__list';
-
-				crumbs.forEach((crumb, index) => {
-						if (index) {
-								list.appendChild(breadcrumbSeparator());
-						}
-
-						list.appendChild(
-								breadcrumbItem(
-										crumb.label,
-										crumb.href || '',
-										Boolean(crumb.current)
-								)
+				if (
+						shared &&
+						typeof shared.create === 'function'
+				) {
+						const nav = shared.create(
+								crumbs,
+								{
+										ariaLabel: 'Journal breadcrumbs',
+										className:
+												'mtf-breadcrumbs--journal-archive mtf-journal-archive-breadcrumbs'
+								}
 						);
-				});
 
-				nav.appendChild(list);
-				hero.after(nav);
+						hero.after(nav);
+
+						if (typeof shared.syncSchema === 'function') {
+								shared.syncSchema(crumbs);
+						}
+				}
 		}
 
 

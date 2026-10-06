@@ -22,7 +22,7 @@ html.mtf-editorial-blog {
 html.mtf-editorial-blog
 .blog-item-wrapper
 > .mtf-journal-hero
-+ .mtf-blog-breadcrumbs {
++ .mtf-breadcrumbs {
   margin-top: 0;
 }
 

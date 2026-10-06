@@ -13,7 +13,7 @@
 				'https://markthomasfilms.mark-a7f.workers.dev';
 
 		const assetVersion =
-				'2026-10-05-films-seo-r011';
+				'2026-10-05-shared-breadcrumbs-r013';
 
 		const jsFiles = [
 				'js/films-tag-context.js',
@@ -23,6 +23,11 @@
 
 				'js/films-related-index.js',
 				'js/films-related-config.js',
+
+				/* Shared breadcrumb renderer + Films hierarchy */
+
+				'js/site-breadcrumbs.js',
+				'js/films-breadcrumbs.js',
 
 				'js/films-browser.js',
 				'js/films-cards.js',

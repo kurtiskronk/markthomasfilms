@@ -13,7 +13,8 @@
    - add robots directives
    - run on individual film pages
    - run on paginated archive URLs
-   - add BreadcrumbList until tag pages have visible breadcrumbs
+   - duplicate BreadcrumbList schema; visible breadcrumbs and their
+   schema are handled by site-breadcrumbs.js
    ========================================================= */
 
 (function () {

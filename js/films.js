@@ -224,7 +224,7 @@
     /*
      * Individual films receive related recommendations
      * and shared About content, but no archive-specific
-     * headers, footers or SEO sections.
+     * headers, footers or tag-page SEO sections.
      */
 
     if (isIndividualFilmPage()) {
@@ -240,16 +240,41 @@
        FILM ARCHIVES
        ===================================================== */
 
-    if (!filmGrid || !filmCards.length) {
-      return;
-    }
-
-
     const archive = getCurrentArchive();
 
     const context = getArchiveContext(archive);
 
     const compact = isLaterPage();
+
+
+    /*
+     * Apply first-page tag SEO independently of the native
+     * film grid. This keeps title/meta/schema available even
+     * if Squarespace temporarily renders an empty archive.
+     */
+
+    if (
+      window.MTF.filmSEO &&
+      typeof window.MTF.filmSEO.render === 'function'
+    ) {
+
+      window.MTF.filmSEO.render(
+        archive,
+        context,
+        { compact: compact }
+      );
+
+    }
+
+
+    /*
+     * Header/browser/footer/card rendering still requires
+     * Squarespace's native archive grid.
+     */
+
+    if (!filmGrid || !filmCards.length) {
+      return;
+    }
 
 
     /*

@@ -24,10 +24,10 @@
 		},
 		
 		{
-				quote:
-						'Their videography work is incredible, and we couldn’t be happier with how everything turned out!',
-				name:
-						'Brittany & Collin'
+			quote:
+				'Their videography work is incredible, and we couldn’t be happier with how everything turned out!',
+			name:
+				'Brittany & Collin'
 		},
 
 		{

@@ -2990,7 +2990,7 @@ html.mtf-editorial-blog {
 
 
 /* Filtered category/tag heroes intentionally have no descriptive
-   subtitle. Remove the title's trailing margin in that compact state. */
+	 subtitle. Remove the title's trailing margin in that compact state. */
 html.mtf-blog-archive-page
 .mtf-journal-filter-hero
 .mtf-journal-hero__title {
@@ -3804,6 +3804,73 @@ html.mtf-blog-archive-page
 	.mtf-journal-hero__title {
 		font-size: clamp(29px, 8vw, 34px);
 	}
+}
+
+/* =========================================================
+	 JOURNAL ARCHIVE — SQUARESPACE BLOG LIST SPECIFICITY
+
+	 Squarespace's generated Blog List component selectors currently
+	 outrank the custom Journal archive selectors. Match that component
+	 scope and increase specificity without using !important.
+
+	 Keep at the end of journal-archive.css. This changes only display
+	 behavior, preserving existing layout measurements and breakpoints.
+	 ========================================================= */
+
+/* Preserve our block rows rather than Squarespace's flex rows. */
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+.blog-single-column--wrapper > article.blog-single-column--container {
+	display: block;
+}
+
+/* Our editorial grid; existing mobile grid columns remain untouched. */
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container .blog-single-column--text {
+	display: grid;
+}
+
+/* Excerpt stacks text above our custom, bottom-aligned Read More. */
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container .blog-excerpt {
+	display: flex;
+}
+
+/* Squarespace native metadata and CTAs are already replaced. */
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container .blog-meta-section,
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container .blog-more-link,
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container .blog-read-more {
+	display: none;
+}
+
+/* Hide native archive image/spacer wrappers for text-only article rows. */
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container > div:has(> .image-wrapper),
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container > .image-wrapper,
+html.mtf-blog-archive-page
+.cdk-section[data-definition-name="website.components.blogList"]
+.blog-list.blog-single-column
+article.blog-single-column--container > .blog-article-spacer {
+	display: none;
 }
 
 

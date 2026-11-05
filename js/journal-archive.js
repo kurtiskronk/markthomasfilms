@@ -627,6 +627,236 @@
 
 
 		/* =====================================================
+		   MAIN JOURNAL INDEX (/journal ONLY)
+
+		   The native Blog collection remains the source of truth.
+		   Every filtered/category/tag/paginated page retains its
+		   established editorial cards and series behavior.
+		   If enhancement fails, the native article list stays visible.
+		   ===================================================== */
+
+		const JOURNAL_INDEX_INITIAL_ARTICLES = 8;
+		const JOURNAL_INDEX_INITIAL_SERIES = 5;
+
+		// Intentional editorial ordering. New categories and series found
+		// on the current archive page are appended automatically.
+		const JOURNAL_INDEX_TOPICS = [
+			'Wedding Planning & Advice',
+			'Personal Reflections',
+			'Behind the Curtain',
+			'Illustrated Stories'
+		];
+
+		const JOURNAL_INDEX_SERIES = [
+			{
+				name: 'Choosing Your Wedding Venue',
+				description: 'Finding a venue that fits your vision, your people and the kind of day you want to have.'
+			},
+			{
+				name: 'Choosing a Wedding Team That Works Well Together',
+				description: 'Building a great team, communicating clearly and creating a smoother wedding day.'
+			},
+			{
+				name: 'Weddings in the Texas Hill Country',
+				description: 'Stories and practical advice about weddings in the Texas Hill Country.'
+			},
+			{
+				name: 'Why I Film the Way I Do',
+				description: 'The approach to filmmaking and the choices behind each wedding film.'
+			}
+		];
+
+		function journalIndexNode(tag, className, text) {
+			const node = document.createElement(tag);
+			if (className) node.className = className;
+			if (text !== undefined) node.textContent = text;
+			return node;
+		}
+
+		function journalIndexSection(heading, detail, sectionClass) {
+			const section = journalIndexNode('section',
+				'mtf-journal-index__section ' + sectionClass);
+			const header = journalIndexNode('div', 'mtf-journal-index__section-heading');
+			const title = journalIndexNode('h2', 'mtf-journal-index__heading', heading);
+			const rule = journalIndexNode('span', 'mtf-journal-index__heading-rule');
+			rule.setAttribute('aria-hidden', 'true');
+			header.append(title, rule);
+			section.appendChild(header);
+			if (detail) {
+				section.appendChild(journalIndexNode('p', 'mtf-journal-index__description', detail));
+			}
+			return section;
+		}
+
+		function journalIndexArrow() {
+			const arrow = journalIndexNode('span', 'mtf-journal-index__arrow', '→');
+			arrow.setAttribute('aria-hidden', 'true');
+			return arrow;
+		}
+
+		function journalIndexKey(name) {
+			return cleanText(name).toLocaleLowerCase('en-US');
+		}
+
+		function journalIndexCategories(records) {
+			const seen = new Map();
+			for (const name of JOURNAL_INDEX_TOPICS) {
+				seen.set(journalIndexKey(name), {name, href: termURL('category', name)});
+			}
+			for (const record of records) {
+				for (const category of record.categories) {
+					if (isInternalName(category.name)) continue;
+					const key = journalIndexKey(category.name);
+					if (!seen.has(key)) seen.set(key, category);
+				}
+			}
+			return [...seen.values()];
+		}
+
+		function journalIndexSeries(records) {
+			const seen = new Map();
+			for (const series of JOURNAL_INDEX_SERIES) {
+				seen.set(journalIndexKey(series.name), {
+					...series,
+					href: termURL('tag', series.name)
+				});
+			}
+			for (const record of records) {
+				for (const tag of record.tags) {
+					if (isInternalName(tag.name)) continue;
+					const key = journalIndexKey(tag.name);
+					if (!seen.has(key)) {
+						seen.set(key, {name: tag.name, href: tag.href, description: ''});
+					}
+				}
+			}
+			return [...seen.values()];
+		}
+
+		function journalIndexLinkRow(item, kind) {
+			const li = journalIndexNode('li', 'mtf-journal-index__link-item');
+			const a = journalIndexNode('a', 'mtf-journal-index__link-row', undefined);
+			a.href = item.href;
+			const text = journalIndexNode('span', 'mtf-journal-index__link-copy');
+			text.appendChild(journalIndexNode('span', 'mtf-journal-index__link-title', item.name));
+			if (kind === 'series' && item.description) {
+				text.appendChild(journalIndexNode('span', 'mtf-journal-index__link-description', item.description));
+			}
+			a.append(text, journalIndexArrow());
+			li.appendChild(a);
+			return li;
+		}
+
+		function journalIndexRecentRow(record) {
+			const li = journalIndexNode('li', 'mtf-journal-index__recent-item');
+			li.dataset.mtfRecentPath = record.path;
+			const a = journalIndexNode('a', 'mtf-journal-index__recent-link');
+			a.href = record.path;
+			if (record.categories[0]) {
+				a.appendChild(journalIndexNode('span', 'mtf-journal-index__recent-category',
+					record.categories[0].name));
+			}
+			a.appendChild(journalIndexNode('span', 'mtf-journal-index__recent-title', record.title));
+			const seriesName = record.tags[0]?.name;
+			if (seriesName) {
+				a.appendChild(journalIndexNode('span', 'mtf-journal-index__recent-series', seriesName));
+			}
+			a.appendChild(journalIndexArrow());
+			li.appendChild(a);
+			return li;
+		}
+
+		function refreshJournalIndexRecentParts(records) {
+			const byPath = new Map(records.map(record => [record.path, record]));
+			document.querySelectorAll('.mtf-journal-index [data-mtf-recent-path]')
+				.forEach(node => {
+					const record = byPath.get(node.dataset.mtfRecentPath);
+					const part = record?.card.querySelector('.mtf-journal-series-part')?.textContent;
+					const label = node.querySelector('.mtf-journal-index__recent-series');
+					if (label && part) label.textContent = record.tags[0].name + '  —  ' + part;
+				});
+		}
+
+		function journalIndexArchiveRow(record) {
+			const li = journalIndexNode('li', 'mtf-journal-index__archive-item');
+			const a = journalIndexNode('a', 'mtf-journal-index__archive-link');
+			a.href = record.path;
+			a.appendChild(journalIndexNode('span', 'mtf-journal-index__archive-title', record.title));
+			const category = record.categories[0]?.name;
+			if (category) a.appendChild(journalIndexNode('span', 'mtf-journal-index__archive-category', category));
+			a.appendChild(journalIndexArrow());
+			li.appendChild(a);
+			return li;
+		}
+
+		function journalIndexShowMore(section, list, initial, step, label) {
+			const entries = [...list.children];
+			if (entries.length <= initial) return;
+			let visible = initial;
+			entries.forEach((entry, index) => { entry.hidden = index >= visible; });
+			const button = journalIndexNode('button', 'mtf-journal-index__more', label);
+			button.type = 'button';
+			button.setAttribute('aria-controls', list.id);
+			button.addEventListener('click', () => {
+				visible = Math.min(visible + step, entries.length);
+				entries.forEach((entry, index) => { entry.hidden = index >= visible; });
+				if (visible === entries.length) button.remove();
+			});
+			section.appendChild(button);
+		}
+
+		function buildJournalIndex(archive, records) {
+			if (!records.length || archive.querySelector('.mtf-journal-index')) return;
+
+			const landing = journalIndexNode('div', 'mtf-journal-index');
+			landing.setAttribute('aria-label', 'Journal topics and articles');
+
+			const recent = journalIndexSection('Recent Articles', '', 'mtf-journal-index__section--recent');
+			const recentList = journalIndexNode('ol', 'mtf-journal-index__recent-list');
+			records.slice(0, 3).forEach(record => recentList.appendChild(journalIndexRecentRow(record)));
+			recent.appendChild(recentList);
+			landing.appendChild(recent);
+
+			const topics = journalIndexSection('Explore by Topic',
+				'Browse journal articles by the themes I write about most often.',
+				'mtf-journal-index__section--topics');
+			const topicList = journalIndexNode('ul', 'mtf-journal-index__link-list');
+			journalIndexCategories(records).forEach(category =>
+				topicList.appendChild(journalIndexLinkRow(category, 'topic')));
+			topics.appendChild(topicList);
+			landing.appendChild(topics);
+
+			const series = journalIndexSection('Explore Series',
+				'Deeper dives on specific topics, organized as ongoing series.',
+				'mtf-journal-index__section--series');
+			const seriesList = journalIndexNode('ul', 'mtf-journal-index__link-list');
+			seriesList.id = 'mtf-journal-series-list';
+			journalIndexSeries(records).forEach(item =>
+				seriesList.appendChild(journalIndexLinkRow(item, 'series')));
+			series.appendChild(seriesList);
+			journalIndexShowMore(series, seriesList,
+				JOURNAL_INDEX_INITIAL_SERIES, 5, 'Show more series');
+			landing.appendChild(series);
+
+			const all = journalIndexSection('All Articles',
+				'Browse the latest entries, or follow a topic or series above to explore related work.',
+				'mtf-journal-index__section--all');
+			const allList = journalIndexNode('ol', 'mtf-journal-index__archive-list');
+			allList.id = 'mtf-journal-articles-list';
+			records.forEach(record => allList.appendChild(journalIndexArchiveRow(record)));
+			all.appendChild(allList);
+			journalIndexShowMore(all, allList,
+				JOURNAL_INDEX_INITIAL_ARTICLES, 8, 'Show more articles');
+			landing.appendChild(all);
+
+			// Insert inside the existing Blog collection; do not replace it.
+			// Native Squarespace pagination remains after its card wrapper.
+			archive.prepend(landing);
+			document.documentElement.classList.add('mtf-journal-landing-ready');
+		}
+
+
+		/* =====================================================
 			 SQUARESPACE ARTICLE METADATA
 			 ===================================================== */
 
@@ -1292,6 +1522,11 @@
 				}
 
 
+				/* EDITORIAL LANDING — unfiltered /journal only. */
+				if (info.showHero) {
+					buildJournalIndex(archive, records);
+				}
+
 				/* AUTOMATIC SERIES NUMBERING
 
 				   Tag-filtered series pages intentionally use the same
@@ -1300,6 +1535,10 @@
 				await updateSeriesParts(
 						records
 				);
+
+				if (info.showHero) {
+					refreshJournalIndexRecentParts(records);
+				}
 
 				updateSingleEntrySeriesStatus(
 						archive,

@@ -983,41 +983,52 @@ html.mtf-blog-archive-page
 }
 
 /* =========================================================
-	 JOURNAL ARCHIVE — SQUARESPACE BLOG LIST SPECIFICITY
+   JOURNAL ARCHIVE — SQUARESPACE BLOG LIST COMPATIBILITY
+   November 2026: Squarespace's component-specific selectors
+   were outranking this archive's presentation rules. Its
+   --blog-text-content-width: 50% also narrowed the ENTIRE
+   editorial grid, instead of each internal column.
 
-	 Squarespace's generated Blog List component selectors currently
-	 outrank the custom Journal archive selectors. Match that component
-	 scope and increase specificity without using !important.
+   Restore the original editorial layout without modifying
+   native Squarespace settings or using !important.
+   Scoped to archive, category, tag, and pagination pages
+   carrying the mtf-blog-archive-page class.
+   ========================================================= */
 
-	 Keep at the end of journal-archive.css. This changes only display
-	 behavior, preserving existing layout measurements and breakpoints.
-	 ========================================================= */
-
-/* Preserve our block rows rather than Squarespace's flex rows. */
+/* Restore full-width article rows, without native flex layout. */
 html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
 .blog-single-column--wrapper > article.blog-single-column--container {
-	display: block;
+  display: block;
+  width: 100%;
+  max-width: none;
 }
 
-/* Our editorial grid; existing mobile grid columns remain untouched. */
+/* CRITICAL: Squarespace sets --blog-text-content-width: 50%.
+   The outer grid must be 100%; its own grid columns divide it. */
 html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
 article.blog-single-column--container .blog-single-column--text {
-	display: grid;
+  display: grid;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
-/* Excerpt stacks text above our custom, bottom-aligned Read More. */
+/* Restore the excerpt column and its custom CTA alignment. */
 html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
 article.blog-single-column--container .blog-excerpt {
-	display: flex;
+  display: flex;
 }
 
-/* Squarespace native metadata and CTAs are already replaced. */
+/* Hide native metadata and extra CTAs; custom replacements remain. */
 html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
@@ -1030,10 +1041,10 @@ html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
 article.blog-single-column--container .blog-read-more {
-	display: none;
+  display: none;
 }
 
-/* Hide native archive image/spacer wrappers for text-only article rows. */
+/* Text-only rows must not reserve space for images or spacers. */
 html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
@@ -1046,5 +1057,348 @@ html.mtf-blog-archive-page
 .cdk-section[data-definition-name="website.components.blogList"]
 .blog-list.blog-single-column
 article.blog-single-column--container > .blog-article-spacer {
-	display: none;
+  display: none;
+}
+
+
+/* =========================================================
+   JOURNAL LANDING — CURATED /journal INDEX ONLY
+
+   No changes to category/tag/paginated archive pages or posts.
+   Native Squarespace article cards are retained as a no-JS
+   fallback; hide them ONLY after the index has been built.
+   ========================================================= */
+
+html.mtf-blog-archive-page.mtf-journal-landing-ready
+.blog-single-column.collection-content-wrapper
+> .blog-single-column--wrapper {
+  display: none;
+}
+
+html.mtf-blog-archive-page.mtf-journal-landing-ready
+.blog-single-column.collection-content-wrapper {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 58px clamp(24px, 3vw, 42px) 76px;
+  color: var(--mtf-journal-ink, #202020);
+  font-family: var(--mtf-journal-sans, Arial, Helvetica, sans-serif);
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__section {
+  padding: 0;
+  margin: 0 0 74px;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__section:last-child {
+  margin-bottom: 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__section-heading {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0 0 23px;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__heading {
+  flex: none;
+  margin: 0;
+  padding: 0;
+  color: #926a44;
+  font-family: var(--mtf-journal-sans, Arial, Helvetica, sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__heading-rule {
+  flex: 1;
+  height: 1px;
+  min-width: 0;
+  background: rgba(114, 99, 83, .28);
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__description {
+  margin: -5px 0 25px;
+  color: #636269;
+  font-family: var(--mtf-journal-serif, Georgia, serif);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-list,
+html.mtf-blog-archive-page .mtf-journal-index__link-list,
+html.mtf-blog-archive-page .mtf-journal-index__archive-list {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-item,
+html.mtf-blog-archive-page .mtf-journal-index__link-item,
+html.mtf-blog-archive-page .mtf-journal-index__archive-item {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--mtf-journal-line, rgba(32,32,32,.17));
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-item:first-child,
+html.mtf-blog-archive-page .mtf-journal-index__link-item:first-child,
+html.mtf-blog-archive-page .mtf-journal-index__archive-item:first-child {
+  border-top: 1px solid var(--mtf-journal-line, rgba(32,32,32,.17));
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-link,
+html.mtf-blog-archive-page .mtf-journal-index__link-row,
+html.mtf-blog-archive-page .mtf-journal-index__archive-link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  color: var(--mtf-journal-ink, #202020);
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-link {
+  min-height: 126px;
+  padding: 23px 56px 24px 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-category {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 10px;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-title {
+  display: block;
+  font-family: var(--mtf-journal-serif, Georgia, serif);
+  font-size: clamp(25px, 2.25vw, 31px);
+  line-height: 1.16;
+  font-weight: 400;
+  letter-spacing: -.027em;
+  text-transform: none;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-series {
+  display: block;
+  margin: 10px 0 0;
+  color: var(--mtf-journal-muted, #65666b);
+  font-size: 10px;
+  line-height: 1.55;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__link-row {
+  min-height: 71px;
+  padding: 18px 52px 18px 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__link-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 5px;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__link-title {
+  font-family: var(--mtf-journal-serif, Georgia, serif);
+  font-size: clamp(22px, 2vw, 27px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -.022em;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__link-description {
+  max-width: 720px;
+  color: var(--mtf-journal-muted, #65666b);
+  font-family: var(--mtf-journal-sans, Arial, sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__section--series
+.mtf-journal-index__link-row {
+  min-height: 92px;
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__archive-link {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 66px;
+  padding: 14px 50px 14px 0;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__archive-title {
+  flex: 1;
+  font-family: var(--mtf-journal-serif, Georgia, serif);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__archive-category {
+  flex: 0 0 auto;
+  max-width: 190px;
+  color: var(--mtf-journal-muted, #65666b);
+  font-family: var(--mtf-journal-sans, Arial, sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .1em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__arrow {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  color: #77716d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform .18s ease, color .18s ease;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-link:hover .mtf-journal-index__arrow,
+html.mtf-blog-archive-page .mtf-journal-index__link-row:hover .mtf-journal-index__arrow,
+html.mtf-blog-archive-page .mtf-journal-index__archive-link:hover .mtf-journal-index__arrow {
+  color: #926a44;
+  transform: translate(4px, -50%);
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__recent-link:focus-visible,
+html.mtf-blog-archive-page .mtf-journal-index__link-row:focus-visible,
+html.mtf-blog-archive-page .mtf-journal-index__archive-link:focus-visible,
+html.mtf-blog-archive-page .mtf-journal-index__more:focus-visible {
+  outline: 2px solid #926a44;
+  outline-offset: 5px;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__archive-item[hidden],
+html.mtf-blog-archive-page .mtf-journal-index__link-item[hidden] {
+  display: none;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin: 24px 0 0;
+  padding: 10px 20px;
+  border: 1px solid rgba(32,32,32,.35);
+  background: transparent;
+  color: var(--mtf-journal-ink, #202020);
+  font-family: var(--mtf-journal-sans, Arial, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease;
+}
+
+html.mtf-blog-archive-page .mtf-journal-index__more:hover {
+  background: #202020;
+  color: #fff;
+}
+
+/* Squarespace controls the older/newer post links, when present. */
+html.mtf-blog-archive-page.mtf-journal-landing-ready .blog-list-pagination,
+html.mtf-blog-archive-page.mtf-journal-landing-ready .blog-pagination {
+  box-sizing: border-box;
+  max-width: 1000px;
+  margin: 0 auto 54px;
+  padding-inline: clamp(24px, 3vw, 42px);
+}
+
+@media (max-width: 800px) {
+  html.mtf-blog-archive-page .mtf-journal-index {
+    padding: 40px 25px 62px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__section {
+    margin-bottom: 58px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__recent-link {
+    min-height: 112px;
+    padding-right: 40px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__link-row {
+    padding-right: 42px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__archive-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-right: 38px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__archive-category {
+    text-align: left;
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  html.mtf-blog-archive-page .mtf-journal-index {
+    padding: 36px 22px 55px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__section-heading {
+    gap: 13px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__heading {
+    font-size: 11px;
+    letter-spacing: .15em;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__recent-title {
+    font-size: 25px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__link-title {
+    font-size: 23px;
+  }
+  html.mtf-blog-archive-page .mtf-journal-index__description {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.mtf-blog-archive-page .mtf-journal-index__recent-link,
+  html.mtf-blog-archive-page .mtf-journal-index__link-row,
+  html.mtf-blog-archive-page .mtf-journal-index__archive-link,
+  html.mtf-blog-archive-page .mtf-journal-index__arrow,
+  html.mtf-blog-archive-page .mtf-journal-index__more {
+    transition: none;
+  }
 }
